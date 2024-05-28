@@ -9,4 +9,5 @@ class ColorCollections {
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color alertSuccessColor = Color(0xFFB0FE76);
   static const Color alertErrorColor = Color(0xFFDC2626);
+  static const Color textCreateNow = Color(0xFF404969);
 }

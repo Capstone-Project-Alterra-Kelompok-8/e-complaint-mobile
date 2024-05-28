@@ -1,17 +1,24 @@
+<<<<<<< HEAD
 import 'package:e_complaint_app/screens/auth/forget_password_screen.dart';
 import 'package:e_complaint_app/screens/auth/login.dart';
+=======
+import 'package:e_complaint_app/screens/auth/create_new_password_screen.dart';
+import 'package:e_complaint_app/screens/auth/login_screen.dart';
+>>>>>>> 4dbcb024505c79a500f8f97559bcf66df229deba
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -115,13 +122,18 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
+=======
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => null),
+    ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          useMaterial3: true,
+>>>>>>> 4dbcb024505c79a500f8f97559bcf66df229deba
         ),
+        home: LoginScreen(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
