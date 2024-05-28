@@ -7,7 +7,7 @@ class LoginTextCollections {
     fontWeight: FontWeight.w700,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
-  
+
   );
 
   static TextStyle headingTwo = GoogleFonts.montserrat(
@@ -15,15 +15,15 @@ class LoginTextCollections {
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
-    
+   
   );
 
   static TextStyle headingThree = GoogleFonts.montserrat(
     fontSize: 18.0,
     fontWeight: FontWeight.w600,
-    color: ColorCollections.textSecondaryColor,
+    color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
-   
+
   );
 
   static TextStyle headingFour = GoogleFonts.montserrat(
@@ -31,7 +31,7 @@ class LoginTextCollections {
     fontWeight: FontWeight.w600,
     color: ColorCollections.alertErrorColor,
     letterSpacing: 0.4,
-
+ 
   );
 
   static TextStyle headingFive = GoogleFonts.montserrat(
@@ -39,14 +39,16 @@ class LoginTextCollections {
     fontWeight: FontWeight.w600,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
-   
+
   );
 
-  static TextStyle headingSix = GoogleFonts.montserrat(
+  static TextStyle createNow = GoogleFonts.montserrat(
     fontSize: 16.0,
     fontWeight: FontWeight.w600,
     color: ColorCollections.textCreateNow,
     letterSpacing: 0.4,
-   
+
   );
+
+
 }

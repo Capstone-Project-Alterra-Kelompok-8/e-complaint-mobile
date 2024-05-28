@@ -24,7 +24,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   width: 227,
                   height: 227,
                   child: Center(
-                      child: Image(
+                    child: Image(
                     image: AssetImage('assets/images/logo.png'),
                     fit: BoxFit.fill,
                   )),

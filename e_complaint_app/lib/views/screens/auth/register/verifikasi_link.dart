@@ -12,7 +12,7 @@ class VerifikasiLink extends StatelessWidget {
           children: [
             // Logo SVG
             Image.asset(
-              'assets/logo.png',
+              'assets/images/logo.png',
               height: 200,
             ),
             const SizedBox(height: 20),

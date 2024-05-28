@@ -12,11 +12,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   bool isVisible = false;
 
   @override
@@ -110,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: TextFormField(
                     controller: passwordController,
-                    obscureText: isVisible!,
+                    obscureText: !isVisible,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(16),
                       hintText: 'Password',
@@ -140,6 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
+                      Navigator.pushNamed(context, '/forgotPassword');
                     },
                     child: Text(
                       'Forgot Password?',
@@ -158,11 +156,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(8.0),
                           
                         ),
+                       
                       ),
                     onPressed: (){}, 
                     child: Text(
                       'Login',
-                      style: LoginTextCollections.headingThree,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+
+                   
 
                       
                     )),
@@ -177,10 +180,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
+                        Navigator.pushNamed(context, '/register');
                       },
                       child: Text(
                         'Create Now',
-                        style: LoginTextCollections.headingSix,
+                        style: LoginTextCollections.createNow,
                       ),
                     ),
                   ],

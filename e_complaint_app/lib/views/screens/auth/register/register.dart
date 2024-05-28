@@ -1,21 +1,33 @@
+import 'package:e_complaint_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 22.5),
         child: ListView(
-          children: [
-            // Logo SVG
-            Image.asset(
-              'assets/logo.png',
-              height: 200,
-            ),
+          children: [  
+             Padding(
+                  padding: const EdgeInsets.only(top: 37),
+                  child:Image.asset('assets/images/logo.png', width: 227, height: 227,),
+                ),
             const SizedBox(height: 20),
             // Text 'Register'
             const Text(
@@ -117,39 +129,32 @@ class RegisterPage extends StatelessWidget {
 
             const SizedBox(height: 20),
             // Register Button
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle register logic
-                  Navigator.pushNamed(context, '/register/verifikasi_link');
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: const Color(0xFFEAB308),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+             SizedBox(
+                  width: double.infinity,
+                  height: 32,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorCollections.buttonColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          
+                        ),
+                       
+                      ),
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/verifikasi_link');
+                    }, 
+                    child: Text(
+                      'Register',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+
+                   
+
+                      
+                    )),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                  child: Text(
-                    'Register',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-            ),
             const SizedBox(height: 10),
             // Login Text
             Row(
