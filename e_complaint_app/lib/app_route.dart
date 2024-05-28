@@ -1,4 +1,5 @@
 import 'package:e_complaint_app/views/screens/auth/create_new_password_screen.dart';
+import 'package:e_complaint_app/views/screens/auth/forget_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/register/register.dart';
 import 'package:e_complaint_app/views/screens/auth/register/verifikasi_link.dart';
@@ -12,6 +13,7 @@ class AppRoute {
     '/verifikasi_link' : (context) => VerifikasiLink(),
     '/new_password' : (context) => NewPasswordScreen(),
     '/news' :(context) => NewsScreen(),
+    '/forgot_password' : (context) => ForgotPasswordScreen(),
   };
   
 }

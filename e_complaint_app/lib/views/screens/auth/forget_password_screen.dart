@@ -4,7 +4,12 @@ import 'package:e_complaint_app/constants/constants.dart';
 
 
 
-class ForgotPasswordPage extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +32,7 @@ class ForgotPasswordPage extends StatelessWidget {
               Center(
                 child: Text(
                   'Forgot Password',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: LoginTextCollections.headingOne,
                 ),
               ),
               SizedBox(height: 10),
@@ -39,10 +41,7 @@ class ForgotPasswordPage extends StatelessWidget {
                 child: Text(
                   'Enter your registered email below to receive password reset instruction',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: ColorCollections.textPrimaryColor,
-                  ),
+                  style: LoginTextCollections.headingTwo,
                 ),
               ),
               SizedBox(height: 20),
@@ -85,6 +84,7 @@ class ForgotPasswordPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.pushNamed(context, '/new_password');
                     
                   },
                   style: ElevatedButton.styleFrom(
