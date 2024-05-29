@@ -9,6 +9,8 @@ class NewPasswordScreen extends StatefulWidget {
 }
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +61,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       ),
                     ],
                   ),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(16),
                       hintText: 'New Password',
@@ -102,7 +104,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       ),
                     ],
                   ),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(16),
                       hintText: 'Confirm Password',

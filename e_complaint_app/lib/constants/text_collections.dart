@@ -49,6 +49,38 @@ class LoginTextCollections {
     letterSpacing: 0.4,
 
   );
+}
+
+class TextCollections {
+  static TextStyle headingOne = GoogleFonts.poppins(
+    fontSize: 28.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+
+  );
+
+  static TextStyle headingTwo = GoogleFonts.poppins(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+   
+  );
+
+  static TextStyle headingThree = GoogleFonts.montserrat(
+    fontSize: 18.0,
+    fontWeight: FontWeight.w600,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+
+  );
+
+  static TextStyle primaryFont = GoogleFonts.montserrat();
+  
+
 
 
 }
+
+

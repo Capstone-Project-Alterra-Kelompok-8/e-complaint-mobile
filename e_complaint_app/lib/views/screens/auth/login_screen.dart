@@ -21,16 +21,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 22.5),
+          padding: const EdgeInsets.only(top: 54, left: 22.5, right: 22.5),
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 37),
-                  child:Image.asset('assets/images/logo.png', width: 227, height: 227,),
-                ),
+               Image.asset('assets/images/logo.png', width: 227, height: 227,),
+             
                 Text(
                   'Welcome',
                   style: LoginTextCollections.headingOne
@@ -65,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: TextFormField(
                     controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(16),
                       hintText: 'Email',
@@ -162,12 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: ColorCollections.textSecondaryColor,
                       ),
-
-                   
-
-                      
                     )),
                 ),
                 SizedBox(height: 10),
