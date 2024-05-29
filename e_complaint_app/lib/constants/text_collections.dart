@@ -37,3 +37,40 @@ class LoginTextCollections {
     letterSpacing: 0.4,
   );
 }
+
+class HomeTextCollections {
+  static TextStyle welcomeText = GoogleFonts.montserrat(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle nameText = GoogleFonts.poppins(
+    fontSize: 24.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle beritaHeader = GoogleFonts.poppins(
+        fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle titleBerita = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+    static TextStyle footerBerita = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+}

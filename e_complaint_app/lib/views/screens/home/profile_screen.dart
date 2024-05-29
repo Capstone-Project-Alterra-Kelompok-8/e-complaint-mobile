@@ -14,7 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CurvedAppBar(),
+      appBar: const CurvedAppBar(),
       body: ListView(
         children: [
           const SizedBox(
@@ -153,46 +153,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const Text(
                   'Tentang Kami',
-                  style: TextStyle(
-                    color: ColorCollections.textPrimaryColor,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 70,
-            color: ColorCollections.profileColor,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.co_present_outlined),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Kisah Sukses',
-                  style: TextStyle(
-                    color: ColorCollections.textPrimaryColor,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 70,
-            color: ColorCollections.profileColor,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.headphones),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Ketentuan Layanan',
                   style: TextStyle(
                     color: ColorCollections.textPrimaryColor,
                   ),

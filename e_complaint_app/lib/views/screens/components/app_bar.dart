@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 
-  const CurvedAppBar({Key? key}) : super(key: key);
+  const CurvedAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       child: Container(
         height: 106,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [ColorCollections.primaryColor, ColorCollections.backgroundColor], // Define your gradient colors here
             begin: Alignment.topCenter,
@@ -23,7 +23,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
 
         ),
-        child: Image(
+        child: const Image(
             image: AssetImage('assets/images/logo_appbar.png'),
         ),
       ),
