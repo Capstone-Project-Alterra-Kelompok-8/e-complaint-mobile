@@ -1,7 +1,9 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
+import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -140,24 +142,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 70,
-            color: ColorCollections.profileColor,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.info),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Tentang Kami',
-                  style: TextStyle(
+          GestureDetector(
+            onTap: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => AboutAppScreen()));
+            },
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              color: ColorCollections.profileColor,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.info),
                     color: ColorCollections.textPrimaryColor,
                   ),
-                )
-              ],
+                  const Text(
+                    'Tentang Kami',
+                    style: TextStyle(
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           GestureDetector(

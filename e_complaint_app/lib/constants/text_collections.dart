@@ -54,7 +54,7 @@ class HomeTextCollections {
   );
 
   static TextStyle beritaHeader = GoogleFonts.poppins(
-        fontSize: 16.0,
+    fontSize: 16.0,
     fontWeight: FontWeight.w700,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
@@ -67,7 +67,21 @@ class HomeTextCollections {
     letterSpacing: 0.4,
   );
 
-    static TextStyle footerBerita = GoogleFonts.montserrat(
+  static TextStyle footerBerita = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle textButtonAboutApp = GoogleFonts.poppins(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle description = GoogleFonts.montserrat(
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
