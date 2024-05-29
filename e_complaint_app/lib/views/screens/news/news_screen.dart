@@ -21,6 +21,7 @@ class _NewsScreenState extends State<NewsScreen> {
         
       ),
       body: SingleChildScrollView(
+
         child: Padding(
           padding: const EdgeInsets.only(left: 22, right: 22, top: 20),
           child: Column(
@@ -52,7 +53,22 @@ class _NewsScreenState extends State<NewsScreen> {
               ),
               Gap(10),
               NewsCardJumbo(),
-              Gap(40),
+              Gap(60),
+              GridView.builder(
+          controller: ScrollController(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 12 / 19,
+          ),
+          shrinkWrap: true,
+          itemCount: 4,
+          itemBuilder: (context, index) {
+            
+            return NewsCard();
+          },
+        ),
              
             
 

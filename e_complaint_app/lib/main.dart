@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: '/login',
+        initialRoute: '/news',
         routes: AppRoute.routes,
       ),
     );

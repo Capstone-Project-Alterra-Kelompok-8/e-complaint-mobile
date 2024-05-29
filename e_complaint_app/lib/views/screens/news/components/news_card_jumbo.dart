@@ -62,11 +62,14 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
                   'Pemprov Banten mendapatkan Pendanaan Proyek Infrastruktur Air ',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
-                  style: TextCollections.headingTwo.copyWith(
+                  style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1C1C1C),
                   ),
                 ),
               ),
-              Gap(10),
+              Gap(20),
               Row(
                 children: [
                   Text(
