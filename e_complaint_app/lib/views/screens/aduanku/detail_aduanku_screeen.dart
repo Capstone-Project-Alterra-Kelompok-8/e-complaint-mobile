@@ -3,9 +3,14 @@ import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class DetailAduankuScreen extends StatelessWidget {
+class DetailAduankuScreen extends StatefulWidget {
   const DetailAduankuScreen({super.key});
 
+  @override
+  State<DetailAduankuScreen> createState() => _DetailAduankuScreenState();
+}
+
+class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
   @override
   Widget build (BuildContext context){
     return Scaffold(
@@ -158,7 +163,9 @@ class DetailAduankuScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/progress_aduanku');
+                          },
                           child: Text(
                             'Progress Aduan',
                             style: TextCollections.headingThree.copyWith(

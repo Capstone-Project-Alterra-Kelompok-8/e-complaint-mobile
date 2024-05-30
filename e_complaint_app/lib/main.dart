@@ -1,5 +1,6 @@
 
 import 'package:e_complaint_app/app_route.dart';
+import 'package:e_complaint_app/views/screens/aduanku/detail_aduanku_screeen.dart';
 import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
 import 'package:e_complaint_app/views/screens/news/news_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: '/detail_aduanku',
+        home: DetailAduankuScreen(),
+        
         routes: AppRoute.routes,
       ),
     );
