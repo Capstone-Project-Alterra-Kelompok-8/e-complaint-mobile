@@ -18,112 +18,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CurvedAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(23.0),
-        child: ListView(
-          children: [
-            const Center(
-              child: CircleAvatar(
-                radius: 45,
-                backgroundColor: ColorCollections.primaryColor,
-                foregroundColor: ColorCollections.backgroundColor,
-                child: Icon(Icons.person),
-              ),
+      resizeToAvoidBottomInset: false,
+      body: ListView(
+        children: [
+          const Center(
+            child: CircleAvatar(
+              radius: 45,
+              backgroundColor: ColorCollections.primaryColor,
+              foregroundColor: ColorCollections.backgroundColor,
+              child: Icon(Icons.person),
             ),
-            const Center(
-              child: Column(
-                children: [
-                  Text(
-                    'Maulana Abraham',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: ColorCollections.textPrimaryColor,
-                        fontSize: 16),
-                  ),
-                  Text(
-                    'maulanaabrhm@gmail.com',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: ColorCollections.textPrimaryColor,
-                        fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 33,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const ChangeProfileScreen()));
-              },
-              child: Container(
-                width: double.infinity,
-                height: 70,
-                decoration: const BoxDecoration(
-                  color: ColorCollections.profileColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.person_2_outlined),
+          ),
+          const Center(
+            child: Column(
+              children: [
+                Text(
+                  'Maulana Abraham',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
                       color: ColorCollections.textPrimaryColor,
-                    ),
-                    const Text(
-                      'Ubah Profile',
-                      style: TextStyle(
-                        color: ColorCollections.textPrimaryColor,
-                      ),
-                    )
-                  ],
+                      fontSize: 16),
                 ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const ChangePasswordProfileScreen()));
-              },
-              child: Container(
-                width: double.infinity,
-                height: 70,
-                color: ColorCollections.profileColor,
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.key_outlined),
+                Text(
+                  'maulanaabrhm@gmail.com',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
                       color: ColorCollections.textPrimaryColor,
-                    ),
-                    const Text(
-                      'Ubah Password',
-                      style: TextStyle(
-                        color: ColorCollections.textPrimaryColor,
-                      ),
-                    )
-                  ],
+                      fontSize: 12),
                 ),
-              ),
+              ],
             ),
-            Container(
+          ),
+          const SizedBox(
+            height: 33,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const ChangeProfileScreen()));
+            },
+            child: Container(
               width: double.infinity,
               height: 70,
-              color: ColorCollections.profileColor,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+              ),
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.mode_comment_outlined),
+                    icon: const Icon(Icons.person_2_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
                   const Text(
-                    'Laporan Saya',
+                    'Ubah Profile',
                     style: TextStyle(
                       color: ColorCollections.textPrimaryColor,
                     ),
@@ -131,19 +82,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            Container(
+          ),
+          const Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const ChangePasswordProfileScreen()));
+            },
+            child: SizedBox(
               width: double.infinity,
               height: 70,
-              color: ColorCollections.profileColor,
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.category_outlined),
+                    icon: const Icon(Icons.key_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
                   const Text(
-                    'Riwayat Favorit',
+                    'Ubah Password',
                     style: TextStyle(
                       color: ColorCollections.textPrimaryColor,
                     ),
@@ -151,63 +108,103 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const AboutAppScreen()));
-              },
-              child: Container(
-                width: double.infinity,
-                height: 70,
-                color: ColorCollections.profileColor,
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.info),
-                      color: ColorCollections.textPrimaryColor,
-                    ),
-                    const Text(
-                      'Tentang Kami',
-                      style: TextStyle(
-                        color: ColorCollections.textPrimaryColor,
-                      ),
-                    )
-                  ],
+          ),
+          const Divider(),
+          SizedBox(
+            width: double.infinity,
+            height: 70,
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.mode_comment_outlined),
+                  color: ColorCollections.textPrimaryColor,
                 ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                height: 70,
-                decoration: const BoxDecoration(
-                  color: ColorCollections.profileColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
+                const Text(
+                  'Laporan Saya',
+                  style: TextStyle(
+                    color: ColorCollections.textPrimaryColor,
                   ),
+                )
+              ],
+            ),
+          ),
+          const Divider(),
+          SizedBox(
+            width: double.infinity,
+            height: 70,
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.category_outlined),
+                  color: ColorCollections.textPrimaryColor,
                 ),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.logout),
+                const Text(
+                  'Riwayat Favorit',
+                  style: TextStyle(
+                    color: ColorCollections.textPrimaryColor,
+                  ),
+                )
+              ],
+            ),
+          ),
+          const Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const AboutAppScreen()));
+            },
+            child: SizedBox(
+              width: double.infinity,
+              height: 70,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.info),
+                    color: ColorCollections.textPrimaryColor,
+                  ),
+                  const Text(
+                    'Tentang Kami',
+                    style: TextStyle(
                       color: ColorCollections.textPrimaryColor,
                     ),
-                    const Text(
-                      'Logout',
-                      style: TextStyle(
-                        color: ColorCollections.textPrimaryColor,
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          const Divider(),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
+                ),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.logout),
+                    color: ColorCollections.textPrimaryColor,
+                  ),
+                  const Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       extendBody: true,
       floatingActionButton: FloatingActionButton(

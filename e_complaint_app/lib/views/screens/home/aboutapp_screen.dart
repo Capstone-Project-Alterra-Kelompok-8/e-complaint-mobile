@@ -75,7 +75,8 @@ class AboutAppScreen extends StatelessWidget {
                 const SizedBox(
                   height: 6,
                 ),
-                const Image(image: AssetImage('assets/images/slogan_bersuara.png')),
+                const Image(
+                    image: AssetImage('assets/images/slogan_bersuara.png')),
                 Text(
                   'Memberikan platform bagi masyarakat\nuntuk menyampaikan aduan atau\nmasalah yang mereka hadapi dengan\nmudah dan cepat.',
                   textAlign: TextAlign.center,
@@ -84,7 +85,8 @@ class AboutAppScreen extends StatelessWidget {
                 const SizedBox(
                   height: 11,
                 ),
-                const Image(image: AssetImage('assets/images/slogan_beraksi.png')),
+                const Image(
+                    image: AssetImage('assets/images/slogan_beraksi.png')),
                 Text(
                   'Setiap aduan yang dilaporkan tidak hanya\ndidengar, tetapi juga segera\nditindaklanjuti. Tim aplikasi akan segera\nmengambil langkah untuk\nmenyelesaikan masalah yang dilaporkan\noleh masyarakat.',
                   textAlign: TextAlign.center,
@@ -93,7 +95,8 @@ class AboutAppScreen extends StatelessWidget {
                 const SizedBox(
                   height: 11,
                 ),
-                const Image(image: AssetImage('assets/images/slogan_berhasil.png')),
+                const Image(
+                    image: AssetImage('assets/images/slogan_berhasil.png')),
                 Text(
                   'Akhirnya, hasil dari tindakan tersebut\nadalah penyelesaian yang berhasil dari\nmasalah yang dilaporkan.',
                   textAlign: TextAlign.center,

@@ -27,6 +27,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         ),
       ),
       backgroundColor: ColorCollections.backgroundColor,
+      resizeToAvoidBottomInset: false,
       body: ListView(
         children: [
           Container(
@@ -65,7 +66,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
           ),
 
           // SEARCH WIDGET SECTION
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Padding(
             padding:
                 const EdgeInsets.only(top: 10, right: 23, left: 23, bottom: 36),

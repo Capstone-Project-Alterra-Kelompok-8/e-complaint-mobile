@@ -210,11 +210,10 @@ class _ChangePasswordProfileScreenState
                                         const SizedBox(height: 20),
                                         ElevatedButton(
                                           onPressed: () {
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            ProfileScreen()));
+                                            Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        const ProfileScreen()));
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: ColorCollections
