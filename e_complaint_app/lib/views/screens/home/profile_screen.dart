@@ -18,82 +18,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CurvedAppBar(),
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: 18,
-          ),
-          const Center(
-            child: CircleAvatar(
-              radius: 45,
-              backgroundColor: ColorCollections.primaryColor,
-              foregroundColor: ColorCollections.backgroundColor,
-              child: Icon(Icons.person),
+      body: Padding(
+        padding: const EdgeInsets.all(23.0),
+        child: ListView(
+          children: [
+            const Center(
+              child: CircleAvatar(
+                radius: 45,
+                backgroundColor: ColorCollections.primaryColor,
+                foregroundColor: ColorCollections.backgroundColor,
+                child: Icon(Icons.person),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Center(
-            child: Column(
-              children: [
-                Text(
-                  'Maulana Abraham',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: ColorCollections.textPrimaryColor,
-                      fontSize: 16),
-                ),
-                Text(
-                  'maulanaabrhm@gmail.com',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: ColorCollections.textPrimaryColor,
-                      fontSize: 12),
-                ),
-              ],
+            const Center(
+              child: Column(
+                children: [
+                  Text(
+                    'Maulana Abraham',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: ColorCollections.textPrimaryColor,
+                        fontSize: 16),
+                  ),
+                  Text(
+                    'maulanaabrhm@gmail.com',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: ColorCollections.textPrimaryColor,
+                        fontSize: 12),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 33,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const ChangeProfileScreen()));
-            },
-            child: Container(
-              width: double.infinity,
-              height: 70,
-              decoration: const BoxDecoration(
+            const SizedBox(
+              height: 33,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const ChangeProfileScreen()));
+              },
+              child: Container(
+                width: double.infinity,
+                height: 70,
+                decoration: const BoxDecoration(
+                  color: ColorCollections.profileColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.person_2_outlined),
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                    const Text(
+                      'Ubah Profile',
+                      style: TextStyle(
+                        color: ColorCollections.textPrimaryColor,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const ChangePasswordProfileScreen()));
+              },
+              child: Container(
+                width: double.infinity,
+                height: 70,
                 color: ColorCollections.profileColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-              ),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.person_2_outlined),
-                    color: ColorCollections.textPrimaryColor,
-                  ),
-                  const Text(
-                    'Ubah Profile',
-                    style: TextStyle(
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.key_outlined),
                       color: ColorCollections.textPrimaryColor,
                     ),
-                  )
-                ],
+                    const Text(
+                      'Ubah Password',
+                      style: TextStyle(
+                        color: ColorCollections.textPrimaryColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ChangePasswordProfileScreen()));
-            },
-            child: Container(
+            Container(
               width: double.infinity,
               height: 70,
               color: ColorCollections.profileColor,
@@ -101,11 +119,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.key_outlined),
+                    icon: const Icon(Icons.mode_comment_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
                   const Text(
-                    'Ubah Password',
+                    'Laporan Saya',
                     style: TextStyle(
                       color: ColorCollections.textPrimaryColor,
                     ),
@@ -113,53 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 70,
-            color: ColorCollections.profileColor,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.mode_comment_outlined),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Laporan Saya',
-                  style: TextStyle(
-                    color: ColorCollections.textPrimaryColor,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 70,
-            color: ColorCollections.profileColor,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.category_outlined),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Kategori Populer',
-                  style: TextStyle(
-                    color: ColorCollections.textPrimaryColor,
-                  ),
-                )
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const AboutAppScreen()));
-            },
-            child: Container(
+            Container(
               width: double.infinity,
               height: 70,
               color: ColorCollections.profileColor,
@@ -167,11 +139,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.info),
+                    icon: const Icon(Icons.category_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
                   const Text(
-                    'Tentang Kami',
+                    'Riwayat Favorit',
                     style: TextStyle(
                       color: ColorCollections.textPrimaryColor,
                     ),
@@ -179,31 +151,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: double.infinity,
-              height: 70,
-              color: ColorCollections.profileColor,
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.logout),
-                    color: ColorCollections.textPrimaryColor,
-                  ),
-                  const Text(
-                    'Logout',
-                    style: TextStyle(
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const AboutAppScreen()));
+              },
+              child: Container(
+                width: double.infinity,
+                height: 70,
+                color: ColorCollections.profileColor,
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.info),
                       color: ColorCollections.textPrimaryColor,
                     ),
-                  )
-                ],
+                    const Text(
+                      'Tentang Kami',
+                      style: TextStyle(
+                        color: ColorCollections.textPrimaryColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: double.infinity,
+                height: 70,
+                decoration: const BoxDecoration(
+                  color: ColorCollections.profileColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.logout),
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                    const Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: ColorCollections.textPrimaryColor,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       extendBody: true,
       floatingActionButton: FloatingActionButton(

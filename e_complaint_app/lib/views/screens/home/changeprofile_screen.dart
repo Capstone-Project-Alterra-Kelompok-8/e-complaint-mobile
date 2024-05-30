@@ -15,7 +15,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
     return Scaffold(
       appBar: const CurvedAppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(23.0),
         child: Column(
           children: [
             const SizedBox(

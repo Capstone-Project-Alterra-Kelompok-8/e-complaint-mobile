@@ -106,17 +106,33 @@ class HomeTextCollections {
   );
 
   // change password profile page text collection session
-    static TextStyle titleButtonChangePassword = GoogleFonts.montserrat(
+  static TextStyle titleButtonChangePassword = GoogleFonts.montserrat(
     fontSize: 14.0,
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
 
-      static TextStyle submitButtonChangePassword = GoogleFonts.montserrat(
+  static TextStyle enableSubmitButtonChangePassword = GoogleFonts.montserrat(
     fontSize: 14.0,
     fontWeight: FontWeight.w700,
     color: ColorCollections.backgroundColor,
     letterSpacing: 0.4,
   );
+
+    static TextStyle disableSubmitButtonChangePassword = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.disableButtonColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle dialogTitleChangePassword = GoogleFonts.poppins(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+
 }

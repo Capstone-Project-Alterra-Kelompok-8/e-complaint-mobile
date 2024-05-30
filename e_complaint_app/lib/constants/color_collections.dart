@@ -11,4 +11,5 @@ class ColorCollections {
   static const Color alertErrorColor = Color(0xFFDC2626);
   static const Color profileColor = Color(0xFFECE6F0);
   static const Color profileButtonColor = Color(0xFFCFCFFC);
+  static const Color disableButtonColor = Color(0xFF79747E);
 }
