@@ -10,4 +10,5 @@ class ColorCollections {
   static const Color alertSuccessColor = Color(0xFFB0FE76);
   static const Color alertErrorColor = Color(0xFFDC2626);
   static const Color profileColor = Color(0xFFECE6F0);
+  static const Color profileButtonColor = Color(0xFFCFCFFC);
 }

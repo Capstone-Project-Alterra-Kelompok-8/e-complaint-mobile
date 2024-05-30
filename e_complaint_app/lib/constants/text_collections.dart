@@ -87,4 +87,18 @@ class HomeTextCollections {
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
+
+  static TextStyle titleButton = GoogleFonts.poppins(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle descriptionChangePassword = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
 }

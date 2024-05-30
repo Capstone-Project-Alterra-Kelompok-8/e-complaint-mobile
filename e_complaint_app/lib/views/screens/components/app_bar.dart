@@ -2,7 +2,7 @@ import 'package:e_complaint_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CurvedAppBar({Key? key}) : super(key: key);
+  const CurvedAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
           top: 40,
           left: 0,
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).pop();
             },

@@ -1,7 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});
@@ -29,7 +28,7 @@ class AboutAppScreen extends StatelessWidget {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.25),
                         blurRadius: 4,
-                        offset: Offset(0, 4),
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -43,7 +42,7 @@ class AboutAppScreen extends StatelessWidget {
                   height: 9,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
                     'KeluhProv adalah aplikasi untuk melaporkan keluhan masyarakat di Provinsi Banten. Dengan antarmuka yang mudah digunakan, penduduk bisa dengan cepat mengirimkan keluhan mereka tentang infrastruktur, layanan publik, atau masalah lingkungan. Aplikasi ini memudahkan pelacakan status keluhan dan membantu pemerintah memperbaiki layanan publik.',
                     textAlign: TextAlign.justify,
@@ -63,7 +62,7 @@ class AboutAppScreen extends StatelessWidget {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.25),
                         blurRadius: 4,
-                        offset: Offset(0, 4),
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -73,28 +72,28 @@ class AboutAppScreen extends StatelessWidget {
                     style: HomeTextCollections.textButtonAboutApp,
                   )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 6,
                 ),
-                Image(image: AssetImage('assets/images/slogan_bersuara.png')),
+                const Image(image: AssetImage('assets/images/slogan_bersuara.png')),
                 Text(
                   'Memberikan platform bagi masyarakat\nuntuk menyampaikan aduan atau\nmasalah yang mereka hadapi dengan\nmudah dan cepat.',
                   textAlign: TextAlign.center,
                   style: HomeTextCollections.description,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 11,
                 ),
-                Image(image: AssetImage('assets/images/slogan_beraksi.png')),
+                const Image(image: AssetImage('assets/images/slogan_beraksi.png')),
                 Text(
                   'Setiap aduan yang dilaporkan tidak hanya\ndidengar, tetapi juga segera\nditindaklanjuti. Tim aplikasi akan segera\nmengambil langkah untuk\nmenyelesaikan masalah yang dilaporkan\noleh masyarakat.',
                   textAlign: TextAlign.center,
                   style: HomeTextCollections.description,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 11,
                 ),
-                Image(image: AssetImage('assets/images/slogan_berhasil.png')),
+                const Image(image: AssetImage('assets/images/slogan_berhasil.png')),
                 Text(
                   'Akhirnya, hasil dari tindakan tersebut\nadalah penyelesaian yang berhasil dari\nmasalah yang dilaporkan.',
                   textAlign: TextAlign.center,

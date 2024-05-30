@@ -2,8 +2,9 @@ import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
+import 'package:e_complaint_app/views/screens/home/chanepassword_screen.dart';
+import 'package:e_complaint_app/views/screens/home/changeprofile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -56,50 +57,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(
             height: 33,
           ),
-          Container(
-            width: double.infinity,
-            height: 70,
-            decoration: const BoxDecoration(
-              color: ColorCollections.profileColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                topRight: Radius.circular(20.0),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const ChangeProfileScreen()));
+            },
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              decoration: const BoxDecoration(
+                color: ColorCollections.profileColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.person_2_outlined),
+                    color: ColorCollections.textPrimaryColor,
+                  ),
+                  const Text(
+                    'Ubah Profile',
+                    style: TextStyle(
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                  )
+                ],
               ),
             ),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.person_2_outlined),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Ubah Profile',
-                  style: TextStyle(
-                    color: ColorCollections.textPrimaryColor,
-                  ),
-                )
-              ],
-            ),
           ),
-          Container(
-            width: double.infinity,
-            height: 70,
-            color: ColorCollections.profileColor,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.key_outlined),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Ubah Password',
-                  style: TextStyle(
+          GestureDetector(
+            onTap: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ChangePasswordProfileScreen()));
+            },
+            child: Container(
+              width: double.infinity,
+              height: 70,
+              color: ColorCollections.profileColor,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.key_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
-                )
-              ],
+                  const Text(
+                    'Ubah Password',
+                    style: TextStyle(
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Container(
@@ -143,8 +155,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           GestureDetector(
-            onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => AboutAppScreen()));
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const AboutAppScreen()));
             },
             child: Container(
               width: double.infinity,
