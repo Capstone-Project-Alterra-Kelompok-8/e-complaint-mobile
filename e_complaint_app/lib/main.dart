@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: '/notification',
+        initialRoute: '/detail_aduanku',
         routes: AppRoute.routes,
       ),
     );

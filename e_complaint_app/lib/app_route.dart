@@ -1,3 +1,4 @@
+import 'package:e_complaint_app/views/screens/aduanku/detail_aduanku_screeen.dart';
 import 'package:e_complaint_app/views/screens/auth/create_new_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/forget_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
@@ -22,6 +23,7 @@ class AppRoute {
     '/news_detail' : (context) => NewsDetail(),
     '/forgot_password' : (context) => ForgotPasswordScreen(),
     '/notification' : (context) => NotificationScreen(),
+    '/detail_aduanku' : (context) => DetailAduankuScreen(),
   };
   
 }
