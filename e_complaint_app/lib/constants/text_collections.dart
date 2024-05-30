@@ -39,6 +39,7 @@ class LoginTextCollections {
 }
 
 class HomeTextCollections {
+  //homepage text collection session
   static TextStyle welcomeText = GoogleFonts.montserrat(
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
@@ -74,6 +75,7 @@ class HomeTextCollections {
     letterSpacing: 0.4,
   );
 
+  // about app page text collection session
   static TextStyle textButtonAboutApp = GoogleFonts.poppins(
     fontSize: 16.0,
     fontWeight: FontWeight.w700,
@@ -88,6 +90,7 @@ class HomeTextCollections {
     letterSpacing: 0.4,
   );
 
+  // change profile page text collection session
   static TextStyle titleButton = GoogleFonts.poppins(
     fontSize: 14.0,
     fontWeight: FontWeight.w600,
@@ -99,6 +102,21 @@ class HomeTextCollections {
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  // change password profile page text collection session
+    static TextStyle titleButtonChangePassword = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+      static TextStyle submitButtonChangePassword = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.backgroundColor,
     letterSpacing: 0.4,
   );
 }
