@@ -90,7 +90,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               
               SizedBox(
                   width: double.infinity,
-                  height: 32,
+                  height: 40,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: ColorCollections.buttonColor,

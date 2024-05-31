@@ -2,39 +2,42 @@ import 'package:e_complaint_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
-
-
-  const CurvedAppBar({Key? key}) : super(key: key);
+  const CurvedAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(48.0),
-        bottomRight: Radius.circular(48.0),
-      ),
-      child: Container(
-        height: 106,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [ColorCollections.primaryColor, ColorCollections.backgroundColor], // Define your gradient colors here
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(48.0),
+            bottomRight: Radius.circular(48.0),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
+          child: Container(
+            height: 106,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [ColorCollections.primaryColor, ColorCollections.backgroundColor],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
-          ],
-
+            child: const Image(
+              image: AssetImage('assets/images/logo appbar.png'),
+            ),
+          ),
         ),
-        child: Image(
-            image: AssetImage('assets/images/logo appbar.png'),
+        Positioned(
+          top: 40,
+          left: 0,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_outlined),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
-      ),
+      ],
     );
   }
 

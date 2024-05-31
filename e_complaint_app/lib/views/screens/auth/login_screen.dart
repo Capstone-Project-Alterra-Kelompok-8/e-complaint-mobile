@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Gap(30),
                 SizedBox(
                   width: double.infinity,
-                  height: 32,
+                  height: 40,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: ColorCollections.buttonColor,

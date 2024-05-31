@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,19 @@ class DetailAduankuScreen extends StatefulWidget {
 }
 
 class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
+  final CarouselController _controller = CarouselController();
+  final List<String> images = [
+    'assets/images/cek.jpg',
+    'assets/images/cek.jpg',
+    'assets/images/cek.jpg',
+    // Tambahkan path gambar lainnya sesuai kebutuhan
+  ];
   @override
   Widget build (BuildContext context){
     return Scaffold(
-      appBar: CurvedAppBar(),
+      appBar: CurvedAppBar(
+     
+      ),
       body: SingleChildScrollView(
         child: Padding(padding: EdgeInsets.all(16),
           child: Container(
@@ -54,28 +64,64 @@ class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
                     ),
                   ),
                 ),
-              
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  width: double.infinity,
-                  height: 244,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/cek.jpg'),
-                      fit: BoxFit.cover,
+                // slider
+                 Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back_ios, color: ColorCollections.primaryColor,),
+                  onPressed: () => _controller.previousPage(),
+                ),
+                Expanded(
+                  child: CarouselSlider.builder(
+                    carouselController: _controller,
+                    itemCount: images.length,
+                    options: CarouselOptions(
+                      aspectRatio: 1.0,
+                      height: 200,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: false,
+
+                
+                      viewportFraction: 0.8,
                     ),
+                    itemBuilder: (context, index, realIndex) {
+                      return Container(
+                        
+                        
+                        decoration: ShapeDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(images[index]),
+                            fit: BoxFit.fill,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 6, color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
+                IconButton(
+                  icon: Icon(Icons.arrow_forward_ios, color: ColorCollections.primaryColor,),
+                  onPressed: () => _controller.nextPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      
                 Gap(10),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16 , vertical: 12),
+                  margin: EdgeInsets.symmetric(horizontal: 16 , vertical: 8),
                   child: Column(
                     children: [
                       Row(
                         children: [
-                          Expanded(child: Text('Banjir semakin parah di Tangerang Saluran Air Tersumbat gara-gara ada kodok', 
+                          Expanded(child: Text('Bencana Alam', 
                           style: TextCollections.headingOne.copyWith(
                             fontSize: 18, 
                             fontWeight: FontWeight.bold
@@ -105,7 +151,6 @@ class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
                          
                         ],
                       ),
-                      Gap(5),
                       Align(
                         alignment: Alignment.centerLeft,
                         child:  Text(
