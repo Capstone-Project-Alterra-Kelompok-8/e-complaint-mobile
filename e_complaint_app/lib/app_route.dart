@@ -1,3 +1,4 @@
+import 'package:e_complaint_app/views/screens/aduanku/aduanku_screen.dart';
 import 'package:e_complaint_app/views/screens/aduanku/detail_aduanku_screeen.dart';
 import 'package:e_complaint_app/views/screens/aduanku/progress_aduanku_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/create_new_password_screen.dart';
@@ -27,6 +28,7 @@ class AppRoute {
     '/notification' : (context) => NotificationScreen(),
     '/detail_aduanku' : (context) => DetailAduankuScreen(),
     '/progress_aduanku' :(context) => ProgressAduankuScreen(),
+    '/aduanku' :(context) => AduankuScreen(),
   };
   
 }
