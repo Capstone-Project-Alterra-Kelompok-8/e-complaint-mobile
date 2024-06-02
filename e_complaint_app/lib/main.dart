@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: '/aduanku',
+        initialRoute: '/detail_aduanku',
         routes: AppRoute.routes,
       ),
     );
