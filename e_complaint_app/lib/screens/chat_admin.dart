@@ -1,6 +1,6 @@
-import 'package:e_complaint_app/env/constants/constants.dart';
+import 'package:e_complaint_app/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:e_complaint_app/components/app_bar.dart';
+import 'package:e_complaint_app/views/components/app_bar.dart';
 
 class ChatAdmin extends StatelessWidget {
   const ChatAdmin({super.key});
