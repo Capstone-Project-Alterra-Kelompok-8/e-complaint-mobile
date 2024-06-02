@@ -42,10 +42,10 @@ class ButtonCollections {
   static ElevatedButton searchButton({required void Function()? onPressed}) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
-      fixedSize: const Size(91, 31),
+      fixedSize: const Size(299, 40),
       backgroundColor: ColorCollections.buttonColor, 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4.0),
+        borderRadius: BorderRadius.circular(8.0),
       ),
     ),
     onPressed: onPressed,
@@ -53,7 +53,7 @@ class ButtonCollections {
       'Cari Aduanku',
       style: TextStyle(
         color: ColorCollections.textSecondaryColor,
-        fontSize: 16.0,
+        fontSize: 14.0,
         fontWeight: FontWeight.w600,
       ),
     ),
