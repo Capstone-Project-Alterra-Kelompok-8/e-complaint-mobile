@@ -70,10 +70,6 @@ class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
           children: [
             Row(
               children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: ColorCollections.primaryColor,),
-                  onPressed: () => _controller.previousPage(),
-                ),
                 Expanded(
                   child: CarouselSlider.builder(
                     carouselController: _controller,
@@ -82,15 +78,13 @@ class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
                       aspectRatio: 1.0,
                       height: 200,
                       enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-
-                
+                      enableInfiniteScroll: false,               
                       viewportFraction: 0.8,
                     ),
                     itemBuilder: (context, index, realIndex) {
                       return Container(
                         
-                        
+                        width: MediaQuery.of(context).size.width,
                         decoration: ShapeDecoration(
                           image: DecorationImage(
                             image: AssetImage(images[index]),
@@ -105,10 +99,7 @@ class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
                     },
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.arrow_forward_ios, color: ColorCollections.primaryColor,),
-                  onPressed: () => _controller.nextPage(),
-                ),
+              
               ],
             ),
           ],
