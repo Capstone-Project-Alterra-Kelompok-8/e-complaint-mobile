@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         'Create Now',
-                        style: LoginTextCollections.createNow,
+                        style: LoginTextCollections.headingThree,
                       ),
                     ),
                   ],

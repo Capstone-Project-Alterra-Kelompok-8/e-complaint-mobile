@@ -141,16 +141,6 @@ class HomeTextCollections {
 
 }
 
-  );
-
-  static TextStyle createNow = GoogleFonts.montserrat(
-    fontSize: 16.0,
-    fontWeight: FontWeight.w600,
-    color: ColorCollections.textCreateNow,
-    letterSpacing: 0.4,
-
-  );
-}
 
 class TextCollections {
   static TextStyle headingOne = GoogleFonts.poppins(

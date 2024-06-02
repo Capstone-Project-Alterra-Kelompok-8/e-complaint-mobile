@@ -29,6 +29,7 @@ class AppRoute {
     '/detail_aduanku' : (context) => DetailAduankuScreen(),
     '/progress_aduanku' :(context) => ProgressAduankuScreen(),
     '/aduanku' :(context) => AduankuScreen(),
+    
   };
   
 }
