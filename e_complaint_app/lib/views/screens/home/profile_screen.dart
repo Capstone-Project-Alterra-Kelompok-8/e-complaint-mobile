@@ -184,7 +184,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const Divider(),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/login');
+            },
             child: Container(
               width: double.infinity,
               height: 70,
@@ -197,9 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
+                    onPressed: () {},
                     icon: const Icon(Icons.logout),
                     color: ColorCollections.textPrimaryColor,
                   ),
@@ -219,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorCollections.primaryColor,
         onPressed: () {
-          Navigator.pushNamed(context, '/form_aduanku');
+          Navigator.pushNamed(context, '/form_aduan');
         },
         shape: const CircleBorder(),
         child: const Icon(

@@ -158,9 +158,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   'Berita Terbaru',
                   style: HomeTextCollections.beritaHeader,
                 ),
-                const Row(
+                Row(
                   children: [
-                    Text('Lihat Semua'),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/news');
+                      },
+                      child: Text('Lihat Semua'),
+                    ),
                     Icon(Icons.chevron_right_outlined)
                   ],
                 )

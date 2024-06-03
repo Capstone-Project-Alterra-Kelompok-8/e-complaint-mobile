@@ -7,6 +7,8 @@ import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/register/register.dart';
 import 'package:e_complaint_app/views/screens/auth/register/verifikasi_link.dart';
 import 'package:e_complaint_app/views/screens/auth/register/verifikasi_otp.dart';
+import 'package:e_complaint_app/views/screens/customer_services/chat_admin.dart';
+import 'package:e_complaint_app/views/screens/customer_services/chat_bot.dart';
 import 'package:e_complaint_app/views/screens/form_aduan/form_aduan.dart';
 import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
 import 'package:e_complaint_app/views/screens/home/chanepassword_screen.dart';
@@ -46,8 +48,9 @@ class AppRoute {
     '/progress_aduanku' :(context) => ProgressAduankuScreen(),
     '/aduanku' :(context) => AduankuScreen(),
     '/riwayat_aduan' : (context) => RiwayatAduan(),
-    '/home' : (context) => HomePageScreen(),
     '/form_aduan' : (context) => FormAduan(),
+    '/chat_bot' : (context) => ChatBot(),
+    '/chat_admin' : (context) => ChatAdmin()
     
   };
   
