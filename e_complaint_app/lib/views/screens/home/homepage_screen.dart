@@ -284,7 +284,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorCollections.primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/form_aduan');
+        },
         shape: const CircleBorder(),
         child: const Icon(
           Icons.add,
