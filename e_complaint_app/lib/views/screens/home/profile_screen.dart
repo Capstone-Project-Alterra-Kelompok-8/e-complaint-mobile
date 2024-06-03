@@ -4,7 +4,9 @@ import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
 import 'package:e_complaint_app/views/screens/home/chanepassword_screen.dart';
 import 'package:e_complaint_app/views/screens/home/changeprofile_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -110,43 +112,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const Divider(),
-          SizedBox(
-            width: double.infinity,
-            height: 70,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.mode_comment_outlined),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Laporan Saya',
-                  style: TextStyle(
+          GestureDetector(
+            onTap: (){},
+            child: SizedBox(
+              width: double.infinity,
+              height: 70,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.mode_comment_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
-                )
-              ],
+                  const Text(
+                    'Laporan Saya',
+                    style: TextStyle(
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           const Divider(),
-          SizedBox(
-            width: double.infinity,
-            height: 70,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.category_outlined),
-                  color: ColorCollections.textPrimaryColor,
-                ),
-                const Text(
-                  'Riwayat Favorit',
-                  style: TextStyle(
+          GestureDetector(
+            onTap: (){},
+            child: SizedBox(
+              width: double.infinity,
+              height: 70,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.category_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
-                )
-              ],
+                  const Text(
+                    'Riwayat Favorit',
+                    style: TextStyle(
+                      color: ColorCollections.textPrimaryColor,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           const Divider(),
