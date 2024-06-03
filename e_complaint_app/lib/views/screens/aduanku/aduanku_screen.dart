@@ -61,81 +61,81 @@ class _AduankuScreenState extends State<AduankuScreen> {
 
   String? _selectedStatus;
 
-void _showFilterBottomSheet() {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-    ),
-    builder: (BuildContext context) {
-      return DraggableScrollableSheet(
-        expand: false,
-        builder: (BuildContext context, ScrollController scrollController) {
-          return SingleChildScrollView(
-            controller: scrollController,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      height: 5,
-                      width: 50,
-                      color: Colors.grey[300],
+  void _showFilterBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          expand: false,
+          builder: (BuildContext context, ScrollController scrollController) {
+            return SingleChildScrollView(
+              controller: scrollController,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        height: 5,
+                        width: 50,
+                        color: Colors.grey[300],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () {
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        SizedBox(height: 10,),
+                        Text(
+                          'Filter',
+                          style: TextCollections.headingThree 
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Divider(color: Colors.grey),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Pilih Status',
+                      style: TextCollections.headingThree
+                    ),
+                    const SizedBox(height: 16),
+                    _buildStatusOption('Pending', Colors.grey, TextCollections.filterFont),
+                    _buildStatusOption('Verifikasi', Colors.green, TextCollections.filterFont),
+                    _buildStatusOption('On Progres', Colors.blue, TextCollections.filterFont),
+                    _buildStatusOption('Selesai', Colors.purple, TextCollections.filterFont),
+                    _buildStatusOption('Ditolak', Colors.red, TextCollections.filterFont),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ButtonCollections.searchButton(onPressed: () {
                           Navigator.of(context).pop();
-                        },
-                      ),
-                      SizedBox(height: 10,),
-                      Text(
-                        'Filter',
-                        style: TextCollections.headingThree 
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Divider(color: Colors.grey),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Pilih Status',
-                    style: TextCollections.headingThree
-                  ),
-                  const SizedBox(height: 16),
-                  _buildStatusOption('Pending', Colors.orange, TextCollections.filterFont),
-                  _buildStatusOption('Verifikasi', Colors.green, TextCollections.filterFont),
-                  _buildStatusOption('On Progres', Colors.blue, TextCollections.filterFont),
-                  _buildStatusOption('Selesai', Colors.purple, TextCollections.filterFont),
-                  _buildStatusOption('Ditolak', Colors.red, TextCollections.filterFont),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ButtonCollections.searchButton(onPressed: () {
-                        Navigator.of(context).pop();
-                      })
-                    ],
-                  ),
-                ],
+                        })
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      );
-    },
-  );
-}
+            );
+          },
+        );
+      },
+    );
+  }
 
 
-  Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
+ Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
     return ListTile(
       leading: Radio<String>(
         value: status,
@@ -146,8 +146,14 @@ void _showFilterBottomSheet() {
           });
         },
         activeColor: color,
+        fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected) || states.contains(MaterialState.pressed)) {
+            return color; // Warna setelah ditekan
+          }
+          return Colors.orange; // Warna sebelum ditekan
+        }),
       ),
-      title: Text(status),
+      title: Text(status, style: textStyle),
     );
   }
 
@@ -174,23 +180,9 @@ void _showFilterBottomSheet() {
                   'Aduanku',
                   style: TextCollections.titleFont
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.candlestick_chart_outlined),
-                      onPressed: _showFilterBottomSheet,
-                    ),
-                    if (_selectedStatus != null) ...[
-                      Text(
-                        'Filter',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: _removeFilter,
-                      ),
-                    ],
-                  ],
+                IconButton(
+                  icon: Icon(Icons.candlestick_chart_outlined),
+                  onPressed: _showFilterBottomSheet,
                 ),
               ],
             ),
@@ -246,24 +238,24 @@ void _showFilterBottomSheet() {
                                     ),
                                     const SizedBox(width: 10),
                                     Container(
-                                        width: 91,
-                                        height: 31,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(4),
-                                          border: Border.all(
+                                      width: 91,
+                                      height: 31,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(4),
+                                        border: Border.all(
+                                          color: statusData.color,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          statusData.status,
+                                          style: TextStyle(
                                             color: statusData.color,
                                           ),
                                         ),
-                                        child: Center(
-                                          child: Text(
-                                            statusData.status,
-                                            style: TextStyle(
-                                              color: statusData.color,
-                                            ),
-                                          ),
-                                        ),
                                       ),
+                                    ),
                                   ],
                                 ),
                               ],
