@@ -92,24 +92,25 @@ class _HomePageScreenState extends State<HomePageScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: (){
-
+                onTap: () {
+                  Navigator.pushNamed(context, '/aduanku');
                 },
-                child: Column(
+                child: const Column(
                   children: [
                     SizedBox(
                         child: Image(
-                            image: AssetImage('assets/images/icon_aduanku.png'))),
+                            image:
+                                AssetImage('assets/images/icon_aduanku.png'))),
                     Text('Aduanku'),
                     Text('')
                   ],
                 ),
               ),
               GestureDetector(
-                onTap: (){
-
+                onTap: () {
+                  Navigator.pushNamed(context, '/riwayat_aduanku');
                 },
-                child: Column(
+                child: const Column(
                   children: [
                     Image(
                         image:
@@ -120,18 +121,23 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: (){},
-                child: Column(
+                onTap: () {
+                  Navigator.pushNamed(context, '/chat_admin');
+                },
+                child: const Column(
                   children: [
-                    Image(image: AssetImage('assets/images/icon_chat_admin.png')),
-                    Text('Aduanku'),
-                    Text('')
+                    Image(
+                        image: AssetImage('assets/images/icon_chat_admin.png')),
+                    Text('Chat'),
+                    Text('Admin')
                   ],
                 ),
               ),
               GestureDetector(
-                onTap: (){},
-                child: Column(
+                onTap: () {
+                  Navigator.pushNamed(context, '/chat_bot');
+                },
+                child: const Column(
                   children: [
                     Image(image: AssetImage('assets/images/icon_chat_ai.png')),
                     Text('Chat AI'),
@@ -168,7 +174,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/news_detail');
+                    },
                     child: Container(
                       width: 162,
                       height: 256,
@@ -213,7 +221,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/news_detail');
+                    },
                     child: Container(
                       width: 162,
                       height: 256,
@@ -258,7 +268,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/news_detail');
+                    },
                     child: Container(
                       width: 162,
                       height: 256,
@@ -311,7 +323,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorCollections.primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/form_aduanku');
+        },
         shape: const CircleBorder(),
         child: const Icon(
           Icons.add,

@@ -56,8 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const ChangeProfileScreen()));
+              Navigator.pushNamed(context, '/change_profile');
             },
             child: Container(
               width: double.infinity,
@@ -88,8 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const Divider(),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const ChangePasswordProfileScreen()));
+              Navigator.pushNamed(context, '/change_password_profile');
             },
             child: SizedBox(
               width: double.infinity,
@@ -113,7 +111,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const Divider(),
           GestureDetector(
-            onTap: (){},
+            onTap: () {
+              Navigator.pushNamed(context, '/aduanku');
+            },
             child: SizedBox(
               width: double.infinity,
               height: 70,
@@ -136,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const Divider(),
           GestureDetector(
-            onTap: (){},
+            onTap: () {},
             child: SizedBox(
               width: double.infinity,
               height: 70,
@@ -160,8 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const Divider(),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const AboutAppScreen()));
+              Navigator.pushNamed(context, '/aboutApp');
             },
             child: SizedBox(
               width: double.infinity,
@@ -198,7 +197,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
                     icon: const Icon(Icons.logout),
                     color: ColorCollections.textPrimaryColor,
                   ),
@@ -217,7 +218,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorCollections.primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/form_aduanku');
+        },
         shape: const CircleBorder(),
         child: const Icon(
           Icons.add,

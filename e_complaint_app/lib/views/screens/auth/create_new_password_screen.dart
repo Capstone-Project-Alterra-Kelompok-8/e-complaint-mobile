@@ -10,7 +10,8 @@ class NewPasswordScreen extends StatefulWidget {
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +27,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   width: 227,
                   height: 227,
                   child: Center(
-                    child: Image(
+                      child: Image(
                     image: AssetImage('assets/images/logo.png'),
                     fit: BoxFit.fill,
                   )),
@@ -131,57 +132,61 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/successmark.png',
-                  width: 100,
-                  height: 100,
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Password Changed', style: TextStyle(
-                    fontSize: 26, fontWeight: FontWeight.w700
-                  ),
-                ),
-                const Text('Your password has been changed'),
-                const Text('Successfully'),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorCollections.buttonColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: const Text(
-                    'Back to Login',
-                    style: TextStyle(
-                      color: ColorCollections.textSecondaryColor,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/successmark.png',
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const Text(
+                                    'Password Changed',
+                                    style: TextStyle(
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  const Text('Your password has been changed'),
+                                  const Text('Successfully'),
+                                  const SizedBox(height: 20),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/login');
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          ColorCollections.buttonColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Back to Login',
+                                      style: TextStyle(
+                                        color:
+                                            ColorCollections.textSecondaryColor,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorCollections.buttonColor,
