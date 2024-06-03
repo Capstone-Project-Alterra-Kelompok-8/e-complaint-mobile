@@ -46,7 +46,6 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
                 image: DecorationImage(
                   image: AssetImage('assets/images/cek.jpg'),
                   fit: BoxFit.cover,
-                 
                 ),
               ),
             ),
