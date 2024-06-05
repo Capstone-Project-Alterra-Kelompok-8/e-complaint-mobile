@@ -8,7 +8,7 @@ class VerifikasiLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 54, left: 22.5, right: 22.5),
           child: Center(
@@ -16,62 +16,60 @@ class VerifikasiLink extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset('assets/images/logo.png', width: 227, height: 227,),
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 227,
+                  height: 227,
+                ),
                 Text(
-                    'Verification',
-                    style: LoginTextCollections.headingOne,
-                  ),
+                  'Verification',
+                  style: LoginTextCollections.headingOne,
+                ),
                 Text(
-                    'Verify your email address',
-                    textAlign: TextAlign.center,
-                    style: LoginTextCollections.headingTwo,
-                  ),
+                  'Verify your email address',
+                  textAlign: TextAlign.center,
+                  style: LoginTextCollections.headingTwo,
+                ),
                 Gap(40),
                 Text(
-                    'Welcome To KeluhProv!',
-                    textAlign: TextAlign.center,
-                    style: LoginTextCollections.headingTwo,
-                  ),
+                  'Welcome To KeluhProv!',
+                  textAlign: TextAlign.center,
+                  style: LoginTextCollections.headingTwo,
+                ),
                 Gap(40),
                 Text(
-                    'please click the button below to confirm your email address and activate your account',
-                    textAlign: TextAlign.center,
-                    style: LoginTextCollections.headingTwo,
-                  ),
+                  'please click the button below to confirm your email address and activate your account',
+                  textAlign: TextAlign.center,
+                  style: LoginTextCollections.headingTwo,
+                ),
                 Gap(30),
-                 SizedBox(
+                SizedBox(
                   width: 200,
                   height: 32,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
+                      style: ElevatedButton.styleFrom(
                         backgroundColor: ColorCollections.buttonColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                       
                       ),
-                    onPressed: (){
-
-                    }, 
-                    child: Text(
-                      'Verify',
-                      style: TextStyle(
-                        color: ColorCollections.textSecondaryColor,
-                      ),
-                    )),
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/verifikasi_otp');
+                      },
+                      child: Text(
+                        'Verify',
+                        style: TextStyle(
+                          color: ColorCollections.textSecondaryColor,
+                        ),
+                      )),
                 ),
                 Gap(40),
                 Text(
-                    'if you received in this error, simply ignore this email and do not click the button',
-                    textAlign: TextAlign.center,
-                    style: LoginTextCollections.headingTwo.copyWith(
-                      color: Color(0xFF979797)
-                    ),
-                  ),
-              
-              
-                
-              
+                  'if you received in this error, simply ignore this email and do not click the button',
+                  textAlign: TextAlign.center,
+                  style: LoginTextCollections.headingTwo
+                      .copyWith(color: Color(0xFF979797)),
+                ),
               ],
             ),
           ),
