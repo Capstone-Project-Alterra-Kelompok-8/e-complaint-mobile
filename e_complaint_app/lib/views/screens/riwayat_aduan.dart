@@ -1,3 +1,4 @@
+import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/aduan_card.dart';
 import 'package:flutter/material.dart';
 
