@@ -78,11 +78,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Name field is required';
-                  }
-                  return null;
-                },
+                    if (value == null || value.isEmpty) {
+                      return 'Name field is required';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Gap(10),
@@ -125,11 +125,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Email field is required';
-                  }
-                  return null;
-                },
+                    if (value == null || value.isEmpty) {
+                      return 'Email field is required';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Gap(10),
@@ -172,11 +172,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Telephone Number field is required';
-                  }
-                  return null;
-                },
+                    if (value == null || value.isEmpty) {
+                      return 'Telephone Number field is required';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Gap(10),
@@ -226,14 +226,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         });
                       },
                     ),
-                    
                   ),
                   validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Password field is required';
-                  }
-                  return null;
-                },
+                    if (value == null || value.isEmpty) {
+                      return 'Password field is required';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Gap(20),
@@ -247,18 +246,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    onPressed: () async{
-                      await Provider.of<RegisterAuthController>(context,
-                              listen: false)
-                          .register(
+                    onPressed: () async {
+                      final registerAuthController =
+                          Provider.of<RegisterAuthController>(context,
+                              listen: false);
+
+                      await registerAuthController.register(
                         context,
                         _nameController.text,
                         _emailController.text,
                         _telephoneController.text,
                         _passwordController.text,
+                        '/verifikasi_link',
                       );
-
-                      Navigator.pushNamed(context, '/verifikasi_link');
                     },
                     child: const Text(
                       'Register',

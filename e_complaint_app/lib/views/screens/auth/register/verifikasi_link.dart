@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class VerifikasiLink extends StatelessWidget {
-  const VerifikasiLink({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final String email = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -54,9 +54,13 @@ class VerifikasiLink extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/verifikasi_otp');
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/verifikasi_otp',
+                          arguments: email,
+                        );
                       },
-                      child: Text(
+                      child: const Text(
                         'Verify',
                         style: TextStyle(
                           color: ColorCollections.textSecondaryColor,

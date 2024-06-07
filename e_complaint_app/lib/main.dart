@@ -17,14 +17,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => RegisterAuthController()),
+      ChangeNotifierProvider(create: (context) => RegisterAuthController(),
+      ),
+      // ChangeNotifierProvider(create: (context) => LoginAuthController()),
     ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: '/register',
+        initialRoute: '/login',
         routes: AppRoute.routes,
       ),
     );

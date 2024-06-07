@@ -1,8 +1,6 @@
-import 'package:e_complaint_app/models/auth_model.dart';
-import 'package:e_complaint_app/services/auth_register_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
+import '../models/auth_model.dart';
+import '../services/auth_service.dart';
 
 class RegisterAuthController with ChangeNotifier {
   final RegisterUserService _registerUserService = RegisterUserService();
@@ -13,28 +11,94 @@ class RegisterAuthController with ChangeNotifier {
     String email,
     String telephoneNumber,
     String password,
+    String verificationLinkRouteName,
   ) async {
-    if (name.isNotEmpty && email.isNotEmpty && telephoneNumber.isNotEmpty && password.isNotEmpty) {
+    if (name.isNotEmpty &&
+        email.isNotEmpty &&
+        telephoneNumber.isNotEmpty &&
+        password.isNotEmpty) {
       final user = UserRegisterModel(
         name: name,
         email: email,
         telephoneNumber: telephoneNumber,
         password: password,
       );
+
       try {
         await _registerUserService.register(user);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration successful')),
-        );
+        debugPrint('Registration successful');
+        await sendOtp(context, email, verificationLinkRouteName);
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed: $e')),
-        );
+        debugPrint('Registration failed: $e');
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('all fields must be filled')),
-      );
+      debugPrint('All fields must be filled');
+    }
+  }
+
+  Future<void> sendOtp(BuildContext context, String email,
+      String verificationLinkRouteName) async {
+    if (email.isNotEmpty) {
+      try {
+        await _registerUserService.sendOtp(email);
+        debugPrint('OTP sent successfully');
+        Navigator.pushNamed(context, verificationLinkRouteName, arguments: email);
+      } catch (e) {
+        debugPrint('Failed to send OTP: $e');
+      }
+    } else {
+      debugPrint('Email field must be filled');
+    }
+  }
+
+  Future<void> verifyOtp(BuildContext context, String email, String otp) async {
+    if (email.isNotEmpty && otp.isNotEmpty) {
+      try {
+        await _registerUserService.verifyOtp(email, otp);
+        debugPrint('OTP verified successfully');
+        Navigator.pushReplacementNamed(context, '/login');
+      } catch (e) {
+        debugPrint('OTP verification failed: $e');
+      }
+    } else {
+      debugPrint('Email and OTP fields must be filled');
     }
   }
 }
+
+
+// class LoginAuthController with ChangeNotifier {
+//   final AuthLoginService _authLoginService = AuthLoginService();
+//   String? _token;
+
+//   String? get token => _token;
+
+//   Future<void> login(BuildContext context, String email, String password) async {
+//     if (email.isNotEmpty && password.isNotEmpty) {
+//       try {
+//         final loginResponse = await _authLoginService.login(email, password);
+//         _token = loginResponse.data.token;
+//         // Simpan token
+//         final prefs = await SharedPreferences.getInstance();
+//         await prefs.setString('token', _token!);
+
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           const SnackBar(content: Text('Login successful')),
+//         );
+//         Navigator.pushReplacementNamed(context, '/news');
+
+
+//         notifyListeners();
+//       } catch (e) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('Login failed: $e')),
+//         );
+//       }
+//     } else {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text('Please fill in all fields')),
+//       );
+//     }
+//   }
+// }
+
