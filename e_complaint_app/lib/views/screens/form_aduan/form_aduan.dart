@@ -1,11 +1,14 @@
 import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/views/components/app_bar.dart';
+import 'package:e_complaint_app/models/complaint_model.dart';
+import 'package:e_complaint_app/services/complaint_service.dart';
+import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/form_aduan/popup_failed.dart';
 import 'package:e_complaint_app/views/screens/form_aduan/popup_success.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:io';
 
 class FormAduan extends StatefulWidget {
@@ -18,18 +21,44 @@ class FormAduan extends StatefulWidget {
 class _FormAduanState extends State<FormAduan> {
   List<String?> _selectedImagePaths = [];
   String? _selectedLokasi;
-  String? _selectedDetailAlamat;
-  String? _selectedJenisAduan;
   String? _selectedIsiAduan;
   String? _selectedKategoriAduan;
   DateTime _dueDate = DateTime.now();
   final _currentDate = DateTime.now();
   final _formKey = GlobalKey<FormState>();
+  String? _jenisAduan;
+  final TextEditingController _detailAlamatController = TextEditingController();
+  final ComplaintService _complaintService = ComplaintService();
 
-  void _submitForm() {
+  @override
+  void initState() {
+    super.initState();
+    // Set token for authentication
+    _complaintService.setAuthToken(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM');
+  }
+
+  void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       if (_selectedImagePaths.isNotEmpty) {
-        _showSuccessPopup();
+        try {
+          final complaintData = {
+            'regency_id': _selectedLokasi,
+            'address': _detailAlamatController.text,
+            'category_id': _selectedKategoriAduan,
+            'description': _selectedIsiAduan,
+            'tanggal': DateFormat("dd/MM/yyyy").format(_dueDate),
+            'type': _jenisAduan,
+            'files': _selectedImagePaths,
+          };
+          Complaint complaint =
+              await _complaintService.submitComplaint(complaintData);
+          print('Laporan berhasil: ${complaint.id}');
+          _showSuccessPopup();
+        } catch (e) {
+          print('Error submitting form: $e');
+          _showFailedPopup();
+        }
       } else {
         _showFailedPopup();
       }
@@ -80,6 +109,38 @@ class _FormAduanState extends State<FormAduan> {
     OpenFile.open(file.path);
   }
 
+  Future<void> _generateLokasi() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    // Check for location permissions.
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Get the current position.
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _detailAlamatController.text =
+          "Latitude: ${position.latitude}, Longitude: ${position.longitude}";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,13 +150,21 @@ class _FormAduanState extends State<FormAduan> {
         child: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            const SizedBox(height: 18),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 16.0),
+              child: Center(
+                child: Text(
+                  'Formulir Aduan',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             Container(
               padding: const EdgeInsets.all(16.0),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: ColorCollections.profileColor,
-                borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                color: ColorCollections.secondaryColor,
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,12 +183,8 @@ class _FormAduanState extends State<FormAduan> {
                         _selectedLokasi = newValue;
                       });
                     },
-                    items: <String>[
-                      'Lokasi 1',
-                      'Lokasi 2',
-                      'Lokasi 3',
-                      'Lokasi 4'
-                    ].map<DropdownMenuItem<String>>((String value) {
+                    items: <String>['3601', 'Lokasi 2', 'Lokasi 3', 'Lokasi 4']
+                        .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(
@@ -130,34 +195,28 @@ class _FormAduanState extends State<FormAduan> {
                       );
                     }).toList(),
                     decoration: InputDecoration(
+                      hintText: 'Kota/Kabupaten',
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
                       ),
                     ),
                     validator: (value) =>
                         value == null ? 'Lokasi tidak boleh kosong' : null,
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Detail Alamat',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                  ),
                   const SizedBox(height: 10),
                   TextFormField(
-                    initialValue: _selectedDetailAlamat,
+                    controller: _detailAlamatController,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    onChanged: (value) {
-                      _selectedDetailAlamat = value;
-                    },
                     decoration: InputDecoration(
+                      hintText: 'Detail alamat ...',
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -165,72 +224,33 @@ class _FormAduanState extends State<FormAduan> {
                         ? 'Detail Alamat tidak boleh kosong'
                         : null,
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Jenis Aduan',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                  ),
                   const SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    value: _selectedJenisAduan,
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedJenisAduan = newValue;
-                      });
-                    },
-                    items: <String>[
-                      'Jenis Aduan 1',
-                      'Jenis Aduan 2',
-                      'Jenis Aduan 3',
-                      'Jenis Aduan 4'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w400),
-                        ),
-                      );
-                    }).toList(),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: _generateLokasi,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'Generate Lokasi',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.location_on,
+                                color: Colors.blue),
+                            onPressed: _generateLokasi,
+                          ),
+                        ],
                       ),
                     ),
-                    validator: (value) =>
-                        value == null ? 'Jenis Aduan tidak boleh kosong' : null,
                   ),
                   const SizedBox(height: 12),
                   _buildDatePicker(context),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Isi Aduan',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    initialValue: _selectedIsiAduan,
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    onChanged: (value) {
-                      _selectedIsiAduan = value;
-                    },
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Isi Aduan tidak boleh kosong'
-                        : null,
-                  ),
                   const SizedBox(height: 12),
                   const Text(
                     'Kategori Aduan',
@@ -260,10 +280,11 @@ class _FormAduanState extends State<FormAduan> {
                       );
                     }).toList(),
                     decoration: InputDecoration(
+                      hintText: 'Kategori aduan',
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -271,10 +292,97 @@ class _FormAduanState extends State<FormAduan> {
                         ? 'Kategori Aduan tidak boleh kosong'
                         : null,
                   ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Isi Aduan',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    initialValue: _selectedIsiAduan,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    onChanged: (value) {
+                      _selectedIsiAduan = value;
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Ketik aduan ...',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Isi Aduan tidak boleh kosong'
+                        : null,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Jenis Aduan',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _jenisAduan = 'Publik';
+                            });
+                          },
+                          child: Text(
+                            'Publik',
+                            style: TextStyle(
+                              color: _jenisAduan == 'Publik'
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _jenisAduan == 'Publik'
+                                ? ColorCollections.buttonColor
+                                : Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _jenisAduan = 'Private';
+                            });
+                          },
+                          child: Text(
+                            'Private',
+                            style: TextStyle(
+                              color: _jenisAduan == 'Private'
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _jenisAduan == 'Private'
+                                ? ColorCollections.buttonColor
+                                : Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 24),
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(8),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
@@ -288,13 +396,13 @@ class _FormAduanState extends State<FormAduan> {
                       child: ElevatedButton(
                         onPressed: _submitForm,
                         child: const Text(
-                          'Submit',
+                          'Kirim',
                           style: TextStyle(color: Colors.white),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorCollections.buttonColor,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                       ),
@@ -332,7 +440,7 @@ class _FormAduanState extends State<FormAduan> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
                   child: _selectedImagePaths.length > index &&
@@ -349,7 +457,7 @@ class _FormAduanState extends State<FormAduan> {
                               size: 30,
                             ),
                             SizedBox(height: 10),
-                            Text("Upload"),
+                            Text("Tambah Foto"),
                           ],
                         ),
                 ),
@@ -372,7 +480,7 @@ class _FormAduanState extends State<FormAduan> {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -400,7 +508,7 @@ class _FormAduanState extends State<FormAduan> {
                   });
                 },
                 icon: const Icon(Icons.date_range),
-                label: const Text("Select"),
+                label: const Text("Pilih Tanggal"),
               ),
             ],
           ),
