@@ -3,7 +3,28 @@ import 'package:page_view_indicators/page_view_indicators.dart';
 import 'comment.dart';
 
 class AduanCard extends StatefulWidget {
-  const AduanCard({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String initials;
+  final String description;
+  final String category;
+  final String regency;
+  final String status;
+  final String profilePhoto;
+  final List<String> files;
+
+  const AduanCard({
+    Key? key,
+    required this.id,
+    required this.name,
+    required this.initials,
+    required this.description,
+    required this.category,
+    required this.regency,
+    required this.status,
+    required this.profilePhoto,
+    required this.files,
+  }) : super(key: key);
 
   @override
   _AduanCardState createState() => _AduanCardState();
@@ -15,8 +36,6 @@ class _AduanCardState extends State<AduanCard> {
   bool _isExpanded = false;
   PageController _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
-
-  String completionStatus = 'Selesai';
 
   void _toggleLike() {
     setState(() {
@@ -40,17 +59,6 @@ class _AduanCardState extends State<AduanCard> {
 
   @override
   Widget build(BuildContext context) {
-    String name = 'John Doe';
-    String initials = _getInitials(name);
-    String description =
-        'Dengan segala hormat, kami warga daerah Tangerang ingin mengajukan aduan terkait kondisi banjir yang semakin Dengan segala hormat, kami warga daerah Tangerang ingin mengajukan aduan terkait kondisi banjir yang semakin Dengan segala hormat, kami warga daerah Tangerang ingin mengajukan aduan terkait kondisi banjir yang semakin';
-
-    List<String> imageUrls = [
-      'assets/contoh.jpeg',
-      'assets/contoh.jpeg',
-      'assets/contoh.jpeg',
-    ];
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Card(
@@ -63,18 +71,21 @@ class _AduanCardState extends State<AduanCard> {
                 children: [
                   CircleAvatar(
                     radius: 24,
+                    backgroundImage: NetworkImage(widget.profilePhoto),
                     backgroundColor: Colors.blueGrey,
-                    child: Text(
-                      initials,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white),
-                    ),
+                    child: widget.profilePhoto.endsWith('default.jpg')
+                        ? Text(
+                            widget.initials,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          )
+                        : null,
                   ),
                   SizedBox(width: 16),
                   Text(
-                    name,
+                    widget.name,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                 ],
@@ -88,10 +99,10 @@ class _AduanCardState extends State<AduanCard> {
                     children: [
                       PageView.builder(
                         controller: _pageController,
-                        itemCount: imageUrls.length,
+                        itemCount: widget.files.length,
                         itemBuilder: (context, index) {
-                          return Image.asset(
-                            imageUrls[index],
+                          return Image.network(
+                            widget.files[index],
                             width: double.infinity,
                             fit: BoxFit.cover,
                           );
@@ -109,7 +120,7 @@ class _AduanCardState extends State<AduanCard> {
                           child: CirclePageIndicator(
                             dotColor: Colors.grey,
                             selectedDotColor: Colors.blue,
-                            itemCount: imageUrls.length,
+                            itemCount: widget.files.length,
                             currentPageNotifier: _currentPageNotifier,
                           ),
                         ),
@@ -123,7 +134,7 @@ class _AduanCardState extends State<AduanCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Infrastruktur',
+                    widget.category,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                   Row(
@@ -153,11 +164,11 @@ class _AduanCardState extends State<AduanCard> {
                 ],
               ),
               Text(
-                'Tangerang',
+                widget.regency,
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
               Text(
-                'ID : #12345678',
+                widget.id,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -172,8 +183,8 @@ class _AduanCardState extends State<AduanCard> {
                 },
                 child: Text(
                   _isExpanded
-                      ? description
-                      : '${description.substring(0, 100)}...',
+                      ? widget.description
+                      : '${widget.description.substring(0, 100)}...',
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   overflow: TextOverflow.fade,
                 ),
@@ -203,7 +214,7 @@ class _AduanCardState extends State<AduanCard> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    completionStatus,
+                    widget.status,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -217,16 +228,5 @@ class _AduanCardState extends State<AduanCard> {
         ),
       ),
     );
-  }
-
-  String _getInitials(String name) {
-    List<String> nameSplit = name.split(' ');
-    String initials = '';
-    if (nameSplit.length >= 2) {
-      initials = nameSplit[0][0] + nameSplit[1][0];
-    } else if (nameSplit.isNotEmpty) {
-      initials = nameSplit[0][0];
-    }
-    return initials.toUpperCase();
   }
 }

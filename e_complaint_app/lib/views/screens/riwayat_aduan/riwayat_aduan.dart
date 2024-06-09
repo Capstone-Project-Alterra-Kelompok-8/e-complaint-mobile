@@ -1,6 +1,9 @@
+import 'package:e_complaint_app/models/riwayat_aduan_model.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/riwayat_aduan/aduan_card.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RiwayatAduan extends StatefulWidget {
   const RiwayatAduan({Key? key}) : super(key: key);
@@ -12,6 +15,14 @@ class RiwayatAduan extends StatefulWidget {
 class _RiwayatAduanState extends State<RiwayatAduan> {
   List<bool> _selectedSegments = [true, false, false, false];
   TextEditingController _searchController = TextEditingController();
+  List<Complaint> complaints = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComplaints();
+  }
 
   void _onSegmentSelected(int index) {
     setState(() {
@@ -19,6 +30,30 @@ class _RiwayatAduanState extends State<RiwayatAduan> {
         _selectedSegments[i] = i == index;
       }
     });
+  }
+
+  Future<void> fetchComplaints() async {
+    final response = await http.get(
+      Uri.parse(
+          'https://capstone-dev.mdrizki.my.id/api/v1/complaints?sort_by=id&sort_type=desc'),
+      headers: {
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final List<Complaint> fetchedComplaints = (jsonResponse['data'] as List)
+          .map((data) => Complaint.fromJson(data))
+          .toList();
+      setState(() {
+        complaints = fetchedComplaints;
+        isLoading = false;
+      });
+    } else {
+      throw Exception('Failed to load complaints');
+    }
   }
 
   @override
@@ -55,7 +90,9 @@ class _RiwayatAduanState extends State<RiwayatAduan> {
             ),
           ),
           Expanded(
-            child: _getSegmentContent(),
+            child: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _getSegmentContent(),
           ),
         ],
       ),
@@ -95,51 +132,32 @@ class _RiwayatAduanState extends State<RiwayatAduan> {
   }
 
   Widget _getSegmentContent() {
-    if (_selectedSegments[0]) {
-      return ListView(
-        children: const [
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-        ],
-      );
-    } else if (_selectedSegments[1]) {
-      return ListView(
-        children: const [
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-        ],
-      );
-    } else if (_selectedSegments[2]) {
-      return ListView(
-        children: const [
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-        ],
-      );
-    } else if (_selectedSegments[3]) {
-      return ListView(
-        children: const [
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-          AduanCard(),
-        ],
-      );
+    return ListView.builder(
+      itemCount: complaints.length,
+      itemBuilder: (context, index) {
+        return AduanCard(
+          id: complaints[index].id,
+          name: complaints[index].name,
+          initials: _getInitials(complaints[index].name),
+          description: complaints[index].description,
+          category: complaints[index].categoryName,
+          regency: complaints[index].regencyName,
+          status: complaints[index].status,
+          profilePhoto: complaints[index].profilePhoto,
+          files: complaints[index].files,
+        );
+      },
+    );
+  }
+
+  String _getInitials(String name) {
+    List<String> nameSplit = name.split(' ');
+    String initials = '';
+    if (nameSplit.length >= 2) {
+      initials = nameSplit[0][0] + nameSplit[1][0];
+    } else if (nameSplit.isNotEmpty) {
+      initials = nameSplit[0][0];
     }
-    return const Text('Select a segment');
+    return initials.toUpperCase();
   }
 }
