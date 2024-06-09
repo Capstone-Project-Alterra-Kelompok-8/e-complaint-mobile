@@ -3,7 +3,7 @@ import '../models/login_model.dart';
 
 class AuthLoginService {
   final Dio _dio = Dio();
-  final String _baseUrl = 'https://capstone-dev.mdrizki.my.id';
+  final String _baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1';
 
   Future<LoginResponse> login(String email, String password) async {
     final response = await _dio.post(

@@ -1,12 +1,11 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -39,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Text('Register', style: LoginTextCollections.headingOne),
               Text('Create a new account',
                   style: LoginTextCollections.headingTwo),
-              Gap(20),
+              const Gap(20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -47,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: LoginTextCollections.headingThree,
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -85,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -93,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: LoginTextCollections.headingThree,
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -132,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -140,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: LoginTextCollections.headingThree,
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -179,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -187,7 +186,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: LoginTextCollections.headingThree,
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -235,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
               ),
-              Gap(20),
+              const Gap(20),
               SizedBox(
                 width: double.infinity,
                 height: 32,
@@ -267,7 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     )),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -282,7 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(
                       'Login',
                       style: LoginTextCollections.headingFive.copyWith(
-                        color: Color(0xFF29B6F6),
+                        color: const Color(0xFF29B6F6),
                       ),
                     ),
                   ),

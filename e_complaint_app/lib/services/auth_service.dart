@@ -21,6 +21,7 @@ class RegisterUserService {
             'Failed to register: ${response.statusCode} ${response.statusMessage}');
         throw Exception('Failed to register: ${response.statusMessage}');
       }
+      
     } catch (e) {
       debugPrint('Failed to register user: $e');
       throw Exception('Failed to register user: $e');
@@ -74,4 +75,5 @@ class RegisterUserService {
       throw Exception('Failed to verify OTP: $e');
     }
   }
+
 }

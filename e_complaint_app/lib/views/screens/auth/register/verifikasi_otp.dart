@@ -33,7 +33,7 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(8),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
           color: Color(0xFF00000),
           spreadRadius: 3,
@@ -71,7 +71,7 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
                   textAlign: TextAlign.center,
                   style: LoginTextCollections.headingTwo,
                 ),
-                Gap(20),
+                const Gap(20),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -81,7 +81,7 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
                     ),
                   ),
                 ),
-                Gap(10),
+                const Gap(10),
                 Pinput(
                   controller: pinController,
                   length: 5,
@@ -93,7 +93,7 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
                   ),
                   onCompleted: (pin) => debugPrint(pin),
                 ),
-                Gap(10),
+                const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -108,14 +108,14 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
                       child: Text(
                         'Kirim Ulang',
                         style: LoginTextCollections.headingTwo.copyWith(
-                          color: Color(0xFF29B6F6),
+                          color: const Color(0xFF29B6F6),
                           fontSize: 14,
                         ),
                       ),
                     ),
                   ],
                 ),
-                Gap(30),
+                const Gap(30),
                 SizedBox(
                   width: double.infinity,
                   height: 32,
@@ -141,7 +141,7 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
                         ),
                       )),
                 ),
-                Gap(40),
+                const Gap(40),
               ],
             ),
           ),

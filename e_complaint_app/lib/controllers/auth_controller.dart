@@ -1,6 +1,8 @@
-import 'package:flutter/widgets.dart';
+import 'package:e_complaint_app/services/login_service.dart';
 import '../models/auth_model.dart';
 import '../services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 class RegisterAuthController with ChangeNotifier {
   final RegisterUserService _registerUserService = RegisterUserService();
@@ -42,7 +44,8 @@ class RegisterAuthController with ChangeNotifier {
       try {
         await _registerUserService.sendOtp(email);
         debugPrint('OTP sent successfully');
-        Navigator.pushNamed(context, verificationLinkRouteName, arguments: email);
+        Navigator.pushNamed(context, verificationLinkRouteName,
+            arguments: email);
       } catch (e) {
         debugPrint('Failed to send OTP: $e');
       }
@@ -66,39 +69,35 @@ class RegisterAuthController with ChangeNotifier {
   }
 }
 
+class LoginAuthController with ChangeNotifier {
+  final AuthLoginService _loginService = AuthLoginService();
 
-// class LoginAuthController with ChangeNotifier {
-//   final AuthLoginService _authLoginService = AuthLoginService();
-//   String? _token;
+  Future<void> login(
+      BuildContext context, String email, String password) async {
+    try {
+      final response = await _loginService.login(email, password);
+      if (response.status) {
+        debugPrint('Success Login');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', response.data.token);
+        await prefs.setString('email', response.data.email);
+        Navigator.pushReplacementNamed(context, '/news');
+      } else {
+        debugPrint(response.message);
+      }
+    } catch (e) {
+      debugPrint('Failed to Login \n$e');
+    }
+  }
 
-//   String? get token => _token;
+  Future<void> logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    Navigator.pushReplacementNamed(context, '/login');
+  }
 
-//   Future<void> login(BuildContext context, String email, String password) async {
-//     if (email.isNotEmpty && password.isNotEmpty) {
-//       try {
-//         final loginResponse = await _authLoginService.login(email, password);
-//         _token = loginResponse.data.token;
-//         // Simpan token
-//         final prefs = await SharedPreferences.getInstance();
-//         await prefs.setString('token', _token!);
-
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(content: Text('Login successful')),
-//         );
-//         Navigator.pushReplacementNamed(context, '/news');
-
-
-//         notifyListeners();
-//       } catch (e) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text('Login failed: $e')),
-//         );
-//       }
-//     } else {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text('Please fill in all fields')),
-//       );
-//     }
-//   }
-// }
-
+  Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+}
