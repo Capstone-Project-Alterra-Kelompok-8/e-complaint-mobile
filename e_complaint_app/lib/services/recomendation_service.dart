@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:e_complaint_app/env/constants/open_ai.dart';
+import 'package:e_complaint_app/constants/open_ai.dart';
 import 'package:e_complaint_app/models/open_ai.dart';
 import 'package:e_complaint_app/models/usege.dart';
 import 'package:http/http.dart' as http;
