@@ -1,5 +1,6 @@
 
 import 'package:e_complaint_app/app_route.dart';
+import 'package:e_complaint_app/controllers/news_controller.dart';
 import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
 import 'package:e_complaint_app/views/screens/news/news_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => null),
+          ChangeNotifierProvider(create: (context) => NewsController()),
     ],
       child: MaterialApp(
         title: 'Flutter Demo',

@@ -18,7 +18,7 @@ class AppRoute {
     '/verifikasi_otp' : (context) => VerifikasiOtp(),
     '/new_password' : (context) => NewPasswordScreen(),
     '/news' :(context) => NewsScreen(),
-    '/news_detail' : (context) => NewsDetail(),
+
     '/forgot_password' : (context) => ForgotPasswordScreen(),
   };
   
