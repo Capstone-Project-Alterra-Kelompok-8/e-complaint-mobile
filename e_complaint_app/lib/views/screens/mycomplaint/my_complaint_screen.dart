@@ -1,13 +1,15 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:e_complaint_app/env/constants/constants.dart';
 
-class AduankuScreen extends StatefulWidget {
-  const AduankuScreen({super.key});
+class MyComplaintScreen extends StatefulWidget {
+  const MyComplaintScreen({super.key});
 
   @override
-  State<AduankuScreen> createState() => _AduankuScreenState();
+  State<MyComplaintScreen> createState() => _MyComplaintScreenState();
 }
 
 class StatusData {
@@ -17,7 +19,7 @@ class StatusData {
   StatusData(this.status, this.color);
 }
 
-class _AduankuScreenState extends State<AduankuScreen> {
+class _MyComplaintScreenState extends State<MyComplaintScreen> {
   final List<Map<String, String>> _aduanList = [
     {
       'image': 'assets/images/aduan.jpg',
@@ -166,6 +168,10 @@ class _AduankuScreenState extends State<AduankuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final myComplaintController = Provider.of<MyComplaintController>(context);
+    if (!myComplaintController.isLoaded) {
+      myComplaintController.getMyComplaint();
+    }
     return Scaffold(
       appBar: CurvedAppBar(),
       body: Column(
@@ -187,6 +193,7 @@ class _AduankuScreenState extends State<AduankuScreen> {
               ],
             ),
           ),
+         
           Expanded(
             child: ListView.builder(
               itemCount: _aduanList.length,
@@ -233,7 +240,7 @@ class _AduankuScreenState extends State<AduankuScreen> {
                                   children: [
                                     ButtonCollections.detailButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, '/detail_aduanku');
+                                        Navigator.pushNamed(context, '/detail_my_complaint');
                                       },
                                     ),
                                     const SizedBox(width: 10),

@@ -4,14 +4,14 @@ import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class DetailAduankuScreen extends StatefulWidget {
-  const DetailAduankuScreen({super.key});
+class DetailMyComplaintScreen extends StatefulWidget {
+  const DetailMyComplaintScreen({super.key});
 
   @override
-  State<DetailAduankuScreen> createState() => _DetailAduankuScreenState();
+  State<DetailMyComplaintScreen> createState() => _DetailMyComplaintScreenState();
 }
 
-class _DetailAduankuScreenState extends State<DetailAduankuScreen> {
+class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
   final CarouselController _controller = CarouselController();
   final List<String> images = [
     'assets/images/cek.jpg',

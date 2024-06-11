@@ -3,14 +3,14 @@ import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class ProgressAduankuScreen extends StatefulWidget{
-  const ProgressAduankuScreen({super.key});
+class ProgressMyComplaintScreen extends StatefulWidget{
+  const ProgressMyComplaintScreen({super.key});
 
   @override
-  State<ProgressAduankuScreen> createState() => _ProgressAduankuScreenState();
+  State<ProgressMyComplaintScreen> createState() => _ProgressMyComplaintScreenState();
 }
 
-class _ProgressAduankuScreenState extends State<ProgressAduankuScreen> {
+class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
   @override
   Widget build (BuildContext context){
     return Scaffold(
@@ -63,7 +63,7 @@ class _ProgressAduankuScreenState extends State<ProgressAduankuScreen> {
                 Gap(10),
                 ListTile(
                   leading: Icon(
-                    Icons.circle_notifications,
+                    Icons.circle_outlined,
                     color: Colors.grey[600],
                     size: 30,
                   ),
@@ -104,7 +104,7 @@ class _ProgressAduankuScreenState extends State<ProgressAduankuScreen> {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.circle_notifications,
+                    Icons.circle_outlined,
                     color: Colors.blueAccent[700],
                     size: 30,
                   ),
@@ -145,7 +145,7 @@ class _ProgressAduankuScreenState extends State<ProgressAduankuScreen> {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.circle_notifications,
+                    Icons.circle_outlined,
                     color: Colors.yellow[700],
                     size: 30,
                   ),
@@ -186,7 +186,7 @@ class _ProgressAduankuScreenState extends State<ProgressAduankuScreen> {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.circle_notifications,
+                    Icons.circle_outlined,
                     color: Colors.green,
                     size: 30,
                   ),

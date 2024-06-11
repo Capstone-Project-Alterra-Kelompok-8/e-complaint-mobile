@@ -1,6 +1,6 @@
-import 'package:e_complaint_app/views/screens/aduanku/aduanku_screen.dart';
-import 'package:e_complaint_app/views/screens/aduanku/detail_aduanku_screeen.dart';
-import 'package:e_complaint_app/views/screens/aduanku/progress_aduanku_screen.dart';
+import 'package:e_complaint_app/views/screens/mycomplaint/my_complaint_screen.dart';
+import 'package:e_complaint_app/views/screens/mycomplaint/detail_my_complaint.dart';
+import 'package:e_complaint_app/views/screens/mycomplaint/progress_my_complaint.dart';
 import 'package:e_complaint_app/views/screens/auth/create_new_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/forget_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
@@ -23,12 +23,13 @@ class AppRoute {
     '/verifikasi_otp' : (context) => VerifikasiOtp(),
     '/new_password' : (context) => NewPasswordScreen(),
     '/news' :(context) => NewsScreen(),
-    '/news_detail' : (context) => NewsDetail(),
+
     '/forgot_password' : (context) => ForgotPasswordScreen(),
     '/notification' : (context) => NotificationScreen(),
-    '/detail_aduanku' : (context) => DetailAduankuScreen(),
-    '/progress_aduanku' :(context) => ProgressAduankuScreen(),
-    '/aduanku' :(context) => AduankuScreen(),
+    '/my_complaint' : (context) => MyComplaintScreen(),
+    '/detail_my_complaint' : (context) => DetailMyComplaintScreen(),
+    '/progress_my_complaint' : (context) => ProgressMyComplaintScreen(),
+   
   };
   
 }
