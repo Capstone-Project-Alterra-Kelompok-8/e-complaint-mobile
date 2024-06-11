@@ -22,19 +22,39 @@ class Complaint {
   });
 
   factory Complaint.fromJson(Map<String, dynamic> json) {
-    var list = json['files'] as List;
+    var list = json['files'] as List? ?? [];
     List<FileModel> filesList = list.map((i) => FileModel.fromJson(i)).toList();
 
     return Complaint(
-      id: json['id'],
-      user: User.fromJson(json['user']),
-      category: Category.fromJson(json['category']),
-      regency: Regency.fromJson(json['regency']),
-      address: json['address'],
-      description: json['description'],
-      status: json['status'],
-      type: json['type'],
+      id: json['id'] ?? '',
+      user: User.fromJson(json['user'] ?? {}),
+      category: Category.fromJson(json['category'] ?? {}),
+      regency: Regency.fromJson(json['regency'] ?? {}),
+      address: json['address'] ?? '',
+      description: json['description'] ?? '',
+      status: json['status'] ?? '',
+      type: json['type'] ?? '',
       files: filesList,
+    );
+  }
+}
+
+class ComplaintResponse {
+  final bool status;
+  final String message;
+  final Complaint? complaint;
+
+  ComplaintResponse({
+    required this.status,
+    required this.message,
+    this.complaint,
+  });
+
+  factory ComplaintResponse.fromJson(Map<String, dynamic> json) {
+    return ComplaintResponse(
+      status: json['status'] ?? false,
+      message: json['message'] ?? '',
+      complaint: json['data'] != null ? Complaint.fromJson(json['data']) : null,
     );
   }
 }
@@ -52,9 +72,9 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
-      name: json['name'],
-      username: json['username'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      username: json['username'] ?? '',
     );
   }
 }
@@ -72,9 +92,9 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
+      id: json['ID'] ?? 0,
+      name: json['Name'] ?? '',
+      description: json['Description'] ?? '',
     );
   }
 }
@@ -90,8 +110,8 @@ class Regency {
 
   factory Regency.fromJson(Map<String, dynamic> json) {
     return Regency(
-      id: json['id'],
-      name: json['name'],
+      id: json['ID'] ?? '',
+      name: json['Name'] ?? '',
     );
   }
 }
@@ -109,9 +129,9 @@ class FileModel {
 
   factory FileModel.fromJson(Map<String, dynamic> json) {
     return FileModel(
-      id: json['id'],
-      complaintId: json['complaint_id'],
-      path: json['path'],
+      id: json['id'] ?? 0,
+      complaintId: json['complaint_id'] ?? '',
+      path: json['path'] ?? '',
     );
   }
 }

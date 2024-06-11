@@ -8,7 +8,7 @@ class PopupFailed extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
-            'assets/popup_failed.png',
+            'assets/images/popup_failed.png',
             width: 130,
             height: 130,
           ),

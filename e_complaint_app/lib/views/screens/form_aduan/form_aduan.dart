@@ -22,13 +22,15 @@ class _FormAduanState extends State<FormAduan> {
   List<String?> _selectedImagePaths = [];
   String? _selectedLokasi;
   String? _selectedIsiAduan;
-  String? _selectedKategoriAduan;
+  int? _selectedKategoriAduan;
   DateTime _dueDate = DateTime.now();
   final _currentDate = DateTime.now();
   final _formKey = GlobalKey<FormState>();
   String? _jenisAduan;
   final TextEditingController _detailAlamatController = TextEditingController();
   final ComplaintService _complaintService = ComplaintService();
+  List<Regency> _regencies = [];
+  List<Category> _categories = [];
 
   @override
   void initState() {
@@ -36,6 +38,32 @@ class _FormAduanState extends State<FormAduan> {
     // Set token for authentication
     _complaintService.setAuthToken(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM');
+    // Fetch regencies
+    _fetchRegencies();
+    // Fetch categories
+    _fetchCategories();
+  }
+
+  void _fetchRegencies() async {
+    try {
+      List<Regency> regencies = await _complaintService.fetchRegencies();
+      setState(() {
+        _regencies = regencies;
+      });
+    } catch (e) {
+      print('Error fetching regencies: $e');
+    }
+  }
+
+  void _fetchCategories() async {
+    try {
+      List<Category> categories = await _complaintService.fetchCategories();
+      setState(() {
+        _categories = categories;
+      });
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
   }
 
   void _submitForm() async {
@@ -47,14 +75,20 @@ class _FormAduanState extends State<FormAduan> {
             'address': _detailAlamatController.text,
             'category_id': _selectedKategoriAduan,
             'description': _selectedIsiAduan,
-            'tanggal': DateFormat("dd/MM/yyyy").format(_dueDate),
             'type': _jenisAduan,
+            'tanggal':
+                _dueDate.toIso8601String(), // Ensure the date is not null
             'files': _selectedImagePaths,
           };
-          Complaint complaint =
+          final response =
               await _complaintService.submitComplaint(complaintData);
-          print('Laporan berhasil: ${complaint.id}');
-          _showSuccessPopup();
+          if (response.status) {
+            print('Laporan berhasil: ${response.complaint?.id}');
+            _showSuccessPopup();
+          } else {
+            print('Gagal mengirim aduan: ${response.message}');
+            _showFailedPopup();
+          }
         } catch (e) {
           print('Error submitting form: $e');
           _showFailedPopup();
@@ -183,12 +217,12 @@ class _FormAduanState extends State<FormAduan> {
                         _selectedLokasi = newValue;
                       });
                     },
-                    items: <String>['3601', 'Lokasi 2', 'Lokasi 3', 'Lokasi 4']
-                        .map<DropdownMenuItem<String>>((String value) {
+                    items: _regencies
+                        .map<DropdownMenuItem<String>>((Regency regency) {
                       return DropdownMenuItem<String>(
-                        value: value,
+                        value: regency.id,
                         child: Text(
-                          value,
+                          regency.name,
                           style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w400),
                         ),
@@ -257,23 +291,19 @@ class _FormAduanState extends State<FormAduan> {
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
+                  DropdownButtonFormField<int>(
                     value: _selectedKategoriAduan,
                     onChanged: (newValue) {
                       setState(() {
                         _selectedKategoriAduan = newValue;
                       });
                     },
-                    items: <String>[
-                      'Kategori Aduan 1',
-                      'Kategori Aduan 2',
-                      'Kategori Aduan 3',
-                      'Kategori Aduan 4'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
+                    items: _categories
+                        .map<DropdownMenuItem<int>>((Category category) {
+                      return DropdownMenuItem<int>(
+                        value: category.id,
                         child: Text(
-                          value,
+                          category.name,
                           style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w400),
                         ),
