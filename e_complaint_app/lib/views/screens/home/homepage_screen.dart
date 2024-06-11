@@ -1,8 +1,10 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -13,7 +15,16 @@ class HomePageScreen extends StatefulWidget {
 
 class _HomePageScreenState extends State<HomePageScreen> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ProfileController>(context, listen: false).loadUserData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profileController = Provider.of<ProfileController>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorCollections.buttonColor,
@@ -53,7 +64,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         Text('Selamat Datang',
                             style: HomeTextCollections.welcomeText),
                         const SizedBox(height: 8.0), // Padding between texts
-                        Text('Budiono Siregar',
+                        Text(profileController.name,
                             style: HomeTextCollections.nameText),
                       ],
                     ),
@@ -92,24 +103,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: (){
-
-                },
-                child: Column(
+                onTap: () {},
+                child: const Column(
                   children: [
                     SizedBox(
                         child: Image(
-                            image: AssetImage('assets/images/icon_aduanku.png'))),
+                            image:
+                                AssetImage('assets/images/icon_aduanku.png'))),
                     Text('Aduanku'),
                     Text('')
                   ],
                 ),
               ),
               GestureDetector(
-                onTap: (){
-
-                },
-                child: Column(
+                onTap: () {},
+                child: const Column(
                   children: [
                     Image(
                         image:
@@ -120,18 +128,19 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: (){},
-                child: Column(
+                onTap: () {},
+                child: const Column(
                   children: [
-                    Image(image: AssetImage('assets/images/icon_chat_admin.png')),
+                    Image(
+                        image: AssetImage('assets/images/icon_chat_admin.png')),
                     Text('Aduanku'),
                     Text('')
                   ],
                 ),
               ),
               GestureDetector(
-                onTap: (){},
-                child: Column(
+                onTap: () {},
+                child: const Column(
                   children: [
                     Image(image: AssetImage('assets/images/icon_chat_ai.png')),
                     Text('Chat AI'),
@@ -168,7 +177,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {},
                     child: Container(
                       width: 162,
                       height: 256,
@@ -213,7 +222,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {},
                     child: Container(
                       width: 162,
                       height: 256,
@@ -258,7 +267,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {},
                     child: Container(
                       width: 162,
                       height: 256,

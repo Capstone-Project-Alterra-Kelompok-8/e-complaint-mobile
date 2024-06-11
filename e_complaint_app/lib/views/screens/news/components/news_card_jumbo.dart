@@ -23,7 +23,7 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: const Color.fromARGB(255, 255, 255, 255),
-         boxShadow: [
+         boxShadow: const [
            BoxShadow(
             color: Color(0x14000000),
             blurRadius: 16,
@@ -40,19 +40,19 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
             Container(
               height: 178,
               width: double.infinity,
-              margin: EdgeInsets.only(top: 16),
+              margin: const EdgeInsets.only(top: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: AssetImage('assets/images/cek.jpg'),
                   fit: BoxFit.cover,
                  
                 ),
               ),
             ),
-            Gap(10),
+            const Gap(10),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
               width: double.infinity,
               child: Column(
                 children: [
@@ -66,24 +66,24 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
                   ),
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               Row(
                 children: [
                   Text(
                     'Admin',
                     style: TextCollections.primaryFont.copyWith(
                       fontSize: 12,
-                      color: Color(0xFF1C1C1C),
+                      color: const Color(0xFF1C1C1C),
                       fontWeight: FontWeight.w400,
                     )
                    
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     '12 Oktober 2021',
                     style: TextCollections.primaryFont.copyWith(
                       fontSize: 12,
-                      color: Color(0xFF1C1C1C),
+                      color: const Color(0xFF1C1C1C),
                     )
                    
                   ),

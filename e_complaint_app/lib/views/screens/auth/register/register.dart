@@ -18,6 +18,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isVisible = false;
+  bool _isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.addListener(_validateForm);
+    _passwordController.addListener(_validateForm);
+    _telephoneController.addListener(_validateForm);
+    _passwordController.addListener(_validateForm);
+  }
+
+  void _validateForm() {
+    setState(() {
+      _isButtonEnabled = _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          _telephoneController.text.isNotEmpty &&
+          _passwordController.text.length >= 8;
+    });
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -234,17 +260,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
               ),
-              const Gap(20),
+              const Gap(29),
               SizedBox(
                 width: double.infinity,
-                height: 32,
+                height: 50,
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorCollections.buttonColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
+                    style: _isButtonEnabled
+                        ? ElevatedButton.styleFrom(
+                            backgroundColor: ColorCollections.buttonColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          )
+                        : ElevatedButton.styleFrom(
+                            backgroundColor:
+                                ColorCollections.disableAuthButtonColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
                     onPressed: () async {
                       final registerAuthController =
                           Provider.of<RegisterAuthController>(context,
@@ -256,15 +293,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         _emailController.text,
                         _telephoneController.text,
                         _passwordController.text,
-                        '/verifikasi_link',
+                        '/verifikasi_otp',
                       );
                     },
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(
-                        color: ColorCollections.textSecondaryColor,
-                      ),
-                    )),
+                    child: _isButtonEnabled
+                        ? const Text(
+                            'Register',
+                            style: TextStyle(
+                              color: ColorCollections.textSecondaryColor,
+                            ),
+                          )
+                        : const Text(
+                            'Register',
+                            style: TextStyle(
+                              color: ColorCollections.disableButtonTextColor,
+                            ),
+                          )),
               ),
               const SizedBox(height: 10),
               Row(

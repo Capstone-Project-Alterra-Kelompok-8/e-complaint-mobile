@@ -16,7 +16,20 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+  bool _isButtonEnabled = false;
 
+
+    @override
+  void initState() {
+    super.initState();
+    pinController.addListener(_validateForm);
+  }
+
+  void _validateForm() {
+    setState(() {
+      _isButtonEnabled = pinController.text.isNotEmpty;
+    });
+  }
   @override
   void dispose() {
     pinController.dispose();
@@ -118,12 +131,21 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
                 const Gap(30),
                 SizedBox(
                   width: double.infinity,
-                  height: 32,
+                  height: 50,
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
+                      style: _isButtonEnabled ? ElevatedButton.styleFrom(
                         backgroundColor: ColorCollections.buttonColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ) : ElevatedButton.styleFrom(
+                        backgroundColor: ColorCollections.disableAuthButtonColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(
+                                color: Colors.grey,
+                              ),
+                          
                         ),
                       ),
                       onPressed: () {
@@ -134,12 +156,18 @@ class _VerifikasiOtpState extends State<VerifikasiOtp> {
                         registerAuthController.verifyOtp(
                             context, email, pinController.text);
                       },
-                      child: const Text(
+                      child: _isButtonEnabled ? const Text(
                         'Verify',
                         style: TextStyle(
                           color: ColorCollections.textSecondaryColor,
                         ),
-                      )),
+                      ) : const Text(
+                        'Verify',
+                        style: TextStyle(
+                          color: ColorCollections.disableButtonTextColor,
+                        ),
+                      ),
+                      ),
                 ),
                 const Gap(40),
               ],

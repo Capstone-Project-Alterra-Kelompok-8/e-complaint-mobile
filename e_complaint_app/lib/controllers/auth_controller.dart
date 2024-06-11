@@ -1,4 +1,6 @@
+import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/services/login_service.dart';
+import 'package:provider/provider.dart';
 import '../models/auth_model.dart';
 import '../services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,12 +31,26 @@ class RegisterAuthController with ChangeNotifier {
       try {
         await _registerUserService.register(user);
         debugPrint('Registration successful');
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('name', name);
+        await prefs.setString('email', email);
+        await prefs.setString('telephoneNumber', telephoneNumber);
+
+        final profileController =
+            Provider.of<ProfileController>(context, listen: false);
+        await profileController.updateUserData(name, email, telephoneNumber);
+
         await sendOtp(context, email, verificationLinkRouteName);
       } catch (e) {
         debugPrint('Registration failed: $e');
       }
     } else {
       debugPrint('All fields must be filled');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('All fields must be filled'),
+        ),
+      );
     }
   }
 
@@ -71,26 +87,66 @@ class RegisterAuthController with ChangeNotifier {
 
 class LoginAuthController with ChangeNotifier {
   final AuthLoginService _loginService = AuthLoginService();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
-  Future<void> login(
-      BuildContext context, String email, String password) async {
-    try {
-      final response = await _loginService.login(email, password);
-      if (response.status) {
-        debugPrint('Success Login');
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', response.data.token);
-        await prefs.setString('email', response.data.email);
-        Navigator.pushReplacementNamed(context, '/news');
-      } else {
-        debugPrint(response.message);
-      }
-    } catch (e) {
-      debugPrint('Failed to Login \n$e');
+  bool _isLoginButtonEnabled = false;
+
+  LoginController() {
+    emailController.addListener(_updateButtonState);
+    passwordController.addListener(_updateButtonState);
+  }
+
+  bool get isLoginButtonEnabled => _isLoginButtonEnabled;
+
+  void _updateButtonState() {
+    final isEnabled =
+        emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    if (_isLoginButtonEnabled != isEnabled) {
+      _isLoginButtonEnabled = isEnabled;
+      notifyListeners();
     }
   }
 
+  @override
+  void dispose() {
+    emailController.removeListener(_updateButtonState);
+    passwordController.removeListener(_updateButtonState);
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+ Future<void> login(BuildContext context, String email, String password) async {
+    try {
+      final response = await _loginService.login(email, password);
+      if (response.status && response.data != null) {
+        _isLoading = true;
+        notifyListeners();
+        debugPrint('Success Login');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('name', response.data!.name);
+        await prefs.setString('token', response.data!.token);
+        await prefs.setString('email', response.data!.email);
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      debugPrint('Failed to Login \n$e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid username or password')),
+      );
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+
   Future<void> logout(BuildContext context) async {
+    _isLoading = false;
+    notifyListeners();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
     Navigator.pushReplacementNamed(context, '/login');

@@ -34,7 +34,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   style: LoginTextCollections.headingOne,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               
               Center(
                 child: Text(
@@ -43,7 +43,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   style: LoginTextCollections.headingTwo,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -86,7 +86,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
               SizedBox(
                   width: double.infinity,
@@ -102,7 +102,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     onPressed: (){
                       Navigator.pushNamed(context, '/new_password');
                     }, 
-                    child: Text(
+                    child: const Text(
                       'Send Code',
                       style: TextStyle(
                         color: ColorCollections.textSecondaryColor,
