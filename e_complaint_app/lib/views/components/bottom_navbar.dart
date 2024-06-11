@@ -7,6 +7,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+        
         padding: const EdgeInsets.symmetric(horizontal: 10),
         height: 60,
         color: const Color.fromARGB(255, 12, 58, 123),

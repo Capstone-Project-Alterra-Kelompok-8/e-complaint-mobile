@@ -7,6 +7,7 @@ import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/register/register.dart';
 import 'package:e_complaint_app/views/screens/auth/register/verifikasi_link.dart';
 import 'package:e_complaint_app/views/screens/auth/register/verifikasi_otp.dart';
+import 'package:e_complaint_app/views/screens/home/homepage_screen.dart';
 import 'package:e_complaint_app/views/screens/news/news_screen.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_detail.dart';
 import 'package:e_complaint_app/views/screens/notification/notification_screen.dart';
@@ -24,6 +25,12 @@ class AppRoute {
     '/new_password' : (context) => NewPasswordScreen(),
     '/news' :(context) => NewsScreen(),
 
+    '/login' : (context) => const LoginScreen(),
+    '/register' : (context) => const RegisterScreen(),
+    '/verifikasi_link' : (context) => const VerifikasiLink(),
+    '/verifikasi_otp' : (context) => const VerifikasiOtp(),
+    '/new_password' : (context) => const NewPasswordScreen(),
+    '/news' :(context) => const NewsScreen(),
     '/forgot_password' : (context) => ForgotPasswordScreen(),
     '/notification' : (context) => NotificationScreen(),
     '/my_complaint' : (context) => MyComplaintScreen(),
