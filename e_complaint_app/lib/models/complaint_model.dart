@@ -6,6 +6,7 @@ class Complaint {
   final String address;
   final String description;
   final String status;
+  final String date;
   final String type;
   final List<FileModel> files;
 
@@ -19,6 +20,7 @@ class Complaint {
     required this.status,
     required this.type,
     required this.files,
+    required this.date,
   });
 
   factory Complaint.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class Complaint {
       description: json['description'] ?? '',
       status: json['status'] ?? '',
       type: json['type'] ?? '',
+      date: json['date'] ?? '',
       files: filesList,
     );
   }

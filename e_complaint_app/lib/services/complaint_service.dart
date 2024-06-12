@@ -73,7 +73,7 @@ class ComplaintService {
         'address': complaintData['address'],
         'category_id': complaintData['category_id'],
         'description': complaintData['description'],
-        'tanggal': complaintData['tanggal'],
+        'date': complaintData['date'],
         'type': complaintData['type'],
         'files': files,
       });

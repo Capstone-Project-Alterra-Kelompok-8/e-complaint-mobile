@@ -35,12 +35,12 @@ class _FormAduanState extends State<FormAduan> {
   @override
   void initState() {
     super.initState();
-    // Set token for authentication
+
     _complaintService.setAuthToken(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM');
-    // Fetch regencies
+
     _fetchRegencies();
-    // Fetch categories
+
     _fetchCategories();
   }
 
@@ -76,8 +76,8 @@ class _FormAduanState extends State<FormAduan> {
             'category_id': _selectedKategoriAduan,
             'description': _selectedIsiAduan,
             'type': _jenisAduan,
-            'tanggal':
-                _dueDate.toIso8601String(), // Ensure the date is not null
+            'date': DateFormat("dd-MM-yyyy")
+                .format(_dueDate), // Format the date correctly
             'files': _selectedImagePaths,
           };
           final response =
@@ -147,13 +147,11 @@ class _FormAduanState extends State<FormAduan> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Check if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
     }
 
-    // Check for location permissions.
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -167,7 +165,6 @@ class _FormAduanState extends State<FormAduan> {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
-    // Get the current position.
     Position position = await Geolocator.getCurrentPosition();
     setState(() {
       _detailAlamatController.text =
@@ -458,7 +455,7 @@ class _FormAduanState extends State<FormAduan> {
           spacing: 10,
           runSpacing: 10,
           children: List.generate(_selectedImagePaths.length + 1, (index) {
-            if (_selectedImagePaths.length == 5 &&
+            if (_selectedImagePaths.length == 3 &&
                 index == _selectedImagePaths.length) {
               return SizedBox.shrink();
             }
