@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_view_indicators/page_view_indicators.dart';
-import 'comment.dart';
+import 'package:e_complaint_app/views/screens/riwayat_aduan/comment.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AduanCard extends StatefulWidget {
   final String id;
@@ -12,6 +14,7 @@ class AduanCard extends StatefulWidget {
   final String status;
   final String profilePhoto;
   final List<String> files;
+  final int totalLikes;
 
   const AduanCard({
     Key? key,
@@ -24,6 +27,7 @@ class AduanCard extends StatefulWidget {
     required this.status,
     required this.profilePhoto,
     required this.files,
+    required this.totalLikes,
   }) : super(key: key);
 
   @override
@@ -31,27 +35,88 @@ class AduanCard extends StatefulWidget {
 }
 
 class _AduanCardState extends State<AduanCard> {
-  int likeCount = 10;
+  int likeCount = 0;
   bool _isLiked = false;
   bool _isExpanded = false;
   PageController _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
 
-  void _toggleLike() {
-    setState(() {
-      _isLiked = !_isLiked;
-      likeCount += _isLiked ? 1 : -1;
-    });
+  @override
+  void initState() {
+    super.initState();
+    likeCount = widget.totalLikes;
+    _fetchInitialData();
   }
 
-  void _showCommentSheet(BuildContext context) {
+  void _toggleLike() async {
+  // Mengubah status suka dan jumlah suka sebelum mengirim permintaan ke server
+  bool previousLikedStatus = _isLiked;
+  setState(() {
+    _isLiked = !_isLiked;
+    if (_isLiked) {
+      likeCount++;
+    } else {
+      likeCount--;
+    }
+  });
+
+  // Mengirim permintaan ke server untuk memperbarui status suka
+  String apiUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.id}/likes';
+  final response = await http.post(
+    Uri.parse(apiUrl),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
+    },
+    body: jsonEncode(<String, bool>{
+      'liked': _isLiked,
+    }),
+  );
+
+  // Jika permintaan gagal, kembalikan status suka dan jumlah suka ke kondisi sebelumnya
+  if (response.statusCode != 200) {
+    setState(() {
+      _isLiked = previousLikedStatus;
+      if (_isLiked) {
+        likeCount++;
+      } else {
+        likeCount--;
+      }
+    });
+    print('Failed to toggle like: ${response.statusCode}');
+  }
+}
+
+
+  void _fetchInitialData() async {
+    String apiUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.id}/likes';
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseData = json.decode(response.body);
+      setState(() {
+        likeCount = responseData['likes_count'] ?? widget.totalLikes;
+        _isLiked = responseData['liked'] ?? false;
+      });
+    } else {
+      print('Failed to fetch initial data: ${response.statusCode}');
+    }
+  }
+
+  void _showCommentSheet(BuildContext context, String complaintId) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.7,
-          child: CommentScreen(),
+          child: CommentScreen(complaintId: complaintId),
         );
       },
     );
@@ -141,7 +206,7 @@ class _AduanCardState extends State<AduanCard> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          _showCommentSheet(context);
+                          _showCommentSheet(context, widget.id);
                         },
                         child: Icon(Icons.comment),
                       ),
@@ -184,7 +249,9 @@ class _AduanCardState extends State<AduanCard> {
                 child: Text(
                   _isExpanded
                       ? widget.description
-                      : '${widget.description.substring(0, 100)}...',
+                      : widget.description.length > 100
+                          ? '${widget.description.substring(0, 100)}...'
+                          : widget.description,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   overflow: TextOverflow.fade,
                 ),

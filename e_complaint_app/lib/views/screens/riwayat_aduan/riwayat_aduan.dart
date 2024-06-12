@@ -55,6 +55,7 @@ class _RiwayatAduanState extends State<RiwayatAduan> {
       throw Exception('Failed to load complaints');
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +146,7 @@ class _RiwayatAduanState extends State<RiwayatAduan> {
           status: complaints[index].status,
           profilePhoto: complaints[index].profilePhoto,
           files: complaints[index].files,
+          totalLikes: complaints[index].totalLikes,
         );
       },
     );

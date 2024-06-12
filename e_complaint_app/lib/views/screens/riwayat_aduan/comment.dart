@@ -1,18 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CommentScreen extends StatefulWidget {
+  final String complaintId;
+
+  CommentScreen({required this.complaintId});
+
   @override
   _CommentScreenState createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
-  List<String> _comments = [
-    'This is the first comment.',
-    'This is the second comment.',
-    'This is the third comment.'
-  ];
-
+  List<dynamic> _comments = [];
   final TextEditingController _commentController = TextEditingController();
+  bool _isLoading = true;
+  String _errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComments();
+  }
+
+  Future<void> fetchComments() async {
+    final String url = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.complaintId}/discussions';
+    print('Fetching comments from: $url'); 
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
+      },
+    );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}'); 
+
+    if (response.statusCode == 200) {
+      try {
+        var responseData = json.decode(response.body);
+        setState(() {
+          _comments = responseData['data'];
+          _isLoading = false;
+        });
+      } catch (e) {
+        setState(() {
+          _errorMessage = 'Failed to parse comments: $e';
+          _isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'Belum ada diskusi...';
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> postComment(String comment) async {
+    final String url = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.complaintId}/discussions';
+    print('Posting comment to: $url'); 
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
+      },
+      body: json.encode({'comment': comment}),
+    );
+
+    print('Response status: ${response.statusCode}'); 
+    print('Response body: ${response.body}'); 
+
+    if (response.statusCode == 201) {
+      try {
+        var responseData = json.decode(response.body);
+        setState(() {
+          _comments.add(responseData['data']);
+        });
+      } catch (e) {
+        setState(() {
+          _errorMessage = 'Failed to parse new comment: $e';
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'Failed to post comment: ${response.statusCode}';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +109,32 @@ class _CommentScreenState extends State<CommentScreen> {
         ),
         Divider(height: 1),
         Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            itemCount: _comments.length,
-            itemBuilder: (context, index) {
-              return _buildComment('User${index + 1}', _comments[index]);
-            },
-          ),
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : _errorMessage.isNotEmpty
+                  ? Center(child: Text(_errorMessage))
+                  : ListView.builder(
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                      itemCount: _comments.length,
+                      itemBuilder: (context, index) {
+                        final comment = _comments[index];
+                        if (comment.containsKey('user')) {
+                          return _buildComment(
+                            comment['user']['name'],
+                            comment['comment'],
+                            'user',
+                          );
+                        } else if (comment.containsKey('admin')) {
+                          return _buildComment(
+                            comment['admin']['name'],
+                            comment['comment'],
+                            'admin',
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
         ),
         Divider(height: 1),
         _buildCommentInputField(),
@@ -44,7 +142,7 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 
-  Widget _buildComment(String username, String commentText) {
+  Widget _buildComment(String username, String commentText, String userType) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -52,7 +150,7 @@ class _CommentScreenState extends State<CommentScreen> {
         children: [
           CircleAvatar(
             radius: 18,
-            backgroundColor: Colors.grey,
+            backgroundColor: userType == 'admin' ? Colors.red : Colors.grey,
             child: Text(
               username[0],
               style: TextStyle(
@@ -66,48 +164,29 @@ class _CommentScreenState extends State<CommentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: username,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' ',
-                      ),
-                      TextSpan(
-                        text: commentText,
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+                Text(
+                  username,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
                 SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      '2h',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      'Reply',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                Text(
+                  commentText,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
+                if (userType == 'admin')
+                  Text(
+                    'Admin',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -122,18 +201,6 @@ class _CommentScreenState extends State<CommentScreen> {
       color: Colors.white,
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: Colors.blueGrey,
-            child: Text(
-              'JD', // Placeholder initials or user image can be added here
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(width: 10),
           Expanded(
             child: TextField(
               controller: _commentController,
@@ -148,10 +215,8 @@ class _CommentScreenState extends State<CommentScreen> {
             onPressed: () {
               String newComment = _commentController.text;
               if (newComment.isNotEmpty) {
-                setState(() {
-                  _comments.add(newComment);
-                  _commentController.clear();
-                });
+                postComment(newComment);
+                _commentController.clear();
               }
             },
           ),

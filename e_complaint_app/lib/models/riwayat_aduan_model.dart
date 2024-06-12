@@ -7,6 +7,7 @@ class Complaint {
   final String status;
   final String profilePhoto;
   final List<String> files;
+  final int totalLikes;
 
   Complaint({
     required this.id,
@@ -17,6 +18,7 @@ class Complaint {
     required this.status,
     required this.profilePhoto,
     required this.files,
+    required this.totalLikes,
   });
 
   factory Complaint.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,7 @@ class Complaint {
               ?.map((file) => baseUrl + file['path'].toString())
               .toList() ??
           [],
+      totalLikes: json['total_likes']
     );
   }
 }
