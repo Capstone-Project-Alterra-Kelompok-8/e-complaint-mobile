@@ -13,7 +13,13 @@ class DetailMyComplaintScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CarouselController _controller = CarouselController();
-
+     final Map<String, Color> _statusColorMap = {
+    'pending': Colors.grey,
+    'selesai': Colors.green,
+    'ditolak': Colors.red,
+    'on progres': Colors.orange,
+    'verifikasi': Colors.blue,
+  };
     return Scaffold(
       appBar: CurvedAppBar(),
       body: SingleChildScrollView(
@@ -167,11 +173,11 @@ class DetailMyComplaintScreen extends StatelessWidget {
                       ),
                       Gap(60),
                       Text(
-                        'Selesai',
+                        complaint.status,
                           style: TextCollections.headingThree.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w200,
-                          color: Colors.blue,
+                          color: _statusColorMap[complaint.status],
                         ),
                       ),
                       Gap(10),

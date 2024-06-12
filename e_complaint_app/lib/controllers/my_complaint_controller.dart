@@ -1,22 +1,20 @@
-import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/models/my_complaint_model.dart';
 import 'package:e_complaint_app/services/my_complaint_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class MyComplaintController extends ChangeNotifier{
+class MyComplaintController extends ChangeNotifier {
   final MyComplaintService _myComplaintService = MyComplaintService();
   List<MyComplaintModel> _myComplaints = [];
   bool _isLoaded = false;
   String _errorMessage = '';
+  String? _filterStatus;
 
-
-  List <MyComplaintModel> get myComplaint => _myComplaints;
+  List<MyComplaintModel> get myComplaint => _myComplaints;
   bool get isLoaded => _isLoaded;
   String get errorMessage => _errorMessage;
 
   Future<void> getMyComplaint() async {
-     try {
+    try {
       final response = await _myComplaintService.getMyComplaint();
 
       print('getNews response: $response');
@@ -49,8 +47,28 @@ class MyComplaintController extends ChangeNotifier{
     }
   }
 
+  void setFilterStatus(String? status) {
+    _filterStatus = status;
+    notifyListeners();
+  }
 
+  void clearFilter() {
+    _filterStatus = null;
+    notifyListeners();
+  }
 
+  List<MyComplaintModel> get filteredComplaints {
+    if (_filterStatus == null) {
+      return myComplaint;
+    }
+    return myComplaint.where((complaint) => complaint.status == _filterStatus).toList();
+  }
 
-
+  final Map<String, Color> _statusColorMap = {
+    'pending': Colors.grey,
+    'selesai': Colors.green,
+    'ditolak': Colors.red,
+    'on progres': Colors.orange,
+    'verifikasi': Colors.blue,
+  };
 }

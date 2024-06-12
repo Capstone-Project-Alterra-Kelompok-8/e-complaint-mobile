@@ -193,3 +193,63 @@ class ComplaintFile {
     return 'https://storage.googleapis.com/e-complaint-assets/$path';
   }
 }
+
+
+class Admin {
+  final int id;
+  final String name;
+  final String username;
+  final String email;
+  final String telephoneNumber;
+  final bool isSuperAdmin;
+  final String profilePhoto;
+
+  Admin({
+    required this.id,
+    required this.name,
+    required this.username,
+    required this.email,
+    required this.telephoneNumber,
+    required this.isSuperAdmin,
+    required this.profilePhoto,
+  });
+
+  factory Admin.fromJson(Map<String, dynamic> json) {
+    return Admin(
+      id: json['id'],
+      name: json['name'],
+      username: json['username'],
+      email: json['email'],
+      telephoneNumber: json['telephone_number'],
+      isSuperAdmin: json['is_super_admin'],
+      profilePhoto: json['profile_photo'],
+    );
+  }
+}
+
+
+class Complaint {
+  final int id;
+  final String complaintId;
+  final Admin admin;
+  final String status;
+  final String message;
+
+  Complaint({
+    required this.id,
+    required this.complaintId,
+    required this.admin,
+    required this.status,
+    required this.message,
+  });
+
+  factory Complaint.fromJson(Map<String, dynamic> json) {
+    return Complaint(
+      id: json['id'],
+      complaintId: json['complaint_id'],
+      admin: Admin.fromJson(json['admin']),
+      status: json['status'],
+      message: json['message'],
+    );
+  }
+}
