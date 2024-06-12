@@ -184,7 +184,9 @@ class _AduanCardState extends State<AduanCard> {
                 child: Text(
                   _isExpanded
                       ? widget.description
-                      : '${widget.description.substring(0, 100)}...',
+                      : widget.description.length > 100
+                          ? '${widget.description.substring(0, 100)}...'
+                          : widget.description,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   overflow: TextOverflow.fade,
                 ),
