@@ -27,8 +27,11 @@ class MyComplaintModel {
   });
 
   factory MyComplaintModel.fromJson(Map<String, dynamic> json) {
+    var filesFromJson = json['files'] as List;
+    List<ComplaintFile> fileList = filesFromJson.map((i) => ComplaintFile.fromJson(i)).toList();
+
     return MyComplaintModel(
-      id: json['id'],
+      id: json['id']?? '',
       user: User.fromJson(json['user']),
       category: Category.fromJson(json['category']),
       regency: Regency.fromJson(json['regency']),
@@ -36,9 +39,7 @@ class MyComplaintModel {
       description: json['description'],
       status: json['status'],
       type: json['type'],
-      files: json['files'] != null
-        ? List<ComplaintFile>.from(json['files'].map((x) => ComplaintFile.fromJson(x)))
-        : [],
+      files: fileList ?? [], 
       updatedAt: json['updated_at'],
     );
   }
@@ -93,6 +94,13 @@ class User {
       'telephone_number': telephoneNumber,
       'profile_photo': profilePhoto,
     };
+  }
+
+  String get url {
+    if (profilePhoto.startsWith('http')) {
+      return profilePhoto;
+    }
+    return 'https://storage.googleapis.com/e-complaint-assets/$profilePhoto';
   }
 }
 
@@ -164,9 +172,9 @@ class ComplaintFile {
 
   factory ComplaintFile.fromJson(Map<String, dynamic> json) {
     return ComplaintFile(
-      id: json['id'],
-      complaintId: json['complaint_id'],
-      path: json['path'],
+      id: json['id'] ?? 0,
+      complaintId: json['complaint_id'] ?? '',
+      path: json['path'] ?? '',
     );
   }
 
@@ -176,5 +184,12 @@ class ComplaintFile {
       'complaint_id': complaintId,
       'path': path,
     };
+  }
+
+  String get url {
+    if (path.startsWith('http')) {
+      return path;
+    }
+    return 'https://storage.googleapis.com/e-complaint-assets/$path';
   }
 }

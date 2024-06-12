@@ -34,8 +34,6 @@ class AppRoute {
     '/forgot_password' : (context) => ForgotPasswordScreen(),
     '/notification' : (context) => NotificationScreen(),
     '/my_complaint' : (context) => MyComplaintScreen(),
-    '/detail_my_complaint' : (context) => DetailMyComplaintScreen(),
-    '/progress_my_complaint' : (context) => ProgressMyComplaintScreen(),
    
   };
   

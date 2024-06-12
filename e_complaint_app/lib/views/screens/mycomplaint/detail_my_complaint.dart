@@ -1,32 +1,24 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/models/my_complaint_model.dart';
 import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class DetailMyComplaintScreen extends StatefulWidget {
-  const DetailMyComplaintScreen({super.key});
+class DetailMyComplaintScreen extends StatelessWidget {
+  final MyComplaintModel complaint;
+
+  const DetailMyComplaintScreen({required this.complaint, Key? key}) : super(key: key);
 
   @override
-  State<DetailMyComplaintScreen> createState() => _DetailMyComplaintScreenState();
-}
+  Widget build(BuildContext context) {
+    final CarouselController _controller = CarouselController();
 
-class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
-  final CarouselController _controller = CarouselController();
-  final List<String> images = [
-    'assets/images/cek.jpg',
-    'assets/images/cek.jpg',
-    'assets/images/cek.jpg',
-    // Tambahkan path gambar lainnya sesuai kebutuhan
-  ];
-  @override
-  Widget build (BuildContext context){
     return Scaffold(
-      appBar: CurvedAppBar(
-     
-      ),
+      appBar: CurvedAppBar(),
       body: SingleChildScrollView(
-        child: Padding(padding: EdgeInsets.all(16),
+        child: Padding(
+          padding: EdgeInsets.all(16),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -44,13 +36,13 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage('assets/images/cek.jpg'),
+                          image: NetworkImage('https://storage.googleapis.com/e-complaint-assets/${complaint.user.profilePhoto}'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                     title: Text(
-                      'Anda',
+                      complaint.user.name,
                       style: TextCollections.headingOne.copyWith(
                         fontSize: 18,
                       ),
@@ -65,67 +57,66 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                   ),
                 ),
                 // slider
-                 Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: CarouselSlider.builder(
-                    carouselController: _controller,
-                    itemCount: images.length,
-                    options: CarouselOptions(
-                      aspectRatio: 1.0,
-                      height: 200,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,               
-                      viewportFraction: 0.8,
-                    ),
-                    itemBuilder: (context, index, realIndex) {
-                      return Container(
-                        
-                        width: MediaQuery.of(context).size.width,
-                        decoration: ShapeDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(images[index]),
-                            fit: BoxFit.fill,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 6, color: Colors.white),
-                            borderRadius: BorderRadius.circular(12),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CarouselSlider.builder(
+                            carouselController: _controller,
+                            itemCount: complaint.files.length,
+                            options: CarouselOptions(
+                              aspectRatio: 1.0,
+                              height: 200,
+                              enlargeCenterPage: true,
+                              enableInfiniteScroll: false,
+                              viewportFraction: 0.8,
+                            ),
+                            itemBuilder: (context, index, realIndex) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: ShapeDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(complaint.files[index].url),
+                                    fit: BoxFit.fill,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(width: 6, color: Colors.white),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
-              
-              ],
-            ),
-          ],
-        ),
-      
                 Gap(10),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16 , vertical: 8),
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Column(
                     children: [
                       Row(
                         children: [
-                          Expanded(child: Text('Bencana Alam', 
-                          style: TextCollections.headingOne.copyWith(
-                            fontSize: 18, 
-                            fontWeight: FontWeight.bold
+                          Expanded(
+                            child: Text(
+                              complaint.category.name,
+                              style: TextCollections.headingOne.copyWith(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              softWrap: true,
                             ),
-                            softWrap: true,
-                          ),
                           ),
                           IconButton(
                             icon: Icon(Icons.comment_outlined),
-                            onPressed: (){},
+                            onPressed: () {},
                           ),
                           IconButton(
-                            onPressed:(){}, 
+                            onPressed: () {},
                             icon: Row(
                               children: [
                                 Icon(Icons.favorite_border),
@@ -137,69 +128,57 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ),
-                         
                         ],
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child:  Text(
-                        'Tangerang',
-                        style: TextCollections.headingThree.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
+                        child: Text(
+                          complaint.regency.name,
+                          style: TextCollections.headingThree.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      )
                       ),
                       Gap(5),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child:  Text(
-                        'ID :#1234567890',
-                        style: TextCollections.headingThree.copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.blue,
+                        child: Text(
+                          'ID: #${complaint.id}',
+                          style: TextCollections.headingThree.copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.blue,
+                          ),
                         ),
-                      )
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child:  Text(
-                        'Dengan segala hormat, kami warga daerah Tangerang ingin mengajukan aduan terkait kondisi banjir yang semakin parah di wilayah kami. karena pemerintah tidak memeperhaitakn sehingga kodok berkeliaran di selokan  ',
-                        style: TextCollections.headingThree.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
+                        child: Text(
+                          complaint.description,
+                          style: TextCollections.headingThree.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.justify,
                         ),
-                        textAlign: TextAlign.justify,
-                      )
                       ),
                       Gap(60),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: (){},
-                          child: Text(
-                            'Selesai',
-                            style: TextCollections.headingThree.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w200,
-                              color: Colors.blue,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            side: BorderSide(color: Colors.blue),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
+                      Text(
+                        'Selesai',
+                          style: TextCollections.headingThree.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w200,
+                          color: Colors.blue,
                         ),
                       ),
+                      Gap(10),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.pushNamed(context, '/progress_aduanku');
                           },
                           child: Text(
@@ -221,15 +200,11 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                     ],
                   ),
                 ),
-                
-                
-
               ],
             ),
           ),
         ),
       ),
-      
     );
   }
 }

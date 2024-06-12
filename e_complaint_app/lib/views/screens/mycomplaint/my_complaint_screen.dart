@@ -1,9 +1,9 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/views/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/mycomplaint/detail_my_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:e_complaint_app/env/constants/constants.dart';
 
 class MyComplaintScreen extends StatefulWidget {
   const MyComplaintScreen({super.key});
@@ -20,39 +20,6 @@ class StatusData {
 }
 
 class _MyComplaintScreenState extends State<MyComplaintScreen> {
-  final List<Map<String, String>> _aduanList = [
-    {
-      'image': 'assets/images/aduan.jpg',
-      'date': '17 Mei, 18:26',
-      'title': 'Infrastuktur, Tangerang',
-      'description': 'Tolong bantu kami, kami tidak bisa melalui jalanan yang rusak parah ini...',
-    },
-    {
-      'image': 'assets/images/aduan.jpg',
-      'date': '17 Mei, 18:26',
-      'title': 'Infrastuktur, Tangerang',
-      'description': 'Tolong bantu kami, kami tidak bisa melalui jalanan yang rusak parah ini......',
-    },
-    {
-      'image': 'assets/images/aduan.jpg',
-      'date': '17 Mei, 18:26',
-      'title': 'Infrastuktur, Tangerang',
-      'description': 'Tolong bantu kami, kami tidak bisa melalui jalanan yang rusak parah ini......',
-    },  
-    {
-      'image': 'assets/images/aduan.jpg',
-      'date': '17 Mei, 18:26',
-      'title': 'Infrastuktur, Tangerang',
-      'description': 'Tolong bantu kami, kami tidak bisa melalui jalanan yang rusak parah ini......',
-    },
-    {
-      'image': 'assets/images/aduan.jpg',
-      'date': '17 Mei, 18:26',
-      'title': 'Infrastuktur, Tangerang',
-      'description': 'Tolong bantu kami, kami tidak bisa melalui jalanan yang rusak parah ini......',
-    },
-  ];
-
   final List<StatusData> _statusData = [
     StatusData('Pending', Colors.grey),
     StatusData('Selesai', Colors.green),
@@ -97,10 +64,10 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
                             Navigator.of(context).pop();
                           },
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10),
                         Text(
                           'Filter',
-                          style: TextCollections.headingThree 
+                          style: TextCollections.headingThree,
                         ),
                       ],
                     ),
@@ -109,13 +76,13 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
                     const SizedBox(height: 16),
                     Text(
                       'Pilih Status',
-                      style: TextCollections.headingThree
+                      style: TextCollections.headingThree,
                     ),
                     const SizedBox(height: 16),
                     _buildStatusOption('Pending', Colors.grey, TextCollections.filterFont),
-                    _buildStatusOption('Verifikasi', Colors.green, TextCollections.filterFont),
-                    _buildStatusOption('On Progres', Colors.blue, TextCollections.filterFont),
-                    _buildStatusOption('Selesai', Colors.purple, TextCollections.filterFont),
+                    _buildStatusOption('Verifikasi', Colors.blue, TextCollections.filterFont),
+                    _buildStatusOption('On Progres', Colors.orange, TextCollections.filterFont),
+                    _buildStatusOption('Selesai', Colors.green, TextCollections.filterFont),
                     _buildStatusOption('Ditolak', Colors.red, TextCollections.filterFont),
                     const SizedBox(height: 16),
                     Row(
@@ -136,8 +103,7 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
     );
   }
 
-
- Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
+  Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
     return ListTile(
       leading: Radio<String>(
         value: status,
@@ -150,9 +116,9 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
         activeColor: color,
         fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
           if (states.contains(MaterialState.selected) || states.contains(MaterialState.pressed)) {
-            return color; // Warna setelah ditekan
+            return color;
           }
-          return Colors.orange; // Warna sebelum ditekan
+          return Colors.orange;
         }),
       ),
       title: Text(status, style: textStyle),
@@ -184,7 +150,7 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
               children: [
                 Text(
                   'Aduanku',
-                  style: TextCollections.titleFont
+                  style: TextCollections.titleFont,
                 ),
                 IconButton(
                   icon: Icon(Icons.candlestick_chart_outlined),
@@ -193,88 +159,120 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
               ],
             ),
           ),
-         
           Expanded(
-            child: ListView.builder(
-              itemCount: _aduanList.length,
-              itemBuilder: (context, index) {
-                final aduan = _aduanList[index];
-                final statusData = _statusData[index % _statusData.length];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(6.0),
-                            child: Image.asset(
-                              aduan['image']!,
-                              width: 91,
-                              height: 133,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  aduan['date']!,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  aduan['title']!,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 16),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(aduan['description']!),
-                                const SizedBox(height: 10),
-                                Row(
+            child: myComplaintController.isLoaded
+                ? myComplaintController.myComplaint.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: myComplaintController.myComplaint.length,
+                        itemBuilder: (context, index) {
+                          final aduan = myComplaintController.myComplaint[index];
+                          final statusData = _statusData.firstWhere(
+                            (status) => status.status == aduan.status,
+                            orElse: () => StatusData(aduan.status, Colors.grey),
+                          );
+
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              elevation: 3,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ButtonCollections.detailButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(context, '/detail_my_complaint');
-                                      },
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                      child: Image.network(
+                                        aduan.files.isNotEmpty
+                                            ? aduan.files[0].url
+                                            : 'https://via.placeholder.com/91x133.png?text=No+Image',
+                                        width: 91,
+                                        height: 133,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.network(
+                                            'https://via.placeholder.com/91x133.png?text=No+Image',
+                                            width: 91,
+                                            height: 133,
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
+                                      ),
                                     ),
                                     const SizedBox(width: 10),
-                                    Container(
-                                      width: 91,
-                                      height: 31,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(4),
-                                        border: Border.all(
-                                          color: statusData.color,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          statusData.status,
-                                          style: TextStyle(
-                                            color: statusData.color,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            aduan.updatedAt,
+                                            style: TextStyle(fontWeight: FontWeight.bold),
                                           ),
-                                        ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            aduan.category.name,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold, fontSize: 16),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            aduan.description,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              ButtonCollections.detailButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => DetailMyComplaintScreen(complaint: aduan,),
+                                                    ),
+                                                  );
+        //                                           Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => NewsDetail(news: newsItem),
+        //   ),
+        // );
+                                                },
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Container(
+                                                width: 91,
+                                                height: 31,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(4),
+                                                  border: Border.all(
+                                                    color: statusData.color,
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    statusData.status,
+                                                    style: TextStyle(
+                                                      color: statusData.color,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+                          );
+                        },
+                      )
+                    : Center(child: Text('No complaints available'))
+                : Center(child: CircularProgressIndicator()),
           ),
         ],
       ),
