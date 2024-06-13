@@ -1,25 +1,44 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
+import 'package:e_complaint_app/views/screens/mycomplaint/progress_my_complaint.dart';
+import 'package:flutter/material.dart';
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/models/my_complaint_model.dart';
 import 'package:e_complaint_app/views/components/app_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:page_view_indicators/circle_page_indicator.dart';
+import 'package:provider/provider.dart'; // Import the package for indicators
 
-class DetailMyComplaintScreen extends StatelessWidget {
+class DetailMyComplaintScreen extends StatefulWidget {
   final MyComplaintModel complaint;
 
   const DetailMyComplaintScreen({required this.complaint, Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final CarouselController _controller = CarouselController();
-     final Map<String, Color> _statusColorMap = {
+  _DetailMyComplaintScreenState createState() => _DetailMyComplaintScreenState();
+}
+
+class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
+  final PageController _pageController = PageController(); // PageController for controlling the PageView
+  final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0); // ValueNotifier for page index
+  final Map<String, Color> _statusColorMap = {
     'pending': Colors.grey,
     'selesai': Colors.green,
     'ditolak': Colors.red,
     'on progres': Colors.orange,
     'verifikasi': Colors.blue,
   };
+
+  @override
+  void dispose() {
+    _pageController.dispose(); // Dispose the page controller
+    _currentPageNotifier.dispose(); // Dispose the ValueNotifier
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final myComplaintController = Provider.of<MyComplaintController>(context, listen: false);
+
     return Scaffold(
       appBar: CurvedAppBar(),
       body: SingleChildScrollView(
@@ -42,13 +61,13 @@ class DetailMyComplaintScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: NetworkImage('https://storage.googleapis.com/e-complaint-assets/${complaint.user.profilePhoto}'),
+                          image: NetworkImage('https://storage.googleapis.com/e-complaint-assets/${widget.complaint.user.profilePhoto}'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                     title: Text(
-                      complaint.user.name,
+                      widget.complaint.user.name,
                       style: TextCollections.headingOne.copyWith(
                         fontSize: 18,
                       ),
@@ -62,43 +81,41 @@ class DetailMyComplaintScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                // slider
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CarouselSlider.builder(
-                            carouselController: _controller,
-                            itemCount: complaint.files.length,
-                            options: CarouselOptions(
-                              aspectRatio: 1.0,
-                              height: 200,
-                              enlargeCenterPage: true,
-                              enableInfiniteScroll: false,
-                              viewportFraction: 0.8,
+                // PageView with indicators
+                SizedBox(
+                  height: 200,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      PageView.builder(
+                        controller: _pageController,
+                        itemCount: widget.complaint.files.length,
+                        onPageChanged: (index) {
+                          _currentPageNotifier.value = index; // Update current page index
+                        },
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(widget.complaint.files[index].url ),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            itemBuilder: (context, index, realIndex) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width,
-                                decoration: ShapeDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(complaint.files[index].url),
-                                    fit: BoxFit.fill,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(width: 6, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                          );
+                        },
+                      ),
+                      Positioned(
+                        bottom: 10.0,
+                        child: CirclePageIndicator(
+                          selectedDotColor: ColorCollections.primaryColor,
+                          itemCount: widget.complaint.files.length,
+                          currentPageNotifier: _currentPageNotifier,
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
                 Gap(10),
                 Container(
@@ -109,7 +126,7 @@ class DetailMyComplaintScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              complaint.category.name,
+                              widget.complaint.category.name,
                               style: TextCollections.headingOne.copyWith(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -141,7 +158,7 @@ class DetailMyComplaintScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          complaint.regency.name,
+                          widget.complaint.regency.name,
                           style: TextCollections.headingThree.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -152,7 +169,7 @@ class DetailMyComplaintScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'ID: #${complaint.id}',
+                          'ID: #${widget.complaint.id}',
                           style: TextCollections.headingThree.copyWith(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
@@ -163,7 +180,7 @@ class DetailMyComplaintScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          complaint.description,
+                          widget.complaint.description,
                           style: TextCollections.headingThree.copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
@@ -173,11 +190,11 @@ class DetailMyComplaintScreen extends StatelessWidget {
                       ),
                       Gap(60),
                       Text(
-                        complaint.status,
-                          style: TextCollections.headingThree.copyWith(
+                        widget.complaint.status,
+                        style: TextCollections.headingThree.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w200,
-                          color: _statusColorMap[complaint.status],
+                          color: _statusColorMap[widget.complaint.status],
                         ),
                       ),
                       Gap(10),
@@ -185,7 +202,13 @@ class DetailMyComplaintScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/progress_aduanku');
+                           
+                            Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => ProgressMyComplaintScreen (complaintId: widget.complaint.id,),
+                                                    ),
+                                                  );
                           },
                           child: Text(
                             'Progress Aduan',

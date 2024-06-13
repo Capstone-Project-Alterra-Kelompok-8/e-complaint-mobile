@@ -25,23 +25,25 @@ class MyComplaintService{
 
   }
 
-  Future getMyComplaintProses () async {
-    var baseUrl = '${_baseUrl}/complaints/:complaint-id/processes';   
-    final response = await _dio.get(
-      baseUrl,
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $_token',
-          
-        },
-
-      ),
-      
-    );
-    return response;
-
-  }
+ Future<Response> getMyComplaintProses(String complaintId) async {
+  var baseUrl = '${_baseUrl}complaints/$complaintId/processes';
   
- 
+  print('Request URL: $baseUrl');
+  print('Request Headers: ${{
+    'Authorization': 'Bearer $_token',
+  }}');
+  
+  final response = await _dio.get(
+    baseUrl,
+    options: Options(
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    ),
+  );
+  return response;
+}
+
 
 }
+

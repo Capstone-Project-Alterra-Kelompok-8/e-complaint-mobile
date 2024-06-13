@@ -195,6 +195,35 @@ class ComplaintFile {
 }
 
 
+class MyComplaintProsesModel {
+  final int id;
+  final String complaintId;
+  final Admin admin;
+  final String status;
+  final String date;
+  final String message;
+
+  MyComplaintProsesModel({
+    required this.id,
+    required this.complaintId,
+    required this.admin,
+    required this.status,
+    required this.date,
+    required this.message,
+  });
+
+  factory MyComplaintProsesModel.fromJson(Map<String, dynamic> json) {
+    return MyComplaintProsesModel(
+      id: json['id'],
+      complaintId: json['complaint_id'],
+      admin: Admin.fromJson(json['admin']),
+      status: json['status'],
+      date: json['updated_at'],
+      message: json['message'],
+    );
+  }
+}
+
 class Admin {
   final int id;
   final String name;
@@ -216,40 +245,40 @@ class Admin {
 
   factory Admin.fromJson(Map<String, dynamic> json) {
     return Admin(
-      id: json['id'],
-      name: json['name'],
-      username: json['username'],
-      email: json['email'],
-      telephoneNumber: json['telephone_number'],
-      isSuperAdmin: json['is_super_admin'],
-      profilePhoto: json['profile_photo'],
+      id: json['id']??'',
+      name: json['name']??'',
+      username: json['username']??'',
+      email: json['email']??'',
+      telephoneNumber: json['telephone_number']??'',
+      isSuperAdmin: json['is_super_admin']??'',
+      profilePhoto: json['profile_photo']??'',
     );
   }
 }
 
 
-class Complaint {
+class CommentModel {
   final int id;
   final String complaintId;
-  final Admin admin;
-  final String status;
+  final User user;
   final String message;
+  final String date;
 
-  Complaint({
+  CommentModel({
     required this.id,
     required this.complaintId,
-    required this.admin,
-    required this.status,
+    required this.user,
     required this.message,
+    required this.date,
   });
 
-  factory Complaint.fromJson(Map<String, dynamic> json) {
-    return Complaint(
-      id: json['id'],
-      complaintId: json['complaint_id'],
-      admin: Admin.fromJson(json['admin']),
-      status: json['status'],
+  factory CommentModel.fromJson(Map<String, dynamic> json) {
+    return CommentModel(
+      id: json['id']??'',
+      complaintId: json['complaint_id']??'',
+      user: User.fromJson(json['user']),
       message: json['message'],
+      date: json['updated_at']??'',
     );
   }
 }
