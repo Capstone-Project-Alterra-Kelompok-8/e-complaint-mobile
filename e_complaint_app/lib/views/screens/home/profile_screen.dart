@@ -1,7 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/auth_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
-import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
@@ -34,11 +33,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       resizeToAvoidBottomInset: false,
       body: ListView(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 35,
           ),
-          const Center(
-            child: CircleAvatar(
+          Center(
+            child: userController.profilePhoto.isNotEmpty ? CircleAvatar(
+              radius: 45,
+              backgroundImage: NetworkImage(userController.profilePhoto),
+            ) :
+            const CircleAvatar(
               radius: 45,
               backgroundColor: ColorCollections.primaryColor,
               foregroundColor: ColorCollections.backgroundColor,
@@ -99,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Container(
+          const SizedBox(
             height: 5,
             child: Divider(),
           ),
@@ -128,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Container(
+          const SizedBox(
             height: 5,
             child: Divider(),
           ),
@@ -154,7 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Container(
+          const SizedBox(
             height: 5,
             child: Divider(),
           ),
@@ -180,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Container(
+          const SizedBox(
             height: 5,
             child: Divider(),
           ),
@@ -209,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Container(
+          const SizedBox(
             height: 5,
             child: Divider(),
           ),

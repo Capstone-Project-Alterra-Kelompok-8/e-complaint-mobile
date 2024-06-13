@@ -44,7 +44,7 @@ class RegisterAuthController with ChangeNotifier {
         await profileController.updateUserData(name, email, telephoneNumber);
         await sendOtp(context, email, verificationLinkRouteName);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Registrasi Berhasil'),
           ),
         );
@@ -53,7 +53,7 @@ class RegisterAuthController with ChangeNotifier {
         notifyListeners();
         debugPrint('Registration failed: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Koneksi Eror'),
           ),
         );
@@ -66,7 +66,7 @@ class RegisterAuthController with ChangeNotifier {
       notifyListeners();
       debugPrint('All fields must be filled');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('All fields must be filled'),
         ),
       );
@@ -98,7 +98,7 @@ class RegisterAuthController with ChangeNotifier {
         debugPrint('OTP verified successfully');
         Navigator.pushReplacementNamed(context, '/login');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('OTP verified successfully'),
           ),
         );
@@ -107,7 +107,7 @@ class RegisterAuthController with ChangeNotifier {
         notifyListeners();
         debugPrint('OTP verification failed: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('OTP verification failed'),
             
           ),
@@ -121,7 +121,7 @@ class RegisterAuthController with ChangeNotifier {
       notifyListeners();
       debugPrint('Failed to verify');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Failed to verify'),
         ),
       );
@@ -135,32 +135,32 @@ class LoginAuthController with ChangeNotifier {
   final TextEditingController passwordController = TextEditingController();
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  bool _isLoginButtonEnabled = false;
+  // bool _isLoginButtonEnabled = false;
 
-  LoginController() {
-    emailController.addListener(_updateButtonState);
-    passwordController.addListener(_updateButtonState);
-  }
+  // LoginController() {
+  //   emailController.addListener(_updateButtonState);
+  //   passwordController.addListener(_updateButtonState);
+  // }
 
-  bool get isLoginButtonEnabled => _isLoginButtonEnabled;
+  // bool get isLoginButtonEnabled => _isLoginButtonEnabled;
 
-  void _updateButtonState() {
-    final isEnabled =
-        emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
-    if (_isLoginButtonEnabled != isEnabled) {
-      _isLoginButtonEnabled = isEnabled;
-      notifyListeners();
-    }
-  }
+  // void _updateButtonState() {
+  //   final isEnabled =
+  //       emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+  //   if (_isLoginButtonEnabled != isEnabled) {
+  //     _isLoginButtonEnabled = isEnabled;
+  //     notifyListeners();
+  //   }
+  // }
 
-  @override
-  void dispose() {
-    emailController.removeListener(_updateButtonState);
-    passwordController.removeListener(_updateButtonState);
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   emailController.removeListener(_updateButtonState);
+  //   passwordController.removeListener(_updateButtonState);
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   super.dispose();
+  // }
 
   Future<void> login(
       BuildContext context, String email, String password) async {
@@ -171,9 +171,10 @@ class LoginAuthController with ChangeNotifier {
       if (response.status && response.data != null) {
         debugPrint('Success Login');
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('name', response.data!.name);
+        // await prefs.setString('name', response.data!.name);
         await prefs.setString('token', response.data!.token);
-        await prefs.setString('email', response.data!.email);
+        await prefs.setInt('id', response.data!.id);
+        // await prefs.setString('email', response.data!.email);
         Navigator.pushReplacementNamed(context, '/home');
       } else if (!response.status &&
           response.message == 'invalid username or password') {

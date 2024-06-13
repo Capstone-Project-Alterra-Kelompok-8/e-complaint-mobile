@@ -4,54 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController with ChangeNotifier {
-  String _name = '';
-  String _email = '';
-  String _telephoneNumber = '';
-  String _profilePhotoUrl = '';
-
-  String get name => _name;
-  String get email => _email;
-  String get telephoneNumber => _telephoneNumber;
-  String get profilePhotoUrl => _profilePhotoUrl;
-
   final UserService _userService = UserService();
+  User? _user;
+  bool _isLoading = false;
+  String? _error;
+
+  User? get user => _user;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
 
   Future<void> loadUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? userId = prefs.getInt('userId');
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
 
-    if (userId != null) {
-      User? user = await _userService.getUserById(userId);
-      if (user != null) {
-        _name = user.name;
-        _email = user.email;
-        _telephoneNumber = user.telephoneNumber;
-        _profilePhotoUrl = user.profilePhotoPath;
-        notifyListeners();
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? userId = prefs.getInt('id');
+
+      if (userId != null) {
+        _user = await _userService.getUserById(userId);
+        debugPrint("User data loaded: ${_user?.name}");
+      } else {
+        throw Exception('User ID not found in shared preferences');
       }
-    } else {
-      _name = prefs.getString('name') ?? '';
-      _email = prefs.getString('email') ?? '';
-      _telephoneNumber = prefs.getString('telephoneNumber') ?? '';
-      _profilePhotoUrl = prefs.getString('profilePhotoUrl') ?? '';
+    } catch (e) {
+      _error = e.toString();
+      debugPrint("Error loading user data: $_error");
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> updateUserData(String name, String email, String telephoneNumber,
-      String profilePhotoPath) async {
-    final profilePhotoUrl =
-        'https://storage.googleapis.com/e-complaint-assets/$profilePhotoPath';
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('name', name);
-    await prefs.setString('email', email);
-    await prefs.setString('telephoneNumber', telephoneNumber);
-    await prefs.setString('profilePhotoUrl', profilePhotoUrl);
-    _name = name;
-    _email = email;
-    _telephoneNumber = telephoneNumber;
-    _profilePhotoUrl = profilePhotoUrl;
-    notifyListeners();
-  }
+  String get name => _user?.name ?? '';
+  String get email => _user?.email ?? '';
+  String get telephoneNumber => _user?.telephoneNumber ?? '';
+  String get profilePhoto =>
+      _user?.profilePhoto ??
+      'https://storage.googleapis.com/e-complaint-assets/complaint_files/example1.jpg';
 }

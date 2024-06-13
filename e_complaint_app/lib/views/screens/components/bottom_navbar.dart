@@ -23,38 +23,38 @@ class CustomBottomNavBar extends StatelessWidget {
         children: <Widget>[
           IconButton(
             icon: currentRoute == '/home'
-                ? CircleAvatar(
+                ? const CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Icon(Icons.home_outlined,
                         color: ColorCollections.textPrimaryColor),
                   )
-                : Icon(Icons.home_outlined,
+                : const Icon(Icons.home_outlined,
                     color: ColorCollections.textPrimaryColor),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HomePageScreen(),
-                  settings: RouteSettings(name: '/home'),
+                  settings: const RouteSettings(name: '/home'),
                 ),
               );
             },
           ),
           IconButton(
             icon: currentRoute == '/profile'
-                ? CircleAvatar(
+                ? const CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Icon(Icons.person_2_outlined,
                         color: ColorCollections.textPrimaryColor),
                   )
-                : Icon(Icons.person_2_outlined,
+                : const Icon(Icons.person_2_outlined,
                     color: ColorCollections.textPrimaryColor),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ProfileScreen(),
-                  settings: RouteSettings(name: '/profile'),
+                  settings: const RouteSettings(name: '/profile'),
                 ),
               );
             },

@@ -1,6 +1,5 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
-import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,11 +34,11 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
           Center(
             child: Stack(
               children: [
-                userController.profilePhotoUrl.isNotEmpty
+                userController.profilePhoto.isNotEmpty
                     ? CircleAvatar(
                         radius: 75,
                         backgroundImage:
-                            NetworkImage(userController.profilePhotoUrl),
+                            NetworkImage(userController.profilePhoto),
                       )
                     : const CircleAvatar(
                         radius: 75,
@@ -70,7 +69,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                 ),
                 subtitle: Text(userController.name),
               )),
-          Container(height: 5, child: const Divider()),
+          const SizedBox(height: 5, child: Divider()),
           SizedBox(
               width: double.infinity,
               height: 70,
@@ -82,7 +81,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                 ),
                 subtitle: Text(userController.telephoneNumber),
               )),
-          Container(height: 5, child: const Divider()),
+          const SizedBox(height: 5, child: Divider()),
           Container(
               width: double.infinity,
               height: 70,
@@ -100,10 +99,10 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                 ),
                 subtitle: Text(userController.email),
               )),
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
-          Container(
+          SizedBox(
             width: 170,
             height: 52,
             child: ElevatedButton(
@@ -117,12 +116,12 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                 ),
                 child: Row(
                   children: [
-                    Text(
+                    const Text(
                       'Ubah Profile',
                       style:
                           TextStyle(color: ColorCollections.textPrimaryColor),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Container(
@@ -132,7 +131,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                         borderRadius: BorderRadius.circular(12),
                         color: ColorCollections.profileButtonColor,
                       ),
-                      child: Icon(Icons.edit_outlined),
+                      child: const Icon(Icons.edit_outlined),
                     )
                   ],
                 )),

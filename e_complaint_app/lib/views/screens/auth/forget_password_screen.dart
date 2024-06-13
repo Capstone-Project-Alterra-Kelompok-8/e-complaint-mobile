@@ -5,6 +5,8 @@ import 'package:e_complaint_app/constants/constants.dart';
 
 
 class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }

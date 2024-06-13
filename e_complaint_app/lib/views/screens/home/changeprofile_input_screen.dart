@@ -1,7 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/controllers/profile_controller.dart';
+import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
-import 'package:e_complaint_app/views/screens/home/changeprofile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -23,12 +22,25 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProfileController>(context, listen: false).loadUserData();
+      Provider.of<UserController>(context, listen: false).loadUserData();
     });
   }
 
   @override
+  void dispose() {
+    _namaController.dispose();
+    _telephoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final userController = Provider.of<UserController>(context);
+    _namaController.text = userController.name;
+    _telephoneController.text = userController.telephoneNumber;
+    _emailController.text = userController.email;
+
     return Scaffold(
       appBar: const CurvedAppBar(),
       body: Padding(
@@ -44,7 +56,7 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                 style: HomeTextCollections.headerChangeProfile,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 24,
             ),
             Center(
@@ -90,7 +102,7 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
             const SizedBox(
               height: 32,
             ),
-            Gap(10),
+            const Gap(10),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -112,7 +124,6 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
               ),
               child: TextFormField(
                 controller: _namaController,
-                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(16),
                   hintText: 'Nama',
@@ -136,7 +147,7 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                 },
               ),
             ),
-            Gap(10),
+            const Gap(10),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -182,7 +193,7 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                 },
               ),
             ),
-            Gap(10),
+            const Gap(10),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -204,7 +215,6 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
               ),
               child: TextFormField(
                 controller: _emailController,
-                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(16),
                   hintText: 'Email',
@@ -228,13 +238,13 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
+                SizedBox(
                   width: 140,
                   height: 52,
                   child: ElevatedButton(
@@ -250,11 +260,12 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                         child: Text('Batal',
                             style: HomeTextCollections.textButtonChangeProfile),
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/change_profile');
+                          Navigator.pushReplacementNamed(
+                              context, '/change_profile');
                         },
                       )),
                 ),
-                Container(
+                SizedBox(
                   width: 140,
                   height: 52,
                   child: ElevatedButton(
@@ -275,10 +286,9 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             )
-            
           ],
         ),
       ),

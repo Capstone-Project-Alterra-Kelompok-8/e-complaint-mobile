@@ -4,7 +4,7 @@ class User {
   final String username;
   final String email;
   final String telephoneNumber;
-  final String profilePhotoPath;
+  final String profilePhoto;
 
   User({
     required this.id,
@@ -12,20 +12,17 @@ class User {
     required this.username,
     required this.email,
     required this.telephoneNumber,
-    required this.profilePhotoPath,
+    required this.profilePhoto,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
-      name: json['name'],
-      username: json['username'],
-      email: json['email'],
-      telephoneNumber: json['telephone_number'],
-      profilePhotoPath: json['profile_photo'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      telephoneNumber: json['telephone_number'] ?? '',
+      profilePhoto: json['profile_photo'] ?? '',
     );
   }
-
-  String get profilePhotoUrl => 'https://storage.googleapis.com/e-complaint-assets/${profilePhotoPath}';
-
 }
