@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_view_indicators/page_view_indicators.dart';
 import 'package:e_complaint_app/views/screens/riwayat_aduan/comment.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:e_complaint_app/services/aduanku_service.dart';
 
 class AduanCard extends StatefulWidget {
   final String id;
@@ -40,72 +39,52 @@ class _AduanCardState extends State<AduanCard> {
   bool _isExpanded = false;
   PageController _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
-
+  late AduankuService _aduankuService;
   @override
   void initState() {
     super.initState();
     likeCount = widget.totalLikes;
+    _aduankuService = AduankuService();
     _fetchInitialData();
   }
 
   void _toggleLike() async {
-  // Mengubah status suka dan jumlah suka sebelum mengirim permintaan ke server
-  bool previousLikedStatus = _isLiked;
-  setState(() {
-    _isLiked = !_isLiked;
-    if (_isLiked) {
-      likeCount++;
-    } else {
-      likeCount--;
-    }
-  });
-
-  // Mengirim permintaan ke server untuk memperbarui status suka
-  String apiUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.id}/likes';
-  final response = await http.post(
-    Uri.parse(apiUrl),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-    },
-    body: jsonEncode(<String, bool>{
-      'liked': _isLiked,
-    }),
-  );
-
-  // Jika permintaan gagal, kembalikan status suka dan jumlah suka ke kondisi sebelumnya
-  if (response.statusCode != 200) {
+    
+    bool previousLikedStatus = _isLiked;
     setState(() {
-      _isLiked = previousLikedStatus;
+      _isLiked = !_isLiked;
       if (_isLiked) {
         likeCount++;
       } else {
         likeCount--;
       }
     });
-    print('Failed to toggle like: ${response.statusCode}');
-  }
-}
 
+    
+    try {
+      await _aduankuService.toggleComplaintLike(widget.id, _isLiked);
+    } catch (e) {
+      setState(() {
+        _isLiked = previousLikedStatus;
+        if (_isLiked) {
+          likeCount++;
+        } else {
+          likeCount--;
+        }
+      });
+      print('Failed to toggle like: $e');
+    }
+  }
 
   void _fetchInitialData() async {
-    String apiUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.id}/likes';
-    final response = await http.get(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      var responseData = json.decode(response.body);
+    try {
+      var responseData = await _aduankuService.getComplaintLikes(widget.id);
       setState(() {
         likeCount = responseData['likes_count'] ?? widget.totalLikes;
         _isLiked = responseData['liked'] ?? false;
       });
-    } else {
-      print('Failed to fetch initial data: ${response.statusCode}');
+    } catch (e) {
+      print('Failed to fetch initial data: $e');
     }
   }
 

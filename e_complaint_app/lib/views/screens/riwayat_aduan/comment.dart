@@ -1,6 +1,6 @@
+import 'package:e_complaint_app/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:e_complaint_app/services/comment_service.dart'; 
 
 class CommentScreen extends StatefulWidget {
   final String complaintId;
@@ -24,73 +24,131 @@ class _CommentScreenState extends State<CommentScreen> {
   }
 
   Future<void> fetchComments() async {
-    final String url = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.complaintId}/discussions';
-    print('Fetching comments from: $url'); 
-
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-      },
-    );
-
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}'); 
-
-    if (response.statusCode == 200) {
-      try {
-        var responseData = json.decode(response.body);
-        setState(() {
-          _comments = responseData['data'];
-          _isLoading = false;
-        });
-      } catch (e) {
-        setState(() {
-          _errorMessage = 'Failed to parse comments: $e';
-          _isLoading = false;
-        });
-      }
-    } else {
+    try {
+      List<dynamic> comments = await CommentService.fetchComments(widget.complaintId);
       setState(() {
-        _errorMessage = 'Belum ada diskusi...';
+        _comments = comments;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load comments: $e';
         _isLoading = false;
       });
     }
   }
 
   Future<void> postComment(String comment) async {
-    final String url = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/${widget.complaintId}/discussions';
-    print('Posting comment to: $url'); 
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-      },
-      body: json.encode({'comment': comment}),
-    );
-
-    print('Response status: ${response.statusCode}'); 
-    print('Response body: ${response.body}'); 
-
-    if (response.statusCode == 201) {
-      try {
-        var responseData = json.decode(response.body);
-        setState(() {
-          _comments.add(responseData['data']);
-        });
-      } catch (e) {
-        setState(() {
-          _errorMessage = 'Failed to parse new comment: $e';
-        });
-      }
-    } else {
+    try {
+      await CommentService.postComment(widget.complaintId, comment);
+      fetchComments(); 
+      _commentController.clear();
+    } catch (e) {
       setState(() {
-        _errorMessage = 'Failed to post comment: ${response.statusCode}';
+        _errorMessage = 'Failed to post comment: $e';
       });
     }
+  }
+
+  Future<void> deleteComment(int commentId) async {
+    try {
+      await CommentService.deleteComment(widget.complaintId, commentId);
+      setState(() {
+        _comments.removeWhere((comment) => comment['id'] == commentId);
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to delete comment: $e';
+      });
+    }
+  }
+
+  Future<void> updateComment(int commentId, String newComment) async {
+    try {
+      await CommentService.updateComment(widget.complaintId, commentId, newComment);
+      setState(() {
+        int commentIndex = _comments.indexWhere((comment) => comment['id'] == commentId);
+        if (commentIndex != -1) {
+          _comments[commentIndex]['comment'] = newComment;
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to update comment: $e';
+      });
+    }
+  }
+
+  void _showEditDeleteDialog(BuildContext context, int commentId, String currentComment) {
+    TextEditingController editController = TextEditingController(text: currentComment);
+    bool _isEditing = false;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Container(
+                width: 70,
+                constraints: BoxConstraints(minHeight: 30),
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (_isEditing)
+                      TextField(
+                        controller: editController,
+                        decoration: InputDecoration(
+                          hintText: 'Ubah Komentar anda', hintStyle: TextCollections.commentAdd,
+                          border: OutlineInputBorder(),
+                        ),
+                        minLines: 1,
+                        maxLines: 3,
+                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (!_isEditing)
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _isEditing = true;
+                              });
+                            },
+                            child: Text('Edit',
+                            style: TextCollections.commentEditnDelete),
+                          ),
+                        Divider(height: 1, color: Colors.black),
+                        TextButton(
+                          onPressed: () {
+                            deleteComment(commentId);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Delete',style: TextCollections.commentEditnDelete),
+                        ),
+                        if (_isEditing)
+                          TextButton(
+                            onPressed: () {
+                              updateComment(commentId, editController.text);
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Save', style: TextCollections.commentEditnDelete),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -99,12 +157,20 @@ class _CommentScreenState extends State<CommentScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'Komentar',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              Text(
+                'Komentar',
+                style:TextCollections.commentTitle
+              ),
+              
+            ],
           ),
         ),
         Divider(height: 1),
@@ -119,16 +185,26 @@ class _CommentScreenState extends State<CommentScreen> {
                       itemBuilder: (context, index) {
                         final comment = _comments[index];
                         if (comment.containsKey('user')) {
-                          return _buildComment(
-                            comment['user']['name'],
-                            comment['comment'],
-                            'user',
+                          return GestureDetector(
+                            onLongPress: () {
+                              _showEditDeleteDialog(context, comment['id'], comment['comment']);
+                            },
+                            child: _buildComment(
+                              comment['user']['name'],
+                              comment['comment'],
+                              'user',
+                            ),
                           );
                         } else if (comment.containsKey('admin')) {
-                          return _buildComment(
-                            comment['admin']['name'],
-                            comment['comment'],
-                            'admin',
+                          return GestureDetector(
+                            onLongPress: () {
+                              _showEditDeleteDialog(context, comment['id'], comment['comment']);
+                            },
+                            child: _buildComment(
+                              comment['admin']['name'],
+                              comment['comment'],
+                              'admin',
+                            ),
                           );
                         } else {
                           return Container();
@@ -153,10 +229,7 @@ class _CommentScreenState extends State<CommentScreen> {
             backgroundColor: userType == 'admin' ? Colors.red : Colors.grey,
             child: Text(
               username[0],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: TextCollections.commentUser
             ),
           ),
           SizedBox(width: 10),
@@ -166,17 +239,12 @@ class _CommentScreenState extends State<CommentScreen> {
               children: [
                 Text(
                   username,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                  style: TextCollections.commentUser
                 ),
                 SizedBox(height: 4),
                 Text(
                   commentText,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
+                  style: TextCollections.comment
                 ),
                 if (userType == 'admin')
                   Text(
@@ -205,18 +273,17 @@ class _CommentScreenState extends State<CommentScreen> {
             child: TextField(
               controller: _commentController,
               decoration: InputDecoration(
-                hintText: 'Add a comment...',
+                hintText: 'Tambahkan Komentar', hintStyle: TextCollections.commentAdd,
                 border: InputBorder.none,
               ),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send, color: Colors.blue),
+            icon: Icon(Icons.send_outlined, color: Colors.black),
             onPressed: () {
               String newComment = _commentController.text;
               if (newComment.isNotEmpty) {
                 postComment(newComment);
-                _commentController.clear();
               }
             },
           ),
