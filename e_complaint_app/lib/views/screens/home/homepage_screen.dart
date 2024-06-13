@@ -166,11 +166,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 Row(
                   children: [
                     Text('Lihat Semua'),
-                    IconButton(onPressed: (){
-                      Navigator.pushNamed(context, '/news');
-                    }, 
-                    icon: Icon(Icons.chevron_right_outlined)),
-              
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/news');
+                        },
+                        icon: Icon(Icons.chevron_right_outlined)),
                   ],
                 )
               ],
@@ -326,7 +326,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
       extendBody: true,
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorCollections.primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/form_aduan');
+        },
         shape: const CircleBorder(),
         child: const Icon(
           Icons.add,
