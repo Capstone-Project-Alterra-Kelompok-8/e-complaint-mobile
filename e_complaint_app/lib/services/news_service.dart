@@ -2,7 +2,7 @@ import 'package:e_complaint_app/models/news_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NewsService{
+class NewsService {
   final Dio _dio = Dio();
   final String _baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/';
 
@@ -10,9 +10,8 @@ class NewsService{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
- 
 
-   Future getNews () async {
+  Future getNews() async {
     try {
       final token = await getToken();
       if (token == null) {
@@ -32,13 +31,10 @@ class NewsService{
       print('Error in getNews: $e');
       return null;
     }
-
   }
-  
 }
 
-
-class NewsCommentService{
+class NewsCommentService {
   final Dio _dio = Dio();
   final String _baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/';
 
@@ -46,9 +42,8 @@ class NewsCommentService{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
- 
 
-   Future getNewsComment (String newsId) async {
+  Future getNewsComment(String newsId) async {
     try {
       final token = await getToken();
       if (token == null) {
@@ -70,7 +65,7 @@ class NewsCommentService{
     }
   }
 
-     Future<Response?> postNewsComment(String newsId, String comment) async {
+  Future<Response?> postNewsComment(String newsId, String comment) async {
     try {
       final token = await getToken();
       if (token == null) {
@@ -95,4 +90,3 @@ class NewsCommentService{
     }
   }
 }
-
