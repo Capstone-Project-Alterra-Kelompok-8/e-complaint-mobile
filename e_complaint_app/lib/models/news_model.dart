@@ -1,3 +1,5 @@
+import 'package:e_complaint_app/models/my_complaint_model.dart';
+
 class NewsModel {
   final int id;
   final Admin admin;
@@ -34,6 +36,16 @@ class NewsModel {
       updatedAt: json['updated_at'],
     );
   }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'content': content,
+    };
+  }
+
+  
 }
 
 class Admin {
@@ -57,14 +69,26 @@ class Admin {
 
   factory Admin.fromJson(Map<String, dynamic> json) {
     return Admin(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      password: json['password'],
-      telephoneNumber: json['telephone_number'],
-      isSuperAdmin: json['is_super_admin'],
-      profilePhoto: json['profile_photo'],
+      id: json['id']??'',
+      name: json['name']??'',
+      email: json['email']??  '',
+      password: json['password']??'',
+      telephoneNumber: json['telephone_number']??'',
+      isSuperAdmin: json['is_super_admin']??'',
+      profilePhoto: json['profile_photo']??'',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'password': password,
+      'telephone_number': telephoneNumber,
+      'is_super_admin': isSuperAdmin,
+      'profile_photo': profilePhoto,
+    };
   }
 }
 
@@ -108,4 +132,43 @@ class File {
   }
 
   String get url => 'https://storage.googleapis.com/e-complaint-assets/${this.path}';
+}
+
+
+
+// news comment
+class NewsCommentModel {
+  final int id;
+  final User? user;
+  final Admin? admin;
+  final String comment;
+  final String updatedAt;
+
+  NewsCommentModel({
+    required this.id,
+    this.user,
+    this.admin,
+    required this.comment,
+    required this.updatedAt,
+  });
+
+  factory NewsCommentModel.fromJson(Map<String, dynamic> json) {
+    return NewsCommentModel(
+      id: json['id']??'',
+      user: json.containsKey('user') ? User.fromJson(json['user']) : null,
+      admin: json.containsKey('admin') ? Admin.fromJson(json['admin']) : null,
+      comment: json['comment']??'',
+      updatedAt: json['update_at']??'',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user': user?.toJson(),
+      'admin': admin?.toJson(),
+      'comment': comment,
+      'updated_at': updatedAt,
+    };
+  }
 }

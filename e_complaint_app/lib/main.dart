@@ -26,13 +26,14 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => ProfileController()),
       ChangeNotifierProvider(create: (context) => NewsController()),
       ChangeNotifierProvider(create: (context) => MyComplaintController()),
+      ChangeNotifierProvider(create: (context) => NewsCommentController()),
     ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: '/news',
+        initialRoute: '/login',
         routes: AppRoute.routes,
       ),
     );

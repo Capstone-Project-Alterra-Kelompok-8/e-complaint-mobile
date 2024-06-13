@@ -66,7 +66,9 @@ class _NewsDetailState extends State<NewsDetail> {
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,
-                          builder: (context) => CommentsBottomSheet(),
+                          builder: (context) => CommentsBottomSheet(
+                            newsId: widget.news.id
+                          ),
                         );
                       },
                       icon: Icon(

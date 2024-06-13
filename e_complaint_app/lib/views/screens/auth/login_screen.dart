@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isButtonEnabled = _emailController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty &&
-          _passwordController.text.length >= 8;
+          _passwordController.text.length >= 3;
     });
   }
 

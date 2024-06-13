@@ -103,7 +103,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/my_complaint');
+                },
                 child: const Column(
                   children: [
                     SizedBox(
@@ -161,10 +163,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   'Berita Terbaru',
                   style: HomeTextCollections.beritaHeader,
                 ),
-                const Row(
+                Row(
                   children: [
                     Text('Lihat Semua'),
-                    Icon(Icons.chevron_right_outlined)
+                    IconButton(onPressed: (){
+                      Navigator.pushNamed(context, '/news');
+                    }, 
+                    icon: Icon(Icons.chevron_right_outlined)),
+              
                   ],
                 )
               ],

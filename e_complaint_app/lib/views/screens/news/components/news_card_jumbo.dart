@@ -75,7 +75,9 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,
-                          builder: (context) => CommentsBottomSheet(),
+                          builder: (context) => CommentsBottomSheet(
+                              newsId: widget.news.id
+                          ),
                         );
                       },
                       icon: Icon(

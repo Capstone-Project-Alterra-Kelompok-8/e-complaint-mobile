@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:e_complaint_app/models/my_complaint_model.dart';
 import 'package:e_complaint_app/services/my_complaint_service.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyComplaintController extends ChangeNotifier {
   final MyComplaintService _myComplaintService = MyComplaintService();
@@ -25,6 +28,9 @@ class MyComplaintController extends ChangeNotifier {
 
   Future<void> getMyComplaint() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? complaintsJson = prefs.getString('myComplaints');
+
       final response = await _myComplaintService.getMyComplaint();
       print('Response: $response');
 
@@ -38,8 +44,9 @@ class MyComplaintController extends ChangeNotifier {
           myComplaintData.forEach((item) {
             final myComplaint = MyComplaintModel.fromJson(item);
             _myComplaints.add(myComplaint);
+            
           });
-
+          prefs.setString('myComplaints', json.encode(_myComplaints));
           _errorMessage = '';
           print('My complaints loaded successfully');
         } else {
@@ -60,6 +67,8 @@ class MyComplaintController extends ChangeNotifier {
 
   Future<void> getComplaintProcesses(String complaintId) async {
   try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? complaintsProsesJson = prefs.getString('myComplaintsProses');
     final response = await _myComplaintService.getMyComplaintProses(complaintId);
 
     if (response != null && response.statusCode == 200) {
@@ -74,7 +83,9 @@ class MyComplaintController extends ChangeNotifier {
           for (var item in processData) {
             final process = MyComplaintProsesModel.fromJson(item);
             _myComplaintProses.add(process);
+            
           }
+          prefs.setString('myComplaintsProses', json.encode(_myComplaintProses));
           _errorMessage = '';
         } else {
           _errorMessage = 'No complaint processes found for this complaint ID.';

@@ -200,66 +200,52 @@ class ComplaintFile {
 
 
 class MyComplaintProsesModel {
-  final int id;
-  final String complaintId;
-  final Admin admin;
   final String status;
+  final Admin admin;
   final String date;
   final String message;
 
   MyComplaintProsesModel({
-    required this.id,
-    required this.complaintId,
-    required this.admin,
     required this.status,
+    required this.admin,
     required this.date,
     required this.message,
   });
 
   factory MyComplaintProsesModel.fromJson(Map<String, dynamic> json) {
     return MyComplaintProsesModel(
-      id: json['id']??'',
-      complaintId: json['complaint_id']??'',
+      status: json['status'] ?? '',
       admin: Admin.fromJson(json['admin']),
-      status: json['status']??'',
-      date: json['updated_at']??'',
-      message: json['message']??'',
+      date: json['updated_at'] ?? '',
+      message: json['message'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status,
+      'admin': admin.toJson(),
+      'date': date,
+      'message': message,
+    };
   }
 }
 
 class Admin {
-  final int id;
   final String name;
-  final String username;
-  final String email;
-  final String telephoneNumber;
-  final bool isSuperAdmin;
-  final String profilePhoto;
 
-  Admin({
-    required this.id,
-    required this.name,
-    required this.username,
-    required this.email,
-    required this.telephoneNumber,
-    required this.isSuperAdmin,
-    required this.profilePhoto,
-  });
+  Admin({required this.name});
 
   factory Admin.fromJson(Map<String, dynamic> json) {
-    return Admin(
-      id: json['id']??'',
-      name: json['name']??'',
-      username: json['username']??'',
-      email: json['email']??'',
-      telephoneNumber: json['telephone_number']??'',
-      isSuperAdmin: json['is_super_admin']??'',
-      profilePhoto: json['profile_photo']??'',
-    );
+    return Admin(name: json['name'] ?? '');
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+    };
   }
 }
-
 
 class CommentModel {
   final int id;

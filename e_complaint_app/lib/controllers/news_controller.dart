@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:e_complaint_app/models/news_model.dart';
 import 'package:e_complaint_app/services/news_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsController extends ChangeNotifier {
   final NewsService _newsService = NewsService();
@@ -16,6 +19,8 @@ class NewsController extends ChangeNotifier {
 
   Future<void> getNews() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? newsJson = prefs.getString('news');
       final response = await _newsService.getNews();
 
       print('getNews response: $response');
@@ -29,7 +34,7 @@ class NewsController extends ChangeNotifier {
             final news = NewsModel.fromJson(item);
             _news.add(news);
           });
-
+          prefs.setString('news', json.encode(_news));
           print('getNews berhasil dimuat');
           print(': $_news');
         } else {
@@ -62,22 +67,63 @@ class NewsController extends ChangeNotifier {
 }
 
 
-  // Future<void> getNews() async {
-  //   try {
-  //     List<NewsModel> news = await _newsService.getNews();
-  //     _news = news;
-  //     _errorMessage = ''; // Clear any previous error message
-  //     notifyListeners();
-  //   } catch (error) {
-  //     if (error is DioError) {
-  //       if (error.response?.statusCode == 401) {
-  //         _errorMessage = 'Unauthorized. Please check your credentials.';
-  //       } else {
-  //         _errorMessage = 'Error fetching news: ${error.message}';
-  //       }
-  //     } else {
-  //       _errorMessage = 'Unexpected error: $error';
-  //     }
-  //     notifyListeners(); // Notify listeners of the error state
-  //   }
-  // }
+class NewsCommentController extends ChangeNotifier {
+  final NewsCommentService _newsCommentService = NewsCommentService();
+  List<NewsCommentModel> _newsComments = [];
+  String _errorMessage = '';
+  bool _isLoaded = false;
+
+  List<NewsCommentModel> get newsComments => _newsComments;
+  String get errorMessage => _errorMessage;
+  bool get isLoaded => _isLoaded;
+
+  Future<void> getNewsComment(String newsId) async {
+    try {
+      final response = await _newsCommentService.getNewsComment(newsId);
+
+      if (response != null && response.statusCode == 200) {
+        _newsComments.clear();
+        final Map<String, dynamic> responseData = response.data;
+        if (responseData.containsKey('data')) {
+          final List<dynamic> newsCommentData = responseData['data'];
+          newsCommentData.forEach((item) {
+            final newsComment = NewsCommentModel.fromJson(item);
+            _newsComments.add(newsComment);
+          });
+          _errorMessage = ''; // Clear error message if successful
+          print('Comments loaded successfully: $_newsComments');
+        } else {
+          _errorMessage = 'Data field is missing in the response';
+          print('Data field is missing in the response');
+        }
+      } else {
+        _errorMessage = 'Failed to load news comments: ${response?.statusCode}';
+        print('Failed to load news comments: ${response?.statusCode}');
+      }
+    } catch (e) {
+      _errorMessage = 'Error: $e';
+      print('Error: $e');
+    } finally {
+      _isLoaded = true; // Only update status if request is completed
+      notifyListeners();
+    }
+  }
+
+  Future<void> postNewsComment(String newsId, String comment) async {
+    try {
+      final response = await _newsCommentService.postNewsComment(newsId, comment);
+
+      if (response != null && response.statusCode == 201) {
+        await getNewsComment(newsId); // Reload comments after successful post
+      } else {
+        _errorMessage = 'Failed to post comment: ${response?.statusCode}';
+        print('Failed to post comment: ${response?.statusCode}');
+      }
+    } catch (e) {
+      _errorMessage = 'Error: $e';
+      print('Error: $e');
+    } finally {
+      notifyListeners();
+    }
+  }
+}
