@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: '/my_complaint',
+        initialRoute: '/news',
         routes: AppRoute.routes,
       ),
     );

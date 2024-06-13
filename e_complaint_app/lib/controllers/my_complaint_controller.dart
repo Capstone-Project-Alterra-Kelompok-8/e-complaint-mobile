@@ -26,6 +26,7 @@ class MyComplaintController extends ChangeNotifier {
   Future<void> getMyComplaint() async {
     try {
       final response = await _myComplaintService.getMyComplaint();
+      print('Response: $response');
 
       if (response != null && response.statusCode == 200) {
         _myComplaints.clear();

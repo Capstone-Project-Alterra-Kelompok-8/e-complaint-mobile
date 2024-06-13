@@ -60,7 +60,7 @@ class _NewsScreenState extends State<NewsScreen> {
               ),
               Gap(10),
               newsController.news.isNotEmpty
-                  ? NewsCardJumbo(news: newsController.news.last)
+                  ? NewsCardJumbo(news: newsController.news.first)
                   : CircularProgressIndicator(),
               Gap(40),
               Align(
