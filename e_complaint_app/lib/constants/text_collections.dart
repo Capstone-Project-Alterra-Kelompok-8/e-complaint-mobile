@@ -65,6 +65,35 @@ class TextCollections {
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
+  static TextStyle searchComplaintFont = GoogleFonts.roboto(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w500,
+    color: ColorCollections.secondaryColor,
+    letterSpacing: 0.4,
+
+  );
+  
+  static TextStyle detailFont = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.secondaryColor,
+    letterSpacing: 0.4,
+
+  );
+  static TextStyle filterFont = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+
+  );
+  static TextStyle titleFont = GoogleFonts.poppins(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+
+  );
 
   static TextStyle primaryFont = GoogleFonts.montserrat();
 }

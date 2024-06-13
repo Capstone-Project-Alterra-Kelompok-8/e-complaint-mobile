@@ -127,7 +127,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  height: 32,
+                  height: 40,
                   child: ElevatedButton(
                     onPressed: () {
                       showDialog(
