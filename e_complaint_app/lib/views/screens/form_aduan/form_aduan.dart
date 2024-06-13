@@ -76,8 +76,7 @@ class _FormAduanState extends State<FormAduan> {
             'category_id': _selectedKategoriAduan,
             'description': _selectedIsiAduan,
             'type': _jenisAduan,
-            'date': DateFormat("dd-MM-yyyy")
-                .format(_dueDate), // Format the date correctly
+            'date': DateFormat("dd-MM-yyyy").format(_dueDate),
             'files': _selectedImagePaths,
           };
           final response =
