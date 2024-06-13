@@ -8,6 +8,8 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
+
     return BottomAppBar(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 60,
@@ -20,23 +22,41 @@ class CustomBottomNavBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           IconButton(
-            icon: const Icon(Icons.home,
-                color: ColorCollections.textPrimaryColor),
+            icon: currentRoute == '/home'
+                ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.home_outlined,
+                        color: ColorCollections.textPrimaryColor),
+                  )
+                : Icon(Icons.home_outlined,
+                    color: ColorCollections.textPrimaryColor),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HomePageScreen(),
+                  settings: RouteSettings(name: '/home'),
                 ),
               );
             },
           ),
           IconButton(
-            icon: const Icon(Icons.person,
-                color: ColorCollections.textPrimaryColor),
+            icon: currentRoute == '/profile'
+                ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.person_2_outlined,
+                        color: ColorCollections.textPrimaryColor),
+                  )
+                : Icon(Icons.person_2_outlined,
+                    color: ColorCollections.textPrimaryColor),
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const ProfileScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                  settings: RouteSettings(name: '/profile'),
+                ),
+              );
             },
           ),
         ],

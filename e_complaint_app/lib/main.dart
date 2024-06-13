@@ -1,6 +1,7 @@
 
 import 'package:e_complaint_app/app_route.dart';
 import 'package:e_complaint_app/controllers/auth_controller.dart';
+import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
 import 'package:e_complaint_app/views/screens/news/news_screen.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       ChangeNotifierProvider(create: (context) => LoginAuthController()),
       ChangeNotifierProvider(create: (context) => ProfileController()),
+      ChangeNotifierProvider(create: (context) => UserController()),
     ],
       child: MaterialApp(
         title: 'Flutter Demo',

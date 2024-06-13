@@ -1,4 +1,5 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,13 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProfileController>(context, listen: false).loadUserData();
+      Provider.of<UserController>(context, listen: false).loadUserData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Provider.of<ProfileController>(context);
+    final userController = Provider.of<UserController>(context);
 
     return Scaffold(
       appBar: const CurvedAppBar(),
@@ -34,40 +35,18 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
           Center(
             child: Stack(
               children: [
-                const CircleAvatar(
-                  radius: 75,
-                  backgroundColor: ColorCollections.primaryColor,
-                  foregroundColor: ColorCollections.backgroundColor,
-                  child: Icon(Icons.person, size: 75),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      // Implementasikan logika untuk ganti foto profil
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            offset: const Offset(0, 2),
-                            blurRadius: 4,
-                          ),
-                        ],
+                userController.profilePhotoUrl.isNotEmpty
+                    ? CircleAvatar(
+                        radius: 75,
+                        backgroundImage:
+                            NetworkImage(userController.profilePhotoUrl),
+                      )
+                    : const CircleAvatar(
+                        radius: 75,
+                        backgroundColor: ColorCollections.primaryColor,
+                        foregroundColor: ColorCollections.backgroundColor,
+                        child: Icon(Icons.person, size: 75),
                       ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        color: ColorCollections.primaryColor,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -89,27 +68,9 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   'Name',
                   style: HomeTextCollections.titleButton,
                 ),
-                subtitle: Text(profileController.name),
-                trailing: const CircleAvatar(
-                    backgroundColor: ColorCollections.profileButtonColor,
-                    child: Icon(Icons.edit_outlined)),
+                subtitle: Text(userController.name),
               )),
-          const Divider(),
-          SizedBox(
-              width: double.infinity,
-              height: 70,
-              child: ListTile(
-                leading: const Icon(Icons.info),
-                title: Text(
-                  'About',
-                  style: HomeTextCollections.titleButton,
-                ),
-                subtitle: const Text('Single'),
-                trailing: const CircleAvatar(
-                    backgroundColor: ColorCollections.profileButtonColor,
-                    child: Icon(Icons.edit_outlined)),
-              )),
-          const Divider(),
+          Container(height: 5, child: const Divider()),
           SizedBox(
               width: double.infinity,
               height: 70,
@@ -119,12 +80,9 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   'Phone Number',
                   style: HomeTextCollections.titleButton,
                 ),
-                subtitle: Text(profileController.telephoneNumber),
-                trailing: const CircleAvatar(
-                    backgroundColor: ColorCollections.profileButtonColor,
-                    child: Icon(Icons.edit_outlined)),
+                subtitle: Text(userController.telephoneNumber),
               )),
-          const Divider(),
+          Container(height: 5, child: const Divider()),
           Container(
               width: double.infinity,
               height: 70,
@@ -140,11 +98,45 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   'Email',
                   style: HomeTextCollections.titleButton,
                 ),
-                subtitle: Text(profileController.email),
-                trailing: const CircleAvatar(
-                    backgroundColor: ColorCollections.profileButtonColor,
-                    child: Icon(Icons.edit_outlined)),
+                subtitle: Text(userController.email),
               )),
+          SizedBox(
+            height: 60,
+          ),
+          Container(
+            width: 170,
+            height: 52,
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/change_profile_input');
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      'Ubah Profile',
+                      style:
+                          TextStyle(color: ColorCollections.textPrimaryColor),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      height: 32,
+                      width: 32,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: ColorCollections.profileButtonColor,
+                      ),
+                      child: Icon(Icons.edit_outlined),
+                    )
+                  ],
+                )),
+          )
         ],
       ),
     );

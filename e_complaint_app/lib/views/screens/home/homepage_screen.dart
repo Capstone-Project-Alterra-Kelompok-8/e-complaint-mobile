@@ -1,4 +1,5 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,13 +19,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProfileController>(context, listen: false).loadUserData();
+      Provider.of<UserController>(context, listen: false).loadUserData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Provider.of<ProfileController>(context);
+    final userController = Provider.of<UserController>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorCollections.buttonColor,
@@ -63,16 +64,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       children: [
                         Text('Selamat Datang',
                             style: HomeTextCollections.welcomeText),
-                        const SizedBox(height: 8.0), // Padding between texts
-                        Text(profileController.name,
+                        const SizedBox(height: 8.0),
+                        Text(userController.name,
                             style: HomeTextCollections.nameText),
                       ],
                     ),
                   ),
-                  const CircleAvatar(
+                  userController.profilePhotoUrl.isNotEmpty ?
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundImage: NetworkImage(userController.profilePhotoUrl),
+                  ) :
+                  CircleAvatar(
                     radius: 40,
                     backgroundColor: ColorCollections.textPrimaryColor,
-                  ),
+                  )
                 ],
               ),
             ),
@@ -89,7 +95,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               decoration: InputDecoration(
                   fillColor: ColorCollections.secondaryColor,
                   filled: true,
-                  labelText: 'Hinted Search Text',
+                  labelText: 'Cari...',
                   prefixIcon: const Icon(Icons.search),
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -133,8 +139,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   children: [
                     Image(
                         image: AssetImage('assets/images/icon_chat_admin.png')),
-                    Text('Aduanku'),
-                    Text('')
+                    Text('Chat'),
+                    Text('Admin')
                   ],
                 ),
               ),
