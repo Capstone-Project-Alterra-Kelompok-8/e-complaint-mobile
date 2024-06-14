@@ -27,6 +27,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Widget build(BuildContext context) {
     final newsController = Provider.of<NewsController>(context);
     final userController = Provider.of<UserController>(context);
+    final isLoaded = Provider.of<NewsController>(context).isLoaded;
 
     return Scaffold(
       appBar: AppBar(
@@ -181,20 +182,35 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ],
             ),
           ),
-          GridView.builder(
-            controller: ScrollController(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 12 / 19,
-            ),
-            shrinkWrap: true,
-            itemCount: newsController.news.length,
-            itemBuilder: (context, index) {
-              return NewsCard(news: newsController.news[index]);
-            },
-          ),
+          isLoaded
+              ? (newsController.news.isNotEmpty
+                  ? GridView.builder(
+                      controller: ScrollController(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 12 / 19,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: newsController.news.length,
+                      itemBuilder: (context, index) {
+                        return NewsCard(news: newsController.news[index]);
+                      },
+                    )
+                  : const Center(
+                      child: Text(
+                        'Tidak ada berita yang ditampilkan',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ))
+              : const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                    backgroundColor: Colors.white,
+                  ),
+                ),
         ],
       ),
       extendBody: true,
