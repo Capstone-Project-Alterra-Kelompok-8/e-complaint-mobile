@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> aduanku
 import 'package:e_complaint_app/app_route.dart';
 import 'package:e_complaint_app/controllers/auth_controller.dart';
 import 'package:e_complaint_app/controllers/form_controller.dart';
@@ -10,22 +6,15 @@ import 'package:e_complaint_app/views/screens/auth/login_screen.dart';
 import 'package:e_complaint_app/views/screens/form_aduan/components/location.dart';
 import 'package:e_complaint_app/views/screens/form_aduan/form_aduan.dart';
 import 'package:e_complaint_app/views/screens/news/news_screen.dart';
-<<<<<<< HEAD
-=======
 import 'package:e_complaint_app/views/screens/home/profile_screen.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
->>>>>>> aduanku
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> aduanku
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
