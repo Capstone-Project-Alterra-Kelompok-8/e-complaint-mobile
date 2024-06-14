@@ -4,6 +4,7 @@ import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
+import 'package:e_complaint_app/views/screens/auth/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,14 +13,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
+  bool loggedIn = token != null;
 
-  runApp(MyApp(initialRoute: token == null ? '/login' : '/home'));
+  runApp(MyApp(loggedIn: loggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  final String initialRoute;
+  final bool loggedIn;
 
-  const MyApp({super.key, required this.initialRoute});
+  const MyApp({super.key, required this.loggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        initialRoute: initialRoute,
+        home: SplashScreen(loggedIn: loggedIn), // Set SplashScreen as the initial screen
         routes: AppRoute.routes,
       ),
     );

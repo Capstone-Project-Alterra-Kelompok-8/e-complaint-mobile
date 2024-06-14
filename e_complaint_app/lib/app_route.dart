@@ -1,3 +1,4 @@
+import 'package:e_complaint_app/views/screens/auth/splashscreen.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/my_complaint_screen.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/detail_my_complaint.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/progress_my_complaint.dart';
