@@ -81,18 +81,17 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: NetworkImage(
-                        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
+                        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'
                       ),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                SizedBox(width: 10), // Space between avatar and text field
                 Expanded(
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
-                      hintText: 'Tambahkan komentar...',
+                      hintText: 'Add a comment...',
                     ),
                   ),
                 ),
@@ -120,7 +119,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     } else if (newsCommentController.errorMessage.isNotEmpty) {
       return Center(child: Text(newsCommentController.errorMessage));
     } else if (newsCommentController.newsComments.isEmpty) {
-      return Center(child: Text('Tidak ada komentar tersedia'));
+      return Center(child: Text('No comments available'));
     } else {
       return ListView.builder(
         itemCount: newsCommentController.newsComments.length,
@@ -129,7 +128,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
           return ListTile(
             leading: CircleAvatar(
               backgroundImage: NetworkImage(
-                comment.user?.profilePhoto ?? comment.admin?.profilePhoto ?? 'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
+                comment.user?.profilePhoto ?? comment.admin?.url ?? 'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
               ),
             ),
             title: Text(comment.user?.name ?? comment.admin?.name ?? 'Anonymous'),

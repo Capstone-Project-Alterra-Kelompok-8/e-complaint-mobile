@@ -75,7 +75,7 @@ class _NewsScreenState extends State<NewsScreen> {
               ),
               Gap(10),
               GridView.builder(
-                controller: ScrollController(),
+                
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,

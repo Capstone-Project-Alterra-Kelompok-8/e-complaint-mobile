@@ -22,18 +22,18 @@ class NewsModel {
   });
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
-    var filesFromJson = json['files'] as List;
+    var filesFromJson = json['files'] as List ?? [];
     List<File> fileList = filesFromJson.map((i) => File.fromJson(i)).toList();
 
     return NewsModel(
-      id: json['id'],
+      id: json['id']??'',
       admin: Admin.fromJson(json['admin']),
       category: Category.fromJson(json['category']),
-      title: json['title'],
-      content: json['content'],
-      totalLikes: json['total_likes'],
+      title: json['title']??'',
+      content: json['content']??'',
+      totalLikes: json['total_likes']??'',
       files: fileList,
-      updatedAt: json['updated_at'],
+      updatedAt: json['updated_at']??'',
     );
   }
 
@@ -51,19 +51,11 @@ class NewsModel {
 class Admin {
   final int id;
   final String name;
-  final String email;
-  final String password;
-  final String telephoneNumber;
-  final bool isSuperAdmin;
   final String profilePhoto;
 
   Admin({
     required this.id,
     required this.name,
-    required this.email,
-    required this.password,
-    required this.telephoneNumber,
-    required this.isSuperAdmin,
     required this.profilePhoto,
   });
 
@@ -71,10 +63,6 @@ class Admin {
     return Admin(
       id: json['id']??'',
       name: json['name']??'',
-      email: json['email']??  '',
-      password: json['password']??'',
-      telephoneNumber: json['telephone_number']??'',
-      isSuperAdmin: json['is_super_admin']??'',
       profilePhoto: json['profile_photo']??'',
     );
   }
@@ -83,14 +71,18 @@ class Admin {
     return {
       'id': id,
       'name': name,
-      'email': email,
-      'password': password,
-      'telephone_number': telephoneNumber,
-      'is_super_admin': isSuperAdmin,
       'profile_photo': profilePhoto,
     };
   }
+
+  String get url {
+    if (profilePhoto.startsWith('http')) {
+      return profilePhoto;
+    }
+    return 'https://storage.googleapis.com/e-complaint-assets/$profilePhoto';
+  }
 }
+
 
 class Category {
   final int id;
@@ -125,9 +117,9 @@ class File {
 
   factory File.fromJson(Map<String, dynamic> json) {
     return File(
-      id: json['id'],
-      newsId: json['news_id'],
-      path: json['path'],
+      id: json['id']??'',
+      newsId: json['news_id']??'',
+      path: json['path']??'',
     );
   }
 
@@ -155,8 +147,8 @@ class NewsCommentModel {
   factory NewsCommentModel.fromJson(Map<String, dynamic> json) {
     return NewsCommentModel(
       id: json['id']??'',
-      user: json.containsKey('user') ? User.fromJson(json['user']) : null,
-      admin: json.containsKey('admin') ? Admin.fromJson(json['admin']) : null,
+      user: json.containsKey('user') && json['user'] != null ? User.fromJson(json['user']) : null,
+      admin: json.containsKey('admin') && json['admin'] != null ? Admin.fromJson(json['admin']) : null,
       comment: json['comment']??'',
       updatedAt: json['update_at']??'',
     );
