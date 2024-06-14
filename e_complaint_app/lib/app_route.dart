@@ -32,7 +32,7 @@ class AppRoute {
     '/change_profile' : (context) => const ChangeProfileScreen(),
     '/profile' : (context) => const ProfileScreen(),
     '/form_aduan' : (context) => FormAduan(),
-    '/riwayat_aduan' : (context) => const RiwayatAduan(),
+    '/riwayat_aduan' : (context) => RiwayatAduan(),
   
   };
 }
