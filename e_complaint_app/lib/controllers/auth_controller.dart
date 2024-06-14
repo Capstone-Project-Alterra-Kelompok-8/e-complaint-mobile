@@ -210,6 +210,7 @@ class LoginAuthController with ChangeNotifier {
     notifyListeners();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('id');
     Navigator.pushReplacementNamed(context, '/login');
   }
 
