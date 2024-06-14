@@ -1,9 +1,9 @@
 import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/controllers/profile_controller.dart';
+import 'package:e_complaint_app/controllers/news_controller.dart';
+import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:e_complaint_app/views/screens/news/components/news_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -18,15 +18,20 @@ class _HomePageScreenState extends State<HomePageScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProfileController>(context, listen: false).loadUserData();
+      Provider.of<UserController>(context, listen: false).loadUserData();
+      Provider.of<NewsController>(context, listen: false).getNews();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Provider.of<ProfileController>(context);
+    final newsController = Provider.of<NewsController>(context);
+    final userController = Provider.of<UserController>(context);
+    final isLoaded = Provider.of<NewsController>(context).isLoaded;
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: ColorCollections.buttonColor,
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,16 +68,22 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       children: [
                         Text('Selamat Datang',
                             style: HomeTextCollections.welcomeText),
-                        const SizedBox(height: 8.0), // Padding between texts
-                        Text(profileController.name,
+                        const SizedBox(height: 8.0),
+                        Text(userController.name,
                             style: HomeTextCollections.nameText),
                       ],
                     ),
                   ),
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundColor: ColorCollections.textPrimaryColor,
-                  ),
+                  userController.profilePhoto.isNotEmpty
+                      ? CircleAvatar(
+                          radius: 40,
+                          backgroundImage:
+                              NetworkImage(userController.profilePhoto),
+                        )
+                      : const CircleAvatar(
+                          radius: 40,
+                          backgroundColor: ColorCollections.textPrimaryColor,
+                        )
                 ],
               ),
             ),
@@ -89,7 +100,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               decoration: InputDecoration(
                   fillColor: ColorCollections.secondaryColor,
                   filled: true,
-                  labelText: 'Hinted Search Text',
+                  labelText: 'Cari...',
                   prefixIcon: const Icon(Icons.search),
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -98,6 +109,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       borderSide: BorderSide.none)),
             ),
           ),
+
           // FITURE HOMEPAGE SECTION
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -135,8 +147,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   children: [
                     Image(
                         image: AssetImage('assets/images/icon_chat_admin.png')),
-                    Text('Aduanku'),
-                    Text('')
+                    Text('Chat'),
+                    Text('Admin')
                   ],
                 ),
               ),
@@ -176,151 +188,35 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ],
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 25),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 162,
-                      height: 256,
-                      margin: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: ColorCollections.secondaryColor,
-                        borderRadius: BorderRadius.circular(10),
+          isLoaded
+              ? (newsController.news.isNotEmpty
+                  ? GridView.builder(
+                      controller: ScrollController(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 12 / 19,
                       ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, right: 7, left: 7),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: ColorCollections.textPrimaryColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            Text(
-                              'Pemprov Banten mendapat Pendanaan Proyek Infrastruktur Air Banten',
-                              style: HomeTextCollections.titleBerita,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Admin',
-                                  style: HomeTextCollections.footerBerita,
-                                ),
-                                Text(
-                                  '24 Mei 2024',
-                                  style: HomeTextCollections.footerBerita,
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                      shrinkWrap: true,
+                      itemCount: newsController.news.length,
+                      itemBuilder: (context, index) {
+                        return NewsCard(news: newsController.news[index]);
+                      },
+                    )
+                  : const Center(
+                      child: Text(
+                        'Tidak ada berita yang ditampilkan',
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ),
+                    ))
+              : const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                    backgroundColor: Colors.white,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 162,
-                      height: 256,
-                      margin: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: ColorCollections.secondaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, right: 7, left: 7),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: ColorCollections.textPrimaryColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            Text(
-                              'Pemprov Banten mendapat Pendanaan Proyek Infrastruktur Air Banten',
-                              style: HomeTextCollections.titleBerita,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Admin',
-                                  style: HomeTextCollections.footerBerita,
-                                ),
-                                Text(
-                                  '24 Mei 2024',
-                                  style: HomeTextCollections.footerBerita,
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 162,
-                      height: 256,
-                      margin: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: ColorCollections.secondaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, right: 7, left: 7),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: ColorCollections.textPrimaryColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            Text(
-                              'Pemprov Banten mendapat Pendanaan Proyek Infrastruktur Air Banten',
-                              style: HomeTextCollections.titleBerita,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Admin',
-                                  style: HomeTextCollections.footerBerita,
-                                ),
-                                Text(
-                                  '24 Mei 2024',
-                                  style: HomeTextCollections.footerBerita,
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                ),
         ],
       ),
       extendBody: true,

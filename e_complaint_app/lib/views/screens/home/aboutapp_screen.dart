@@ -105,6 +105,9 @@ class AboutAppScreen extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          )
         ],
       ),
     );

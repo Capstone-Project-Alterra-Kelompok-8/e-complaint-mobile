@@ -61,9 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 227,
                       height: 227,
                     ),
-                    Text('Welcome', style: LoginTextCollections.headingOne),
+                    Text('Selamat Datang', style: LoginTextCollections.headingOne),
                     const SizedBox(height: 5),
-                    Text('Login to your account',
+                    Text('Masuk ke Akun Anda',
                         style: LoginTextCollections.headingTwo),
                     const Gap(20),
                     Align(
@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushNamed(context, '/forgot_password');
                         },
                         child: Text(
-                          'Forgot Password?',
+                          'Lupa Password?',
                           style: LoginTextCollections.headingFour,
                         ),
                       ),
@@ -216,11 +216,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           : null,
                         child: _isButtonEnabled ? const Text(
-                          'Login',
+                          'Masuk',
                           style: TextStyle(
                             color: ColorCollections.textSecondaryColor,
                           ),
-                        ) : const Text('Login', style: TextStyle(
+                        ) : const Text('Masuk', style: TextStyle(
                           color: Colors.purple, fontWeight: FontWeight.w700,
                         )),
                       ),
@@ -230,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Don\'t have account?',
+                          'Tidak Punya Akun?',
                           style: LoginTextCollections.headingFive,
                         ),
                         TextButton(
@@ -238,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushNamed(context, '/register');
                           },
                           child: Text(
-                            'Create Now',
+                            'Buat Sekarang',
                             style: LoginTextCollections.createNow,
                           ),
                         ),

@@ -24,6 +24,16 @@ class AuthLoginService {
           statusCode: response.statusCode ?? 0,
         );
       }
+    } on DioError catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        return LoginResponse(
+          status: false,
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode ?? 0,
+        );
+      } else {
+        throw Exception('Failed to login: $e');
+      }
     } catch (e) {
       throw Exception('Failed to login: $e');
     }

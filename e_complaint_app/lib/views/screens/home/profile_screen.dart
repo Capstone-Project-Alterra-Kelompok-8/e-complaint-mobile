@@ -1,6 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/auth_controller.dart';
-import 'package:e_complaint_app/controllers/profile_controller.dart';
+import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
@@ -21,20 +21,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProfileController>(context, listen: false).loadUserData();
+      Provider.of<UserController>(context, listen: false).loadUserData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Provider.of<ProfileController>(context);
+    final userController = Provider.of<UserController>(context);
     return Scaffold(
       appBar: const CurvedAppBar(),
       resizeToAvoidBottomInset: false,
       body: ListView(
         children: [
-          const Center(
-            child: CircleAvatar(
+          const SizedBox(
+            height: 35,
+          ),
+          Center(
+            child: userController.profilePhoto.isNotEmpty ? CircleAvatar(
+              radius: 45,
+              backgroundImage: NetworkImage(userController.profilePhoto),
+            ) :
+            const CircleAvatar(
               radius: 45,
               backgroundColor: ColorCollections.primaryColor,
               foregroundColor: ColorCollections.backgroundColor,
@@ -45,14 +52,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 Text(
-                  profileController.name,
+                  userController.name,
                   style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: ColorCollections.textPrimaryColor,
                       fontSize: 16),
                 ),
                 Text(
-                  profileController.email,
+                  userController.email,
                   style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       color: ColorCollections.textPrimaryColor,
@@ -94,7 +101,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          const Divider(),
+          const SizedBox(
+            height: 5,
+            child: Divider(),
+          ),
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/change_password_profile');
@@ -119,7 +129,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          const Divider(),
+          const SizedBox(
+            height: 5,
+            child: Divider(),
+          ),
           GestureDetector(
             onTap: () {},
             child: SizedBox(
@@ -142,7 +155,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          const Divider(),
+          const SizedBox(
+            height: 5,
+            child: Divider(),
+          ),
           GestureDetector(
             onTap: () {},
             child: SizedBox(
@@ -165,7 +181,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          const Divider(),
+          const SizedBox(
+            height: 5,
+            child: Divider(),
+          ),
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/aboutApp');
@@ -190,7 +209,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          const Divider(),
+          const SizedBox(
+            height: 5,
+            child: Divider(),
+          ),
           GestureDetector(
             onTap: () {
               final logoutController = Provider.of<LoginAuthController>(
