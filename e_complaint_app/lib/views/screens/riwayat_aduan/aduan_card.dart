@@ -1,38 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:page_view_indicators/page_view_indicators.dart';
-import 'comment.dart';
+import 'package:e_complaint_app/views/screens/riwayat_aduan/comment.dart';
+import 'package:e_complaint_app/services/aduanku_service.dart';
 
 class AduanCard extends StatefulWidget {
-  const AduanCard({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String initials;
+  final String description;
+  final String category;
+  final String regency;
+  final String status;
+  final String profilePhoto;
+  final List<String> files;
+  final int totalLikes;
+
+  const AduanCard({
+    Key? key,
+    required this.id,
+    required this.name,
+    required this.initials,
+    required this.description,
+    required this.category,
+    required this.regency,
+    required this.status,
+    required this.profilePhoto,
+    required this.files,
+    required this.totalLikes,
+  }) : super(key: key);
 
   @override
   _AduanCardState createState() => _AduanCardState();
 }
 
 class _AduanCardState extends State<AduanCard> {
-  int likeCount = 10;
+  int likeCount = 0;
   bool _isLiked = false;
   bool _isExpanded = false;
   PageController _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
-
-  String completionStatus = 'Selesai';
-
-  void _toggleLike() {
-    setState(() {
-      _isLiked = !_isLiked;
-      likeCount += _isLiked ? 1 : -1;
-    });
+  late AduankuService _aduankuService;
+  @override
+  void initState() {
+    super.initState();
+    likeCount = widget.totalLikes;
+    _aduankuService = AduankuService();
+    _fetchInitialData();
   }
 
-  void _showCommentSheet(BuildContext context) {
+  void _toggleLike() async {
+    
+    bool previousLikedStatus = _isLiked;
+    setState(() {
+      _isLiked = !_isLiked;
+      if (_isLiked) {
+        likeCount++;
+      } else {
+        likeCount--;
+      }
+    });
+
+    
+    try {
+      await _aduankuService.toggleComplaintLike(widget.id, _isLiked);
+    } catch (e) {
+      setState(() {
+        _isLiked = previousLikedStatus;
+        if (_isLiked) {
+          likeCount++;
+        } else {
+          likeCount--;
+        }
+      });
+      print('Failed to toggle like: $e');
+    }
+  }
+
+  void _fetchInitialData() async {
+    try {
+      var responseData = await _aduankuService.getComplaintLikes(widget.id);
+      setState(() {
+        likeCount = responseData['likes_count'] ?? widget.totalLikes;
+        _isLiked = responseData['liked'] ?? false;
+      });
+    } catch (e) {
+      print('Failed to fetch initial data: $e');
+    }
+  }
+
+  void _showCommentSheet(BuildContext context, String complaintId) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.7,
-          child: CommentScreen(),
+          child: CommentScreen(complaintId: complaintId),
         );
       },
     );
@@ -40,17 +103,6 @@ class _AduanCardState extends State<AduanCard> {
 
   @override
   Widget build(BuildContext context) {
-    String name = 'John Doe';
-    String initials = _getInitials(name);
-    String description =
-        'Dengan segala hormat, kami warga daerah Tangerang ingin mengajukan aduan terkait kondisi banjir yang semakin Dengan segala hormat, kami warga daerah Tangerang ingin mengajukan aduan terkait kondisi banjir yang semakin Dengan segala hormat, kami warga daerah Tangerang ingin mengajukan aduan terkait kondisi banjir yang semakin';
-
-    List<String> imageUrls = [
-      'assets/contoh.jpeg',
-      'assets/contoh.jpeg',
-      'assets/contoh.jpeg',
-    ];
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Card(
@@ -63,18 +115,21 @@ class _AduanCardState extends State<AduanCard> {
                 children: [
                   CircleAvatar(
                     radius: 24,
+                    backgroundImage: NetworkImage(widget.profilePhoto),
                     backgroundColor: Colors.blueGrey,
-                    child: Text(
-                      initials,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white),
-                    ),
+                    child: widget.profilePhoto.endsWith('default.jpg')
+                        ? Text(
+                            widget.initials,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          )
+                        : null,
                   ),
                   SizedBox(width: 16),
                   Text(
-                    name,
+                    widget.name,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                 ],
@@ -88,10 +143,10 @@ class _AduanCardState extends State<AduanCard> {
                     children: [
                       PageView.builder(
                         controller: _pageController,
-                        itemCount: imageUrls.length,
+                        itemCount: widget.files.length,
                         itemBuilder: (context, index) {
-                          return Image.asset(
-                            imageUrls[index],
+                          return Image.network(
+                            widget.files[index],
                             width: double.infinity,
                             fit: BoxFit.cover,
                           );
@@ -109,7 +164,7 @@ class _AduanCardState extends State<AduanCard> {
                           child: CirclePageIndicator(
                             dotColor: Colors.grey,
                             selectedDotColor: Colors.blue,
-                            itemCount: imageUrls.length,
+                            itemCount: widget.files.length,
                             currentPageNotifier: _currentPageNotifier,
                           ),
                         ),
@@ -123,14 +178,14 @@ class _AduanCardState extends State<AduanCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Infrastruktur',
+                    widget.category,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
                   Row(
                     children: [
                       GestureDetector(
                         onTap: () {
-                          _showCommentSheet(context);
+                          _showCommentSheet(context, widget.id);
                         },
                         child: Icon(Icons.comment),
                       ),
@@ -153,11 +208,11 @@ class _AduanCardState extends State<AduanCard> {
                 ],
               ),
               Text(
-                'Tangerang',
+                widget.regency,
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
               Text(
-                'ID : #12345678',
+                widget.id,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -172,8 +227,10 @@ class _AduanCardState extends State<AduanCard> {
                 },
                 child: Text(
                   _isExpanded
-                      ? description
-                      : '${description.substring(0, 100)}...',
+                      ? widget.description
+                      : widget.description.length > 100
+                          ? '${widget.description.substring(0, 100)}...'
+                          : widget.description,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   overflow: TextOverflow.fade,
                 ),
@@ -203,7 +260,7 @@ class _AduanCardState extends State<AduanCard> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    completionStatus,
+                    widget.status,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -217,16 +274,5 @@ class _AduanCardState extends State<AduanCard> {
         ),
       ),
     );
-  }
-
-  String _getInitials(String name) {
-    List<String> nameSplit = name.split(' ');
-    String initials = '';
-    if (nameSplit.length >= 2) {
-      initials = nameSplit[0][0] + nameSplit[1][0];
-    } else if (nameSplit.isNotEmpty) {
-      initials = nameSplit[0][0];
-    }
-    return initials.toUpperCase();
   }
 }

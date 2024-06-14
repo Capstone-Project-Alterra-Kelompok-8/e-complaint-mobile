@@ -1,18 +1,155 @@
+import 'package:e_complaint_app/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:e_complaint_app/services/comment_service.dart'; 
 
 class CommentScreen extends StatefulWidget {
+  final String complaintId;
+
+  CommentScreen({required this.complaintId});
+
   @override
   _CommentScreenState createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
-  List<String> _comments = [
-    'This is the first comment.',
-    'This is the second comment.',
-    'This is the third comment.'
-  ];
-
+  List<dynamic> _comments = [];
   final TextEditingController _commentController = TextEditingController();
+  bool _isLoading = true;
+  String _errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComments();
+  }
+
+  Future<void> fetchComments() async {
+    try {
+      List<dynamic> comments = await CommentService.fetchComments(widget.complaintId);
+      setState(() {
+        _comments = comments;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load comments: $e';
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> postComment(String comment) async {
+    try {
+      await CommentService.postComment(widget.complaintId, comment);
+      fetchComments(); 
+      _commentController.clear();
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to post comment: $e';
+      });
+    }
+  }
+
+  Future<void> deleteComment(int commentId) async {
+    try {
+      await CommentService.deleteComment(widget.complaintId, commentId);
+      setState(() {
+        _comments.removeWhere((comment) => comment['id'] == commentId);
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to delete comment: $e';
+      });
+    }
+  }
+
+  Future<void> updateComment(int commentId, String newComment) async {
+    try {
+      await CommentService.updateComment(widget.complaintId, commentId, newComment);
+      setState(() {
+        int commentIndex = _comments.indexWhere((comment) => comment['id'] == commentId);
+        if (commentIndex != -1) {
+          _comments[commentIndex]['comment'] = newComment;
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to update comment: $e';
+      });
+    }
+  }
+
+  void _showEditDeleteDialog(BuildContext context, int commentId, String currentComment) {
+    TextEditingController editController = TextEditingController(text: currentComment);
+    bool _isEditing = false;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Container(
+                width: 70,
+                constraints: BoxConstraints(minHeight: 30),
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (_isEditing)
+                      TextField(
+                        controller: editController,
+                        decoration: InputDecoration(
+                          hintText: 'Ubah Komentar anda', hintStyle: TextCollections.commentAdd,
+                          border: OutlineInputBorder(),
+                        ),
+                        minLines: 1,
+                        maxLines: 3,
+                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (!_isEditing)
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _isEditing = true;
+                              });
+                            },
+                            child: Text('Edit',
+                            style: TextCollections.commentEditnDelete),
+                          ),
+                        Divider(height: 1, color: Colors.black),
+                        TextButton(
+                          onPressed: () {
+                            deleteComment(commentId);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Delete',style: TextCollections.commentEditnDelete),
+                        ),
+                        if (_isEditing)
+                          TextButton(
+                            onPressed: () {
+                              updateComment(commentId, editController.text);
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Save', style: TextCollections.commentEditnDelete),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +157,60 @@ class _CommentScreenState extends State<CommentScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'Komentar',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              Text(
+                'Komentar',
+                style:TextCollections.commentTitle
+              ),
+              
+            ],
           ),
         ),
         Divider(height: 1),
         Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            itemCount: _comments.length,
-            itemBuilder: (context, index) {
-              return _buildComment('User${index + 1}', _comments[index]);
-            },
-          ),
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : _errorMessage.isNotEmpty
+                  ? Center(child: Text(_errorMessage))
+                  : ListView.builder(
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                      itemCount: _comments.length,
+                      itemBuilder: (context, index) {
+                        final comment = _comments[index];
+                        if (comment.containsKey('user')) {
+                          return GestureDetector(
+                            onLongPress: () {
+                              _showEditDeleteDialog(context, comment['id'], comment['comment']);
+                            },
+                            child: _buildComment(
+                              comment['user']['name'],
+                              comment['comment'],
+                              'user',
+                            ),
+                          );
+                        } else if (comment.containsKey('admin')) {
+                          return GestureDetector(
+                            onLongPress: () {
+                              _showEditDeleteDialog(context, comment['id'], comment['comment']);
+                            },
+                            child: _buildComment(
+                              comment['admin']['name'],
+                              comment['comment'],
+                              'admin',
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
         ),
         Divider(height: 1),
         _buildCommentInputField(),
@@ -44,7 +218,7 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 
-  Widget _buildComment(String username, String commentText) {
+  Widget _buildComment(String username, String commentText, String userType) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -52,13 +226,10 @@ class _CommentScreenState extends State<CommentScreen> {
         children: [
           CircleAvatar(
             radius: 18,
-            backgroundColor: Colors.grey,
+            backgroundColor: userType == 'admin' ? Colors.red : Colors.grey,
             child: Text(
               username[0],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: TextCollections.commentUser
             ),
           ),
           SizedBox(width: 10),
@@ -66,48 +237,24 @@ class _CommentScreenState extends State<CommentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: username,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' ',
-                      ),
-                      TextSpan(
-                        text: commentText,
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
+                Text(
+                  username,
+                  style: TextCollections.commentUser
                 ),
                 SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      '2h',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      'Reply',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                Text(
+                  commentText,
+                  style: TextCollections.comment
                 ),
+                if (userType == 'admin')
+                  Text(
+                    'Admin',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -122,36 +269,21 @@ class _CommentScreenState extends State<CommentScreen> {
       color: Colors.white,
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: Colors.blueGrey,
-            child: Text(
-              'JD', // Placeholder initials or user image can be added here
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(width: 10),
           Expanded(
             child: TextField(
               controller: _commentController,
               decoration: InputDecoration(
-                hintText: 'Add a comment...',
+                hintText: 'Tambahkan Komentar', hintStyle: TextCollections.commentAdd,
                 border: InputBorder.none,
               ),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send, color: Colors.blue),
+            icon: Icon(Icons.send_outlined, color: Colors.black),
             onPressed: () {
               String newComment = _commentController.text;
               if (newComment.isNotEmpty) {
-                setState(() {
-                  _comments.add(newComment);
-                  _commentController.clear();
-                });
+                postComment(newComment);
               }
             },
           ),

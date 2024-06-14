@@ -142,7 +142,41 @@ class TextCollections {
     letterSpacing: 0.4,
   );
 
+    static TextStyle commentTitle = GoogleFonts.montserrat(
+    fontSize: 18.0,
+    fontWeight: FontWeight.w600,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+  static TextStyle comment = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+  static TextStyle commentAdd = GoogleFonts.montserrat(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle commentUser = GoogleFonts.poppins(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+  static TextStyle commentEditnDelete = GoogleFonts.roboto(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+
   static TextStyle primaryFont = GoogleFonts.montserrat();
+
 }
 
 
