@@ -59,8 +59,10 @@ class ButtonCollections {
     ),
   );
 }
+  }
 
-  static Widget stackedButton(VoidCallback onPressed) {
+
+   Widget stackedButton(VoidCallback onPressed) {
     return Stack(
       children: [
         Container(
@@ -78,5 +80,4 @@ class ButtonCollections {
       ],
     );
   }
-}
 

@@ -43,13 +43,18 @@ dependencies:
   image_picker: ^1.1.1
   gap: ^3.0.1
   pinput: ^4.0.0
-  shared_preferences: ^2.2.3
+  http: ^1.2.1
   sqflite: ^2.3.3+1
   carousel_slider: ^4.2.1
   google_fonts: ^6.2.0
-  file_picker: ^8.0.3
-  open_file: ^3.3.2
+  shared_preferences: ^2.2.3
   page_view_indicators: ^2.0.0
+  geolocator: ^12.0.0
+  file_picker: ^8.0.5
+  geocoding: ^3.0.0
+  flutter_native_splash: ^2.4.0
+  permission_handler: ^11.3.1
+  open_file: ^3.3.2
 
 dev_dependencies:
   flutter_test:

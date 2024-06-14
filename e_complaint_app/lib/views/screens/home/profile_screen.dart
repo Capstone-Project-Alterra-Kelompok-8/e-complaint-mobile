@@ -1,12 +1,13 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/auth_controller.dart';
+import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
 import 'package:e_complaint_app/views/screens/home/chanepassword_screen.dart';
 import 'package:e_complaint_app/views/screens/home/changeprofile_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,7 +18,16 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ProfileController>(context, listen: false).loadUserData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profileController = Provider.of<ProfileController>(context);
     return Scaffold(
       appBar: const CurvedAppBar(),
       resizeToAvoidBottomInset: false,
@@ -31,19 +41,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Icon(Icons.person),
             ),
           ),
-          const Center(
+          Center(
             child: Column(
               children: [
                 Text(
-                  'Maulana Abraham',
-                  style: TextStyle(
+                  profileController.name,
+                  style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: ColorCollections.textPrimaryColor,
                       fontSize: 16),
                 ),
                 Text(
-                  'maulanaabrhm@gmail.com',
-                  style: TextStyle(
+                  profileController.email,
+                  style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       color: ColorCollections.textPrimaryColor,
                       fontSize: 12),
@@ -111,9 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const Divider(),
           GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/aduanku');
-            },
+            onTap: () {},
             child: SizedBox(
               width: double.infinity,
               height: 70,
@@ -185,7 +193,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const Divider(),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/login');
+              final logoutController = Provider.of<LoginAuthController>(
+                context,
+                listen: false,
+              );
+              logoutController.logout(context);
             },
             child: Container(
               width: double.infinity,

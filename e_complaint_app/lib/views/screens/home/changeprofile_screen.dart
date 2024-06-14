@@ -1,6 +1,8 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChangeProfileScreen extends StatefulWidget {
   const ChangeProfileScreen({super.key});
@@ -11,7 +13,17 @@ class ChangeProfileScreen extends StatefulWidget {
 
 class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ProfileController>(context, listen: false).loadUserData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profileController = Provider.of<ProfileController>(context);
+
     return Scaffold(
       appBar: const CurvedAppBar(),
       body: Column(
@@ -77,7 +89,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   'Name',
                   style: HomeTextCollections.titleButton,
                 ),
-                subtitle: const Text('Maulana Abraham'),
+                subtitle: Text(profileController.name),
                 trailing: const CircleAvatar(
                     backgroundColor: ColorCollections.profileButtonColor,
                     child: Icon(Icons.edit_outlined)),
@@ -107,7 +119,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   'Phone Number',
                   style: HomeTextCollections.titleButton,
                 ),
-                subtitle: const Text('081212345678'),
+                subtitle: Text(profileController.telephoneNumber),
                 trailing: const CircleAvatar(
                     backgroundColor: ColorCollections.profileButtonColor,
                     child: Icon(Icons.edit_outlined)),
@@ -128,7 +140,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   'Email',
                   style: HomeTextCollections.titleButton,
                 ),
-                subtitle: const Text('maulanaabrhm@gmail.com'),
+                subtitle: Text(profileController.email),
                 trailing: const CircleAvatar(
                     backgroundColor: ColorCollections.profileButtonColor,
                     child: Icon(Icons.edit_outlined)),

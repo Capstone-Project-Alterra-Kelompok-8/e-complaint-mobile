@@ -1,8 +1,10 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -13,7 +15,16 @@ class HomePageScreen extends StatefulWidget {
 
 class _HomePageScreenState extends State<HomePageScreen> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ProfileController>(context, listen: false).loadUserData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profileController = Provider.of<ProfileController>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorCollections.buttonColor,
@@ -53,7 +64,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         Text('Selamat Datang',
                             style: HomeTextCollections.welcomeText),
                         const SizedBox(height: 8.0), // Padding between texts
-                        Text('Budiono Siregar',
+                        Text(profileController.name,
                             style: HomeTextCollections.nameText),
                       ],
                     ),
@@ -93,7 +104,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/aduanku');
+                  Navigator.pushNamed(context, '/my_complaint');
                 },
                 child: const Column(
                   children: [
@@ -107,9 +118,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/riwayat_aduanku');
-                },
+                onTap: () {},
                 child: const Column(
                   children: [
                     Image(
@@ -121,22 +130,18 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/chat_admin');
-                },
+                onTap: () {},
                 child: const Column(
                   children: [
                     Image(
                         image: AssetImage('assets/images/icon_chat_admin.png')),
-                    Text('Chat'),
-                    Text('Admin')
+                    Text('Aduanku'),
+                    Text('')
                   ],
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/chat_bot');
-                },
+                onTap: () {},
                 child: const Column(
                   children: [
                     Image(image: AssetImage('assets/images/icon_chat_ai.png')),
@@ -160,13 +165,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
                 Row(
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/news');
-                      },
-                      child: Text('Lihat Semua'),
-                    ),
-                    Icon(Icons.chevron_right_outlined)
+                    Text('Lihat Semua'),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/news');
+                        },
+                        icon: Icon(Icons.chevron_right_outlined)),
                   ],
                 )
               ],
@@ -179,9 +183,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/news_detail');
-                    },
+                    onTap: () {},
                     child: Container(
                       width: 162,
                       height: 256,
@@ -226,9 +228,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/news_detail');
-                    },
+                    onTap: () {},
                     child: Container(
                       width: 162,
                       height: 256,
@@ -273,9 +273,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/news_detail');
-                    },
+                    onTap: () {},
                     child: Container(
                       width: 162,
                       height: 256,

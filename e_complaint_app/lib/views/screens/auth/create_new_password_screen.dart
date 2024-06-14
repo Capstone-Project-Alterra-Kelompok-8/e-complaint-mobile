@@ -161,7 +161,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                                   const SizedBox(height: 20),
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/login');
+                                      Navigator.pop(context);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor:
