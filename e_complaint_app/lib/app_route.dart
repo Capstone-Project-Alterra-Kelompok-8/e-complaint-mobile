@@ -1,4 +1,5 @@
 import 'package:e_complaint_app/views/screens/auth/splashscreen.dart';
+import 'package:e_complaint_app/views/screens/form_aduan/form_aduan.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/my_complaint_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/create_new_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/forget_password_screen.dart';
@@ -30,5 +31,8 @@ class AppRoute {
     '/change_profile_input' : (context) => const ChangeProfileInputScreen(),
     '/change_profile' : (context) => const ChangeProfileScreen(),
     '/profile' : (context) => const ProfileScreen(),
+    '/form_aduan' : (context) => FormAduan(),
+    '/riwayat_aduan' : (context) => const RiwayatAduan(),
+  
   };
 }

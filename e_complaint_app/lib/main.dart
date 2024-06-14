@@ -1,5 +1,6 @@
 import 'package:e_complaint_app/app_route.dart';
 import 'package:e_complaint_app/controllers/auth_controller.dart';
+import 'package:e_complaint_app/controllers/form_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
@@ -33,6 +34,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserController()),
         ChangeNotifierProvider(create: (context) => NewsController()),
         ChangeNotifierProvider(create: (context) => MyComplaintController()),
+        ChangeNotifierProvider(create: (context) => FormAduanController()),
+        ChangeNotifierProvider(create: (context) => NewsCommentController()),
+
+
+
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

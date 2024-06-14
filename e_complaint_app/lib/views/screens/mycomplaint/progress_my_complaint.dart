@@ -30,7 +30,7 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
       myComplaintController.getComplaintProcesses(widget.complaintId);
     }
     return Scaffold(
-      appBar: CurvedAppBar(),
+      appBar: CurvedAppBarMyComplaint(),
       body: Consumer<MyComplaintController>(
         builder: (context, controller, child) {
           if (!controller.isLoaded) {

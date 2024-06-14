@@ -130,7 +130,7 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
       myComplaintController.getMyComplaint();
     }
     return Scaffold(
-      appBar: CurvedAppBar(),
+      appBar: CurvedAppBarMyComplaint(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

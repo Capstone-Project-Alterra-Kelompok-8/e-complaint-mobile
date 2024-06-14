@@ -1,9 +1,11 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -20,6 +22,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<UserController>(context, listen: false).loadUserData();
       Provider.of<NewsController>(context, listen: false).getNews();
+      Provider.of<MyComplaintController>(context, listen: false).getMyComplaint();
     });
   }
 
@@ -28,19 +31,26 @@ class _HomePageScreenState extends State<HomePageScreen> {
     final newsController = Provider.of<NewsController>(context);
     final userController = Provider.of<UserController>(context);
     final isLoaded = Provider.of<NewsController>(context).isLoaded;
+    final myComplaintController = Provider.of<MyComplaintController>(context);
+    if (!myComplaintController.isLoaded) {
+      myComplaintController.getMyComplaint();
+    }
+    
+   
+                  
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: ColorCollections.buttonColor,
-        title: const Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image(image: AssetImage('assets/images/logo_appbar.png')),
-            Icon(
-              Icons.notifications_none,
-              size: 35,
-            )
+            IconButton(onPressed: (){
+              Navigator.pushNamed(context, '/notification');
+            },
+              icon: Icon(Icons.notifications_none_outlined, size: 35)),
           ],
         ),
       ),
@@ -117,6 +127,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/my_complaint');
+                 
+                  
                 },
                 child: const Column(
                   children: [
@@ -130,7 +142,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  
+                },
                 child: const Column(
                   children: [
                     Image(
@@ -142,7 +156,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  
+                },
                 child: const Column(
                   children: [
                     Image(

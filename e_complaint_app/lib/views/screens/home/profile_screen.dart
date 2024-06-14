@@ -233,7 +233,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final logoutController = Provider.of<LoginAuthController>(
+                        context,
+                        listen: false,
+                      );
+                      logoutController.logout(context);
+                    },
                     icon: const Icon(Icons.logout),
                     color: ColorCollections.textPrimaryColor,
                   ),

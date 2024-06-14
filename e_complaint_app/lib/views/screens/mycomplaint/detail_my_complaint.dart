@@ -40,7 +40,7 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
     final myComplaintController = Provider.of<MyComplaintController>(context, listen: false);
 
     return Scaffold(
-      appBar: CurvedAppBar(),
+      appBar: CurvedAppBarMyComplaint(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16),
