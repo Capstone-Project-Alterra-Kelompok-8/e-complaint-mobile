@@ -25,4 +25,6 @@ class User {
       profilePhoto: json['profile_photo'] ?? '',
     );
   }
+
+  
 }

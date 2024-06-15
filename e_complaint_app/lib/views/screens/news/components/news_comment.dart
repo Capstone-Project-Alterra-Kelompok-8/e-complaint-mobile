@@ -117,7 +117,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     if (!newsCommentController.isLoaded) {
       return Center(child: CircularProgressIndicator());
     } else if (newsCommentController.errorMessage.isNotEmpty) {
-      return Center(child: Text(newsCommentController.errorMessage));
+      return Center(child: Text('No comments available'));
     } else if (newsCommentController.newsComments.isEmpty) {
       return Center(child: Text('No comments available'));
     } else {

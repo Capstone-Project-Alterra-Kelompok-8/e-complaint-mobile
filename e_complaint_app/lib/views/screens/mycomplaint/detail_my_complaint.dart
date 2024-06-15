@@ -1,9 +1,9 @@
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
+import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/progress_my_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/models/my_complaint_model.dart';
-import 'package:e_complaint_app/views/components/app_bar.dart';
 import 'package:gap/gap.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:provider/provider.dart'; // Import the package for indicators
@@ -21,11 +21,11 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
   final PageController _pageController = PageController(); // PageController for controlling the PageView
   final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0); // ValueNotifier for page index
   final Map<String, Color> _statusColorMap = {
-    'pending': Colors.grey,
-    'selesai': Colors.green,
-    'ditolak': Colors.red,
-    'on progres': Colors.orange,
-    'verifikasi': Colors.blue,
+    'Pending': Colors.grey,
+    'Selesai': Colors.green,
+    'Ditolak': Colors.red,
+    'On Progres': Colors.orange,
+    'Verifikasi': Colors.blue,
   };
 
   @override
@@ -67,18 +67,27 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                       ),
                     ),
                     title: Text(
-                      widget.complaint.user.name,
+                      'Anda',
                       style: TextCollections.headingOne.copyWith(
                         fontSize: 18,
                       ),
                     ),
                     subtitle: Text(
-                      'Anonim',
-                      style: TextCollections.headingThree.copyWith(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
+                      'ID: #${widget.complaint.id}',
+                          style: TextCollections.headingThree.copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.blue,
+                          ),
                     ),
+                    trailing: Text(
+                        widget.complaint.status,
+                        style: TextCollections.headingThree.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w200,
+                          color: _statusColorMap[widget.complaint.status],
+                        ),
+                      ),
                   ),
                 ),
                 // PageView with indicators
@@ -98,8 +107,14 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage(widget.complaint.files[index].url ),
+                                image: NetworkImage(
+                                  widget.complaint.files.isNotEmpty
+                                      ? widget.complaint.files[index].url
+                                      : 'https://via.placeholder.com/91x133.png?text=No+Image',
+                                ),
+
                                 fit: BoxFit.cover,
+                              
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -158,25 +173,15 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          widget.complaint.regency.name,
+                          '${widget.complaint.regency.name}, ${widget.complaint.date}',
                           style: TextCollections.headingThree.copyWith(
-                            fontSize: 16,
+                            fontSize: 14,
+                            letterSpacing: 0.1,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
                       ),
                       Gap(5),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'ID: #${widget.complaint.id}',
-                          style: TextCollections.headingThree.copyWith(
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -189,15 +194,6 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                         ),
                       ),
                       Gap(60),
-                      Text(
-                        widget.complaint.status,
-                        style: TextCollections.headingThree.copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w200,
-                          color: _statusColorMap[widget.complaint.status],
-                        ),
-                      ),
-                      Gap(10),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:e_complaint_app/models/news_model.dart';
 import 'package:e_complaint_app/services/news_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 class NewsController extends ChangeNotifier {
   final NewsService _newsService = NewsService();
   List<NewsModel> _news = [];
@@ -15,7 +14,6 @@ class NewsController extends ChangeNotifier {
   List<NewsModel> get news => _filteredNews.isEmpty ? _news : _filteredNews;
   String get errorMessage => _errorMessage;
   bool get isLoaded => _isLoaded;
-  
 
   Future<void> getNews() async {
     try {
@@ -53,7 +51,6 @@ class NewsController extends ChangeNotifier {
     }
   }
 
-
   void filterNews(String query) {
     if (query.isEmpty) {
       _filteredNews = _news;
@@ -64,72 +61,14 @@ class NewsController extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  List<NewsModel> getLatestNews(int count) {
+    List<NewsModel> sortedNews = List.from(_news)
+      ..sort((a, b) => b.id.compareTo(a.id));
+    return sortedNews.take(count).toList();
+  }
 }
 
-
-// class NewsCommentController extends ChangeNotifier {
-//   final NewsCommentService _newsCommentService = NewsCommentService();
-//   List<NewsCommentModel> _newsComments = [];
-//   String _errorMessage = '';
-//   bool _isLoaded = false;
-
-//   List<NewsCommentModel> get newsComments => _newsComments;
-//   String get errorMessage => _errorMessage;
-//   bool get isLoaded => _isLoaded;
-
-//   Future<void> getNewsComment(String newsId) async {
-//     try {
-//       final response = await _newsCommentService.getNewsComment(newsId);
-
-//       if (response != null && response.statusCode == 200) {
-//         _newsComments.clear();
-//         final Map<String, dynamic> responseData = response.data;
-//         if (responseData.containsKey('data')) {
-//           final List<dynamic> newsCommentData = responseData['data'];
-//           newsCommentData.forEach((item) {
-//             final newsComment = NewsCommentModel.fromJson(item);
-//             _newsComments.add(newsComment);
-//           });
-//           _errorMessage = ''; // Clear error message if successful
-//           await saveComments(_newsComments); // Save comments to SharedPreferences
-//           print('Comments loaded successfully: $_newsComments');
-//         } else {
-//           _errorMessage = 'Data field is missing in the response';
-//           print('Data field is missing in the response');
-//         }
-//       } else {
-//         _errorMessage = 'Failed to load news comments: ${response?.statusCode}';
-//         print('Failed to load news comments: ${response?.statusCode}');
-//       }
-//     } catch (e) {
-//       _errorMessage = 'Error: $e';
-//       print('Error: $e');
-//     } finally {
-//       _isLoaded = true; // Only update status if request is completed
-//       notifyListeners();
-//     }
-//   }
-
-//   Future<void> postNewsComment(String newsId, String comment) async {
-//     try {
-//       final response = await _newsCommentService.postNewsComment(newsId, comment);
-
-//       if (response != null && response.statusCode == 201) {
-//         await getNewsComment(newsId); // Reload comments after successful post
-//       } else {
-//         _errorMessage = 'Failed to post comment: ${response?.statusCode}';
-//         print('Failed to post comment: ${response?.statusCode}');
-//       }
-//     } catch (e) {
-//       _errorMessage = 'Error: $e';
-//       print('Error: $e');
-//     } finally {
-//       notifyListeners();
-//     }
-//   }
-
-   
-// }
 
 
 

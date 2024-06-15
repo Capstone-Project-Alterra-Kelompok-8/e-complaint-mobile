@@ -10,6 +10,7 @@ class MyComplaintModel {
   final String description;
   final String status;
   final String type;
+  final String date;
   final List<ComplaintFile> files;
   final String updatedAt;
 
@@ -22,6 +23,7 @@ class MyComplaintModel {
     required this.description,
     required this.status,
     required this.type,
+    required this.date,
     required this.files,
     required this.updatedAt,
   });
@@ -42,6 +44,7 @@ class MyComplaintModel {
       description: json['description'] ?? '',
       status: json['status'] ?? '',
       type: json['type'] ?? '',
+      date: json['date'] ?? '',
       files: fileList,
       updatedAt: json['updated_at'] ?? '',
     );
@@ -57,6 +60,7 @@ class MyComplaintModel {
       'description': description,
       'status': status,
       'type': type,
+      'date': date,
       'files': List<dynamic>.from(files.map((x) => x.toJson())),
       'updated_at': updatedAt,
     };

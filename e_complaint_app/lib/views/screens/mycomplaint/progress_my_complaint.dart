@@ -1,6 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
-import 'package:e_complaint_app/views/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/components/dashline_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -165,14 +165,14 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
   }
 
   Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
+    switch (status) {
+      case 'Pending':
         return Colors.grey[600]!;
-      case 'verifikasi':
+      case 'Verifikasi':
         return Colors.blueAccent[700]!;
-      case 'on progress':
+      case 'On Progress':
         return Colors.yellow[700]!;
-      case 'selesai':
+      case 'Selesai':
         return Colors.green;
       default:
         return Colors.grey;

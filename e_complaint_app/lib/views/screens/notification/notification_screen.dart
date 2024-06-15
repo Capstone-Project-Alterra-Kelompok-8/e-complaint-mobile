@@ -1,4 +1,4 @@
-import 'package:e_complaint_app/views/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/notification/components/card_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

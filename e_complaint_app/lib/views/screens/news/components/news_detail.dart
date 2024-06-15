@@ -1,6 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/models/news_model.dart';
-import 'package:e_complaint_app/views/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

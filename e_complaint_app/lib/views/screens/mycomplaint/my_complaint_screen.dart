@@ -1,6 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
-import 'package:e_complaint_app/views/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/detail_my_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,11 +14,11 @@ class MyComplaintScreen extends StatefulWidget {
 
 class _MyComplaintScreenState extends State<MyComplaintScreen> {
   final Map<String, Color> _statusColorMap = {
-    'pending': Colors.grey,
-    'selesai': Colors.green,
-    'ditolak': Colors.red,
-    'on progres': Colors.orange,
-    'verifikasi': Colors.blue,
+    'Pending': Colors.grey,
+    'Selesai': Colors.green,
+    'Ditolak': Colors.red,
+    'On Progres': Colors.orange,
+    'Verifikasi': Colors.blue,
   };
 
   String? _selectedStatus;
@@ -60,6 +60,9 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
                             final myComplaintController = Provider.of<MyComplaintController>(context, listen: false);
                             myComplaintController.clearFilter();
                             Navigator.of(context).pop();
+                            setState(() {
+                              _selectedStatus = null;
+                            });
                           },
                         ),
                         const SizedBox(height: 10),
@@ -101,27 +104,35 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
     );
   }
 
-  Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
-    return ListTile(
-      leading: Radio<String>(
-        value: status,
-        groupValue: _selectedStatus,
-        onChanged: (String? value) {
-          setState(() {
-            _selectedStatus = value;
-          });
-        },
-        activeColor: color,
-        fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected) || states.contains(MaterialState.pressed)) {
-            return color;
-          }
-          return Colors.orange;
-        }),
-      ),
-      title: Text(status, style: textStyle),
-    );
-  }
+ Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
+  return ListTile(
+    leading: Radio<String>(
+      value: status,
+      groupValue: _selectedStatus,
+      onChanged: (String? value) {
+        setState(() {
+          _selectedStatus = value;
+        });
+      },
+      activeColor: color,
+      autofocus: true,
+    
+      fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          return color;
+        }
+        return Colors.orange; // Default color for unselected state
+      }),
+      overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return color.withOpacity(0.3); // Slightly transparent color when pressed
+        }
+        return Colors.transparent; // No overlay color when not pressed
+      }),
+    ),
+    title: Text(status, style: textStyle),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

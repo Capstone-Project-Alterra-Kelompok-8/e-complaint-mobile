@@ -2,6 +2,7 @@ import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
+import 'package:e_complaint_app/models/news_model.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_card.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +32,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     final newsController = Provider.of<NewsController>(context);
     final userController = Provider.of<UserController>(context);
     final isLoaded = Provider.of<NewsController>(context).isLoaded;
-    final myComplaintController = Provider.of<MyComplaintController>(context);
-    if (!myComplaintController.isLoaded) {
-      myComplaintController.getMyComplaint();
-    }
-    
-   
-                  
+    List<NewsModel> latestNews = newsController.getLatestNews(6);
 
     return Scaffold(
       appBar: AppBar(
@@ -157,7 +152,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  
+                  Navigator.pushNamed(context, '/chat_admin');
                 },
                 child: const Column(
                   children: [
@@ -169,7 +164,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/chat_bot');
+                },
                 child: const Column(
                   children: [
                     Image(image: AssetImage('assets/images/icon_chat_ai.png')),
@@ -204,35 +201,38 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ],
             ),
           ),
-          isLoaded
-              ? (newsController.news.isNotEmpty
-                  ? GridView.builder(
-                      controller: ScrollController(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 12 / 19,
+          Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: newsController.isLoaded
+                    ? (latestNews.isNotEmpty
+                        ? GridView.builder(
+                            controller: ScrollController(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 12 / 19,
+                            ),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: latestNews.length,
+                            itemBuilder: (context, index) {
+                              return NewsCard(news: latestNews[index]);
+                            },
+                          )
+                        : const Center(
+                            child: Text(
+                              'Tidak ada berita yang ditampilkan',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ))
+                    : const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                          backgroundColor: Colors.white,
+                        ),
                       ),
-                      shrinkWrap: true,
-                      itemCount: newsController.news.length,
-                      itemBuilder: (context, index) {
-                        return NewsCard(news: newsController.news[index]);
-                      },
-                    )
-                  : const Center(
-                      child: Text(
-                        'Tidak ada berita yang ditampilkan',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ))
-              : const Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                    backgroundColor: Colors.white,
-                  ),
-                ),
+              ),
         ],
       ),
       extendBody: true,

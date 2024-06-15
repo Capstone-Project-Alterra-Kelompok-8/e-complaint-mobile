@@ -19,11 +19,11 @@ class MyComplaintController extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   final Map<String, Color> _statusColorMap = {
-    'pending': Colors.grey,
-    'selesai': Colors.green,
-    'ditolak': Colors.red,
-    'on progress': Colors.orange,
-    'verifikasi': Colors.blue,
+    'Pending': Colors.grey,
+    'Selesai': Colors.green,
+    'Ditolak': Colors.red,
+    'On Progress': Colors.orange,
+    'Verifikasi': Colors.blue,
   };
 
   Future<void> getMyComplaint() async {

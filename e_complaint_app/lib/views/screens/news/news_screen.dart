@@ -1,6 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
-import 'package:e_complaint_app/views/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_card.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_card_jumbo.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +28,7 @@ class _NewsScreenState extends State<NewsScreen> {
     return Scaffold(
       appBar: CurvedAppBar(),
       body: SingleChildScrollView(
+        controller: ScrollController(),
         child: Padding(
           padding: const EdgeInsets.only(left: 22, right: 22, top: 20),
           child: Column(
@@ -45,7 +46,17 @@ class _NewsScreenState extends State<NewsScreen> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                onChanged: (query) => newsController.filterNews(query),
+                onChanged: (query) {
+                  newsController.filterNews(query);
+                  if (query.isEmpty) {
+                    newsController.filterNews('');
+                  }
+                },
+                onSubmitted: (query) {
+                  if (query.isEmpty) {
+                    newsController.filterNews('');
+                  }
+                },
               ),
               Gap(10),
               Align(
@@ -75,7 +86,7 @@ class _NewsScreenState extends State<NewsScreen> {
               ),
               Gap(10),
               GridView.builder(
-                
+                controller: ScrollController(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,

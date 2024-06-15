@@ -217,19 +217,19 @@ class _FormAduanState extends State<FormAduan> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              _controller.jenisAduan = 'Publik';
+                              _controller.jenisAduan = 'Public';
                             });
                           },
                           child: Text(
-                            'Publik',
+                            'Public',
                             style: TextStyle(
-                              color: _controller.jenisAduan == 'Publik'
+                              color: _controller.jenisAduan == 'Public'
                                   ? Colors.white
                                   : Colors.black,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: _controller.jenisAduan == 'Publik'
+                            backgroundColor: _controller.jenisAduan == 'Public'
                                 ? ColorCollections.buttonColor
                                 : Colors.white,
                             shape: RoundedRectangleBorder(
