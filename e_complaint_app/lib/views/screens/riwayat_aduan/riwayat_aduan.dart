@@ -70,6 +70,14 @@ class _RiwayatAduanState extends State<RiwayatAduan> {
               decoration: InputDecoration(
                 hintText: 'Cari aduan...',
                 prefixIcon: Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: ImageIcon(
+                    AssetImage('assets/images/icon_filter.png'),
+                  ),
+                  onPressed: () {
+                    // Handle filter action
+                  },
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
