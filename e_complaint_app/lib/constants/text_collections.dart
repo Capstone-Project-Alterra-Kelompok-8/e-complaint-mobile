@@ -1,6 +1,5 @@
 part of 'constants.dart';
 
-// apakah tiap page dibuat textcollectionnya?
 class LoginTextCollections {
   static TextStyle headingOne = GoogleFonts.poppins(
     fontSize: 28.0,
@@ -40,110 +39,18 @@ class LoginTextCollections {
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
-}
+  
 
-class HomeTextCollections {
-  //homepage text collection session
-  static TextStyle welcomeText = GoogleFonts.montserrat(
+  static TextStyle createNow = GoogleFonts.montserrat(
     fontSize: 16.0,
-    fontWeight: FontWeight.w400,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle nameText = GoogleFonts.poppins(
-    fontSize: 24.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle beritaHeader = GoogleFonts.poppins(
-    fontSize: 16.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle titleBerita = GoogleFonts.montserrat(
-    fontSize: 14.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle footerBerita = GoogleFonts.montserrat(
-    fontSize: 12.0,
-    fontWeight: FontWeight.w400,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  // about app page text collection session
-  static TextStyle textButtonAboutApp = GoogleFonts.poppins(
-    fontSize: 16.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle description = GoogleFonts.montserrat(
-    fontSize: 12.0,
-    fontWeight: FontWeight.w400,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  // change profile page text collection session
-  static TextStyle titleButton = GoogleFonts.poppins(
-    fontSize: 14.0,
     fontWeight: FontWeight.w600,
-    color: ColorCollections.textPrimaryColor,
+    color: ColorCollections.textCreateNow,
     letterSpacing: 0.4,
   );
-
-  static TextStyle descriptionChangePassword = GoogleFonts.montserrat(
-    fontSize: 12.0,
-    fontWeight: FontWeight.w400,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  // change password profile page text collection session
-  static TextStyle titleButtonChangePassword = GoogleFonts.montserrat(
-    fontSize: 14.0,
-    fontWeight: FontWeight.w400,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle enableSubmitButtonChangePassword = GoogleFonts.montserrat(
-    fontSize: 14.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.backgroundColor,
-    letterSpacing: 0.4,
-  );
-
-    static TextStyle disableSubmitButtonChangePassword = GoogleFonts.montserrat(
-    fontSize: 14.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.disableButtonColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle dialogTitleChangePassword = GoogleFonts.poppins(
-    fontSize: 16.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-
 }
-
 
 class TextCollections {
-  static TextStyle headingOne = GoogleFonts.poppins(
+    static TextStyle headingOne = GoogleFonts.poppins(
     fontSize: 28.0,
     fontWeight: FontWeight.w700,
     color: ColorCollections.textPrimaryColor,
@@ -271,12 +178,154 @@ class TextCollections {
     letterSpacing: 0.4,
   );
 
-
   static TextStyle primaryFont = GoogleFonts.montserrat();
+}
+
+class HomeTextCollections {
+  
+  //homepage text collection session
+  static TextStyle welcomeText = GoogleFonts.montserrat(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle nameText = GoogleFonts.poppins(
+    fontSize: 24.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle beritaHeader = GoogleFonts.poppins(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle titleBerita = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle footerBerita = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  // about app page text collection session
+  static TextStyle textButtonAboutApp = GoogleFonts.poppins(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle description = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  // change profile page text collection session
+  static TextStyle titleButton = GoogleFonts.poppins(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle descriptionChangePassword = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  // change password profile page text collection session
+  static TextStyle titleButtonChangePassword = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle enableSubmitButtonChangePassword = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.backgroundColor,
+    letterSpacing: 0.4,
+  );
+
+    static TextStyle disableSubmitButtonChangePassword = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.disableButtonColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle dialogTitleChangePassword = GoogleFonts.poppins(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle headerChangeProfile = GoogleFonts.poppins(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle textButtonChangeProfile = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.disableButtonColor,
+    letterSpacing: 0.4,
+  );
+
+
+  // Verifikasi OTP Text Collections
+  static TextStyle descOtp = GoogleFonts.poppins(
+    fontSize: 18.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle bottomDescOtp = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+}
+
+
+
   
 
 
 
-}
+
+
+
+
+
+
+
+  
+
+
+
+
 
 
