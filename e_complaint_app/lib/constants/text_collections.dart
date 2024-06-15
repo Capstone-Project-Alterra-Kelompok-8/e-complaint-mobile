@@ -14,7 +14,6 @@ class LoginTextCollections {
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
-   
   );
 
   static TextStyle headingThree = GoogleFonts.montserrat(

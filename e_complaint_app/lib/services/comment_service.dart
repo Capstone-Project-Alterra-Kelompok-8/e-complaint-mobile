@@ -1,90 +1,122 @@
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class CommentService {
-  static const String baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/';
+  final Dio _dio = Dio();
+  static const String _baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints/';
 
-  static Future<List<dynamic>> fetchComments(String complaintId) async {
-    final String url = '$baseUrl$complaintId/discussions';
-    print('Fetching comments from: $url');
+  Future<String?> _getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
 
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-      },
-    );
+  Future<List<dynamic>> fetchComments(String complaintId) async {
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception("Token not found");
+      }
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+      final String url = '$_baseUrl$complaintId/discussions';
+      final response = await _dio.get(
+        url,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body)['data'];
-    } else {
-      throw Exception('Failed to load comments');
+      if (response.statusCode == 200) {
+        return response.data['data'];
+      } else {
+        throw Exception('Failed to load comments');
+      }
+    } catch (e) {
+      print('Error in fetchComments: $e');
+      return [];
     }
   }
 
-  static Future<void> postComment(String complaintId, String comment) async {
-    final String url = '$baseUrl$complaintId/discussions';
-    print('Posting comment to: $url');
+  Future<void> postComment(String complaintId, String comment) async {
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception("Token not found");
+      }
 
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-      },
-      body: json.encode({'comment': comment}),
-    );
+      final String url = '$_baseUrl$complaintId/discussions';
+      final response = await _dio.post(
+        url,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+        data: jsonEncode({'comment': comment}),
+      );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
-    if (response.statusCode != 201) {
-      throw Exception('Failed to post comment');
+      if (response.statusCode != 201) {
+        throw Exception('Failed to post comment');
+      }
+    } catch (e) {
+      print('Error in postComment: $e');
     }
   }
 
-  static Future<void> deleteComment(String complaintId, int commentId) async {
-    final String url = '$baseUrl$complaintId/discussions/$commentId';
-    print('Deleting comment from: $url');
+  Future<void> deleteComment(String complaintId, int commentId) async {
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception("Token not found");
+      }
 
-    final response = await http.delete(
-      Uri.parse(url),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-      },
-    );
+      final String url = '$_baseUrl$complaintId/discussions/$commentId';
+      final response = await _dio.delete(
+        url,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to delete comment');
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete comment');
+      }
+    } catch (e) {
+      print('Error in deleteComment: $e');
     }
   }
 
-  static Future<void> updateComment(String complaintId, int commentId, String newComment) async {
-    final String url = '$baseUrl$complaintId/discussions/$commentId';
-    print('Updating comment at: $url');
+  Future<void> updateComment(String complaintId, int commentId, String newComment) async {
+    try {
+      final token = await _getToken();
+      if (token == null) {
+        throw Exception("Token not found");
+      }
 
-    final response = await http.put(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM',
-      },
-      body: json.encode({'comment': newComment}),
-    );
+      final String url = '$_baseUrl$complaintId/discussions/$commentId';
+      final response = await _dio.put(
+        url,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+        data: jsonEncode({'comment': newComment}),
+      );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update comment');
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update comment');
+      }
+    } catch (e) {
+      print('Error in updateComment: $e');
     }
   }
 }

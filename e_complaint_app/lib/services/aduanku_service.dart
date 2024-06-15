@@ -1,41 +1,68 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AduankuService {
-  final String baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints';
-  final String apiKey =
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM';
+  final Dio _dio = Dio();
+  final String _baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/complaints';
+
+  Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
 
   Future<Map<String, dynamic>> getComplaintLikes(String id) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/$id/likes'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': apiKey,
-      },
-    );
+    try {
+      final token = await getToken();
+      if (token == null) {
+        throw Exception("Token not found");
+      }
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to fetch initial data: ${response.statusCode}');
+      final response = await _dio.get(
+        '$_baseUrl/$id/likes',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        throw Exception('Failed to fetch initial data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error in getComplaintLikes: $e');
+      return {};
     }
   }
 
   Future<void> toggleComplaintLike(String id, bool isLiked) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/$id/likes'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': apiKey,
-      },
-      body: jsonEncode(<String, bool>{
-        'liked': isLiked,
-      }),
-    );
+    try {
+      final token = await getToken();
+      if (token == null) {
+        throw Exception("Token not found");
+      }
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to toggle like: ${response.statusCode}');
+      final response = await _dio.post(
+        '$_baseUrl/$id/likes',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        ),
+        data: jsonEncode({'liked': isLiked}),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to toggle like: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error in toggleComplaintLike: $e');
     }
   }
 }

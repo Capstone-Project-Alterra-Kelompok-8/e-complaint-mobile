@@ -3,6 +3,7 @@ import 'package:e_complaint_app/controllers/news_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_card.dart';
+import 'package:e_complaint_app/views/screens/riwayat_aduan/riwayat_aduan.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -128,7 +129,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RiwayatAduan()),
+            );
+          },
                 child: const Column(
                   children: [
                     Image(
