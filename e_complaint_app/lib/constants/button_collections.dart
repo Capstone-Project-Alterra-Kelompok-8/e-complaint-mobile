@@ -59,13 +59,7 @@ class ButtonCollections {
     ),
   );
 }
-  }
-
-
-part of 'constants.dart';
-
-class ButtonCollections {
-  static Widget stackedButton(VoidCallback onPressed) {
+static Widget stackedButton(VoidCallback onPressed) {
     return Stack(
       children: [
         Container(
@@ -83,4 +77,6 @@ class ButtonCollections {
       ],
     );
   }
-}
+  }
+
+

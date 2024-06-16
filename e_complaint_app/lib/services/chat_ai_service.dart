@@ -1,15 +1,22 @@
 import 'dart:convert';
-import 'package:e_complaint_app/models/chat_ai.dart';
+import 'package:e_complaint_app/models/chat_ai_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatbotService {
   static const String baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1/chatbot';
 
   static Future<ChatbotMessage> sendMessage({
     required String message,
-    required String token,
   }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      throw Exception('Token not found');
+    }
+
     final url = Uri.parse('$baseUrl/messages');
     final response = await http.post(
       url,

@@ -3,6 +3,7 @@ import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/services/chat_ai_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatBot extends StatefulWidget {
   const ChatBot({Key? key}) : super(key: key);
@@ -41,48 +42,56 @@ class _ChatBotState extends State<ChatBot> {
     });
   }
 
-  void _sendMessage() async {
-    if (_complaintController.text.trim().isEmpty) {
-      return;
-    }
+void _sendMessage() async {
+  if (_complaintController.text.trim().isEmpty) {
+    return;
+  }
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('token');
+
+  if (token == null) {
+    // Handle case when token is not available
+    // Redirect to login screen or show error message
+    return;
+  }
+
+  setState(() {
+    _messages.add({
+      'role': 'user',
+      'content': _complaintController.text,
+      'timestamp': DateFormat('HH:mm').format(DateTime.now())
+    });
+    isLoading = true;
+  });
+
+  try {
+    final result = await ChatbotService.sendMessage(
+      message: _complaintController.text,
+    );
 
     setState(() {
       _messages.add({
-        'role': 'user',
-        'content': _complaintController.text,
+        'role': 'bot',
+        'content': result.botResponse,
         'timestamp': DateFormat('HH:mm').format(DateTime.now())
       });
-      isLoading = true;
+      isLoading = false;
+    });
+  } catch (e) {
+    setState(() {
+      isLoading = false;
     });
 
-    try {
-      final result = await ChatbotService.sendMessage(
-        message: _complaintController.text,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IlVzZXIgMiIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.DgppkPOyYZNCPpNHkW4R4j-bE1GL0SpLwMfX3vtYtyM', 
-      );
-
-      setState(() {
-        _messages.add({
-          'role': 'bot',
-          'content': result.botResponse,
-          'timestamp': DateFormat('HH:mm').format(DateTime.now())
-        });
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to send a request. Please try again.'),
-        ),
-      );
-    } finally {
-      _complaintController.clear();
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to send a request. Please try again.'),
+      ),
+    );
+  } finally {
+    _complaintController.clear();
   }
+}
 
   Widget _buildMessageBubble(String message, String timestamp, bool isUser) {
     return Align(
@@ -100,8 +109,8 @@ class _ChatBotState extends State<ChatBot> {
                   
                 ),
                 Positioned(
-                  bottom: 0,
-                  right: 0,
+                  bottom: 2,
+                  right: 10,
                   child: Container(
                     width: 10,
                     height: 10,
@@ -181,8 +190,8 @@ class _ChatBotState extends State<ChatBot> {
                 radius: 31,
               ),
               Positioned(
-                bottom: 0,
-                right: 0,
+                bottom: 2,
+                right: 10,
                 child: Container(
                   width: 10,
                   height: 10,
@@ -191,7 +200,7 @@ class _ChatBotState extends State<ChatBot> {
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: Colors.white,
-                      width: 2,
+                      width: 1,
                     ),
                   ),
                 ),
@@ -254,11 +263,6 @@ class _ChatBotState extends State<ChatBot> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.attach_file),
-                    onPressed: () {
-                    },
-                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -267,7 +271,7 @@ class _ChatBotState extends State<ChatBot> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextField(
                             controller: _complaintController,
                             decoration: InputDecoration(
@@ -284,11 +288,11 @@ class _ChatBotState extends State<ChatBot> {
                   ),
                   Container(
                     width: 1,
-                    height: 24,
+                    height: 35.94,
                     color: Colors.grey,
                   ),
                   IconButton(
-                    icon: Icon(Icons.send),
+                    icon: Icon(Icons.send_outlined),
                     onPressed: _sendMessage,
                   ),
                 ],

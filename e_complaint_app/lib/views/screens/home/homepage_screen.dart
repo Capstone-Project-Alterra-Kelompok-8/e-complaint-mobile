@@ -1,6 +1,7 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
+import 'package:e_complaint_app/views/screens/chat_ai/chat_ai_screen.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_card.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  
+                },
                 child: const Column(
                   children: [
                     Image(
@@ -151,7 +154,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatBot()),
+            );
+          },
                 child: const Column(
                   children: [
                     Image(image: AssetImage('assets/images/icon_chat_ai.png')),
