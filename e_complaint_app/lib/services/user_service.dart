@@ -71,7 +71,7 @@ class UserService {
     }
   }
 
-    Future<void> changeProfile(String name, telephoneNumber, email) async {
+  Future<void> changeProfile(String name, telephoneNumber, email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     const String _baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1';
@@ -98,5 +98,4 @@ class UserService {
       print('Error changing profile: $e');
     }
   }
-
 }
