@@ -53,7 +53,7 @@ class _NewsDetailState extends State<NewsDetail> {
                         image: NetworkImage(
                           widget.news.files.isNotEmpty
                               ? widget.news.files[0].url
-                              : 'https://your_base_url/default-image-path.jpg',
+                              : 'https://via.placeholder.com/91x133.png?text=No+Image',
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -126,7 +126,7 @@ class _NewsDetailState extends State<NewsDetail> {
                         Row(
                           children: [
                             Text(
-                              widget.news.admin.name,
+                              widget.news.admin?.name ?? 'Admin',
                               style: TextCollections.primaryFont.copyWith(
                                 fontSize: 12,
                                 color: Color(0xFF1C1C1C),

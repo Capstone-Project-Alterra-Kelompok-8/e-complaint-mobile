@@ -123,3 +123,8 @@ class MyComplaintController extends ChangeNotifier {
     return myComplaints.where((complaint) => complaint.status == _filterStatus).toList();
   }
 }
+
+
+class MyComplaintCommentController extends ChangeNotifier {
+  
+}

@@ -15,6 +15,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: Container(
             height: 106,
+            width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [ColorCollections.primaryColor, ColorCollections.backgroundColor],
@@ -28,7 +29,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         Positioned(
-          top: 40,
+          top: 20,
           left: 0,
           child: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -58,7 +59,9 @@ class CurvedAppBarMyComplaint extends StatelessWidget implements PreferredSizeWi
             bottomRight: Radius.circular(48.0),
           ),
           child: Container(
+            padding: EdgeInsets.only(top: 16),
             height: 106,
+            width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [ColorCollections.primaryColor, ColorCollections.backgroundColor],
@@ -72,7 +75,7 @@ class CurvedAppBarMyComplaint extends StatelessWidget implements PreferredSizeWi
           ),
         ),
         Positioned(
-          top: 40,
+          top: 20,
           left: 0,
           child: IconButton(
             icon: const Icon(Icons.arrow_back_outlined),
@@ -82,7 +85,7 @@ class CurvedAppBarMyComplaint extends StatelessWidget implements PreferredSizeWi
           ),
         ),
         Positioned(
-          top: 40,
+          top: 20,
           right: 0,
           child: IconButton(
             icon: const Icon(Icons.mark_unread_chat_alt_rounded),

@@ -32,6 +32,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     final newsController = Provider.of<NewsController>(context);
     final userController = Provider.of<UserController>(context);
     final isLoaded = Provider.of<NewsController>(context).isLoaded;
+ 
     List<NewsModel> latestNews = newsController.getLatestNews(6);
 
     return Scaffold(
@@ -138,7 +139,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  
+                  Navigator.pushNamed(context, '/riwayat_aduan');
                 },
                 child: const Column(
                   children: [

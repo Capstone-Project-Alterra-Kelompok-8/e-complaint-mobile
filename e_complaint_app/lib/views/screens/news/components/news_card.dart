@@ -47,7 +47,7 @@ class NewsCard extends StatelessWidget {
                     image: NetworkImage(
                       news.files.isNotEmpty
                           ? news.files[0].url
-                          : 'https://your_base_url/default-image-path.jpg',
+                          : 'https://via.placeholder.com/150x150.png?text=No+Image',
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -85,7 +85,7 @@ class NewsCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          news.admin.name,
+                          news.admin?.name ?? 'Admin ',
                           style: TextCollections.primaryFont.copyWith(
                             fontSize: 10,
                             color: Color(0xFF1C1C1C),

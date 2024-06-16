@@ -2,8 +2,8 @@ import 'package:e_complaint_app/models/my_complaint_model.dart';
 
 class NewsModel {
   final int id;
-  final Admin admin;
-  final Category category;
+  final Admin? admin; // Nullable
+  final Category? category; // Nullable
   final String title;
   final String content;
   final int totalLikes;
@@ -12,8 +12,8 @@ class NewsModel {
 
   NewsModel({
     required this.id,
-    required this.admin,
-    required this.category,
+    this.admin,
+    this.category,
     required this.title,
     required this.content,
     required this.totalLikes,
@@ -22,31 +22,35 @@ class NewsModel {
   });
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
-    var filesFromJson = json['files'] as List ?? [];
+    var filesFromJson = json['files'] as List? ?? []; // Safe handling of null
     List<File> fileList = filesFromJson.map((i) => File.fromJson(i)).toList();
 
     return NewsModel(
-      id: json['id']??'',
-      admin: Admin.fromJson(json['admin']),
-      category: Category.fromJson(json['category']),
-      title: json['title']??'',
-      content: json['content']??'',
-      totalLikes: json['total_likes']??'',
+      id: json['id'] ?? 0,
+      admin: json['admin'] != null ? Admin.fromJson(json['admin']) : null,
+      category: json['category'] != null ? Category.fromJson(json['category']) : null,
+      title: json['title'] ?? '',
+      content: json['content'] ?? '',
+      totalLikes: json['total_likes'] ?? 0,
       files: fileList,
-      updatedAt: json['updated_at']??'',
+      updatedAt: json['updated_at'] ?? '',
     );
   }
 
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'admin': admin?.toJson(),
+      // 'category': category?.toJson(),
       'title': title,
       'content': content,
+      'total_likes': totalLikes,
+      // 'files': files.map((file) => file.toJson()).toList(),
+      'updated_at': updatedAt,
     };
   }
-
-  
 }
+
 
 class Admin {
   final int id;
@@ -61,7 +65,7 @@ class Admin {
 
   factory Admin.fromJson(Map<String, dynamic> json) {
     return Admin(
-      id: json['id']??'',
+      id: json['id']??0,
       name: json['name']??'',
       profilePhoto: json['profile_photo']??'',
     );
@@ -97,9 +101,9 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
+      id: json['id']??0,
+      name: json['name']??'',
+      description: json['description']??'',
     );
   }
 }
@@ -117,13 +121,18 @@ class File {
 
   factory File.fromJson(Map<String, dynamic> json) {
     return File(
-      id: json['id']??'',
+      id: json['id']??0,
       newsId: json['news_id']??'',
       path: json['path']??'',
     );
   }
 
-  String get url => 'https://storage.googleapis.com/e-complaint-assets/${this.path}';
+ String get url {
+    if (path.startsWith('http')) {
+      return path;
+    }
+    return 'https://storage.googleapis.com/e-complaint-assets/$path';
+  }
 }
 
 

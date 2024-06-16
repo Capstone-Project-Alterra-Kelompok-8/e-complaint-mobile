@@ -17,30 +17,33 @@ class NewsController extends ChangeNotifier {
 
   Future<void> getNews() async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? newsJson = prefs.getString('news');
       final response = await _newsService.getNews();
-
-      print('getNews response: $response');
 
       if (response != null && response.statusCode == 200) {
         _news.clear();
         final Map<String, dynamic> responseData = response.data;
-        if (responseData.containsKey('data')) {
+
+        if (responseData.containsKey('data') && responseData['data'] is List) {
           final List<dynamic> newsData = responseData['data'];
-          newsData.forEach((item) {
-            final news = NewsModel.fromJson(item);
-            _news.add(news);
-          });
-          prefs.setString('news', json.encode(_news));
-          print('getNews berhasil dimuat');
-          print(': $_news');
+          for (var item in newsData) {
+            if (item is Map<String, dynamic>) {
+              final news = NewsModel.fromJson(item);
+              _news.add(news);
+            }
+          }
+
+          _errorMessage = ''; // Clear error message if successful
+          print('News loaded successfully: $_news');
         } else {
-          _errorMessage = 'Data field is missing in the response';
+          _errorMessage = 'Data field is missing or not a list in the response';
+          print('Data field is missing or not a list in the response');
         }
+      } else if (response?.statusCode == 404) {
+        _errorMessage = response.data['message'] ?? 'Not found';
+        print('Error: ${response.data['message']}');
       } else {
         _errorMessage = 'Failed to load news: ${response?.statusCode}';
-        print('Response kosong atau tidak berhasil: ${response?.statusCode}');
+        print('Failed to load news: ${response?.statusCode}');
       }
     } catch (e) {
       _errorMessage = 'Error: $e';
@@ -68,8 +71,6 @@ class NewsController extends ChangeNotifier {
     return sortedNews.take(count).toList();
   }
 }
-
-
 
 
 class NewsCommentController extends ChangeNotifier {

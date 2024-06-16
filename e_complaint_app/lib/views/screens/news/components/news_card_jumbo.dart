@@ -63,7 +63,9 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: NetworkImage(newsItem.files[0].url),
+                    image: NetworkImage(newsItem.files.isNotEmpty
+                        ? newsItem.files[0].url
+                        : 'https://via.placeholder.com/150x150.png?text=No+Image'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -124,7 +126,7 @@ class _NewsCardJumboState extends State<NewsCardJumbo> {
                     Row(
                       children: [
                         Text(
-                          newsItem.admin.name,
+                          newsItem.admin?.name ?? 'Admin',
                           style: TextCollections.primaryFont.copyWith(
                             fontSize: 12,
                             color: Color(0xFF1C1C1C),
