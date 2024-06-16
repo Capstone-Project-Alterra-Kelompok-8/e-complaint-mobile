@@ -1,6 +1,6 @@
 import 'package:e_complaint_app/views/screens/auth/splashscreen.dart';
-import 'package:e_complaint_app/views/screens/customer_services/chat_admin.dart';
-import 'package:e_complaint_app/views/screens/customer_services/chat_bot.dart';
+import 'package:e_complaint_app/views/screens/chat_admin/chat_admin_screen.dart';
+import 'package:e_complaint_app/views/screens/chat_ai/chat_ai_screen.dart';
 import 'package:e_complaint_app/views/screens/form_aduan/form_aduan.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/my_complaint_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/create_new_password_screen.dart';
@@ -37,6 +37,6 @@ class AppRoute {
     '/riwayat_aduan' : (context) => RiwayatAduan(),
     '/chat_admin' :(context) => ChatAdmin(),
     '/chat_bot' :(context) => ChatBot(),
-  
+ 
   };
 }

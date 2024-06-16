@@ -79,6 +79,40 @@ class TextCollections {
     letterSpacing: 0.4,
 
   );
+
+  //comment
+
+    static TextStyle commentTitle = GoogleFonts.montserrat(
+    fontSize: 18.0,
+    fontWeight: FontWeight.w600,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+  static TextStyle comment = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+  static TextStyle commentAdd = GoogleFonts.montserrat(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle commentUser = GoogleFonts.poppins(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+  static TextStyle commentEditnDelete = GoogleFonts.roboto(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  ); 
   
   static TextStyle detailFont = GoogleFonts.montserrat(
     fontSize: 12.0,
@@ -101,8 +135,7 @@ class TextCollections {
     letterSpacing: 0.4,
 
   );
-
-   static TextStyle admin = GoogleFonts.inter(
+  static TextStyle admin = GoogleFonts.inter(
     fontSize: 12.0,
     fontWeight: FontWeight.w500,
     color: ColorCollections.textPrimaryColor,
@@ -144,38 +177,42 @@ class TextCollections {
     letterSpacing: 0.4,
   );
 
-  // section discussion complaint
-  static TextStyle commentTitle = GoogleFonts.montserrat(
-    fontSize: 18.0,
-    fontWeight: FontWeight.w600,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-  static TextStyle comment = GoogleFonts.montserrat(
+  // chat_ai
+  static TextStyle messageBubble = GoogleFonts.montserrat(
     fontSize: 14.0,
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
-  static TextStyle commentAdd = GoogleFonts.montserrat(
-    fontSize: 16.0,
+
+  static TextStyle messageToday = GoogleFonts.montserrat(
+    fontSize: 14.0,
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
 
-  static TextStyle commentUser = GoogleFonts.poppins(
-    fontSize: 16.0,
-    fontWeight: FontWeight.w700,
+  static TextStyle messageProfileBot = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w500,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
-  static TextStyle commentEditnDelete = GoogleFonts.roboto(
+
+  static TextStyle messageActiveNow = GoogleFonts.montserrat(
     fontSize: 12.0,
-    fontWeight: FontWeight.w400,
-    color: ColorCollections.textPrimaryColor,
+    fontWeight: FontWeight.w500,
+    color: ColorCollections.timeStampColor,
     letterSpacing: 0.4,
   );
+
+  static TextStyle messageType = GoogleFonts.aBeeZee(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.timeStampColor,
+    letterSpacing: 0.4,
+  );
+
 
   static TextStyle primaryFont = GoogleFonts.montserrat();
 }
@@ -308,24 +345,3 @@ class HomeTextCollections {
     letterSpacing: 0.4,
   );
 }
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
