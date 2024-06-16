@@ -12,6 +12,7 @@ class CommentScreen extends StatefulWidget {
 }
 
 class _CommentScreenState extends State<CommentScreen> {
+  final CommentService _commentService = CommentService();
   List<dynamic> _comments = [];
   final TextEditingController _commentController = TextEditingController();
   bool _isLoading = true;
@@ -25,7 +26,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   Future<void> fetchComments() async {
     try {
-      List<dynamic> comments = await CommentService.fetchComments(widget.complaintId);
+      List<dynamic> comments = await _commentService.fetchComments(widget.complaintId);
       setState(() {
         _comments = comments;
         _isLoading = false;
@@ -40,8 +41,8 @@ class _CommentScreenState extends State<CommentScreen> {
 
   Future<void> postComment(String comment) async {
     try {
-      await CommentService.postComment(widget.complaintId, comment);
-      fetchComments(); 
+      await _commentService.postComment(widget.complaintId, comment);
+      fetchComments();
       _commentController.clear();
     } catch (e) {
       setState(() {
@@ -52,7 +53,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   Future<void> deleteComment(int commentId) async {
     try {
-      await CommentService.deleteComment(widget.complaintId, commentId);
+      await _commentService.deleteComment(widget.complaintId, commentId);
       setState(() {
         _comments.removeWhere((comment) => comment['id'] == commentId);
       });
@@ -65,7 +66,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   Future<void> updateComment(int commentId, String newComment) async {
     try {
-      await CommentService.updateComment(widget.complaintId, commentId, newComment);
+      await _commentService.updateComment(widget.complaintId, commentId, newComment);
       setState(() {
         int commentIndex = _comments.indexWhere((comment) => comment['id'] == commentId);
         if (commentIndex != -1) {
@@ -79,77 +80,88 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  void _showEditDeleteDialog(BuildContext context, int commentId, String currentComment) {
-    TextEditingController editController = TextEditingController(text: currentComment);
-    bool _isEditing = false;
+void _showEditDeleteDialog(BuildContext context, int commentId, String currentComment) {
+  TextEditingController editController = TextEditingController(text: currentComment);
+  bool _isEditing = false;
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Container(
-                width: 70,
-                constraints: BoxConstraints(minHeight: 30),
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (_isEditing)
-                      TextField(
-                        controller: editController,
-                        decoration: InputDecoration(
-                          hintText: 'Ubah Komentar anda', hintStyle: TextCollections.commentAdd,
-                          border: OutlineInputBorder(),
-                        ),
-                        minLines: 1,
-                        maxLines: 3,
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              width: 70,
+              constraints: BoxConstraints(minHeight: 30),
+              padding: EdgeInsets.all(8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (_isEditing)
+                    TextField(
+                      controller: editController,
+                      decoration: InputDecoration(
+                        hintText: 'Ubah Komentar anda',
+                        hintStyle: TextCollections.commentAdd,
+                        border: OutlineInputBorder(),
                       ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (!_isEditing)
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _isEditing = true;
-                              });
-                            },
-                            child: Text('Edit',
-                            style: TextCollections.commentEditnDelete),
-                          ),
-                        Divider(height: 1, color: Colors.black),
+                      minLines: 1,
+                      maxLines: 3,
+                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (_isEditing)
+                        TextButton(
+                          onPressed: () {
+                            updateComment(commentId, editController.text);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Simpan', style: TextCollections.commentEditnDelete),
+                        ),
+                      if (_isEditing)
                         TextButton(
                           onPressed: () {
                             deleteComment(commentId);
                             Navigator.of(context).pop();
                           },
-                          child: Text('Delete',style: TextCollections.commentEditnDelete),
+                          child: Text('Hapus', style: TextCollections.commentEditnDelete),
                         ),
-                        if (_isEditing)
-                          TextButton(
-                            onPressed: () {
-                              updateComment(commentId, editController.text);
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('Save', style: TextCollections.commentEditnDelete),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
+                      if (!_isEditing)
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _isEditing = true;
+                            });
+                          },
+                          child: Text('Edit', style: TextCollections.commentEditnDelete),
+                        ),
+                      if (!_isEditing)
+                        Divider(height: 2, color: Colors.black),
+                      if (!_isEditing)
+                        TextButton(
+                          onPressed: () {
+                            deleteComment(commentId);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Hapus', style: TextCollections.commentEditnDelete),
+                        ),
+                    ],
+                  ),
+                ],
               ),
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,9 +179,8 @@ class _CommentScreenState extends State<CommentScreen> {
               ),
               Text(
                 'Komentar',
-                style:TextCollections.commentTitle
+                style: TextCollections.commentTitle,
               ),
-              
             ],
           ),
         ),
@@ -229,7 +240,7 @@ class _CommentScreenState extends State<CommentScreen> {
             backgroundColor: userType == 'admin' ? Colors.red : Colors.grey,
             child: Text(
               username[0],
-              style: TextCollections.commentUser
+              style: TextCollections.commentUser,
             ),
           ),
           SizedBox(width: 10),
@@ -239,12 +250,12 @@ class _CommentScreenState extends State<CommentScreen> {
               children: [
                 Text(
                   username,
-                  style: TextCollections.commentUser
+                  style: TextCollections.commentUser,
                 ),
                 SizedBox(height: 4),
                 Text(
                   commentText,
-                  style: TextCollections.comment
+                  style: TextCollections.comment,
                 ),
                 if (userType == 'admin')
                   Text(
@@ -273,7 +284,8 @@ class _CommentScreenState extends State<CommentScreen> {
             child: TextField(
               controller: _commentController,
               decoration: InputDecoration(
-                hintText: 'Tambahkan Komentar', hintStyle: TextCollections.commentAdd,
+                hintText: 'Tambahkan Komentar',
+                hintStyle: TextCollections.commentAdd,
                 border: InputBorder.none,
               ),
             ),

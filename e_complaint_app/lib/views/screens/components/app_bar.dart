@@ -24,7 +24,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             child: const Image(
-              image: AssetImage('assets/images/logo_appbar.png'),
+              image: AssetImage('assets/images/logo appbar.png'),
             ),
           ),
         ),
@@ -32,7 +32,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
           top: 20,
           left: 0,
           child: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back_outlined),
             onPressed: () {
               Navigator.of(context).pop();
             },

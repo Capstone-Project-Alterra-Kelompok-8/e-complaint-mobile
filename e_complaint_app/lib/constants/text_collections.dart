@@ -6,6 +6,7 @@ class LoginTextCollections {
     fontWeight: FontWeight.w700,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
+
   );
 
   static TextStyle headingTwo = GoogleFonts.montserrat(
@@ -20,6 +21,7 @@ class LoginTextCollections {
     fontWeight: FontWeight.w600,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
+
   );
 
   static TextStyle headingFour = GoogleFonts.montserrat(
@@ -27,6 +29,7 @@ class LoginTextCollections {
     fontWeight: FontWeight.w600,
     color: ColorCollections.alertErrorColor,
     letterSpacing: 0.4,
+ 
   );
 
   static TextStyle headingFive = GoogleFonts.montserrat(
@@ -35,6 +38,7 @@ class LoginTextCollections {
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
+  
 
   static TextStyle createNow = GoogleFonts.montserrat(
     fontSize: 16.0,
@@ -45,11 +49,12 @@ class LoginTextCollections {
 }
 
 class TextCollections {
-  static TextStyle headingOne = GoogleFonts.poppins(
+    static TextStyle headingOne = GoogleFonts.poppins(
     fontSize: 28.0,
     fontWeight: FontWeight.w700,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
+
   );
 
   static TextStyle headingTwo = GoogleFonts.poppins(
@@ -57,6 +62,7 @@ class TextCollections {
     fontWeight: FontWeight.w700,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
+   
   );
 
   static TextStyle headingThree = GoogleFonts.montserrat(
@@ -64,6 +70,7 @@ class TextCollections {
     fontWeight: FontWeight.w600,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
+
   );
   static TextStyle searchComplaintFont = GoogleFonts.roboto(
     fontSize: 14.0,
@@ -95,7 +102,7 @@ class TextCollections {
 
   );
 
-  static TextStyle admin = GoogleFonts.inter(
+   static TextStyle admin = GoogleFonts.inter(
     fontSize: 12.0,
     fontWeight: FontWeight.w500,
     color: ColorCollections.textPrimaryColor,
@@ -110,7 +117,12 @@ class TextCollections {
   
   );
 
- 
+  static TextStyle hariIni = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
 
   static TextStyle textField = GoogleFonts.aBeeZee(
     fontSize: 14.0,
@@ -132,17 +144,8 @@ class TextCollections {
     letterSpacing: 0.4,
   );
 
-
-
-
-   static TextStyle hariIni = GoogleFonts.montserrat(
-    fontSize: 12.0,
-    fontWeight: FontWeight.w400,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-    static TextStyle commentTitle = GoogleFonts.montserrat(
+  // section discussion complaint
+  static TextStyle commentTitle = GoogleFonts.montserrat(
     fontSize: 18.0,
     fontWeight: FontWeight.w600,
     color: ColorCollections.textPrimaryColor,
@@ -174,13 +177,12 @@ class TextCollections {
     letterSpacing: 0.4,
   );
 
-
   static TextStyle primaryFont = GoogleFonts.montserrat();
-
 }
 
 
 class HomeTextCollections {
+  
   //homepage text collection session
   static TextStyle welcomeText = GoogleFonts.montserrat(
     fontSize: 16.0,
@@ -247,20 +249,6 @@ class HomeTextCollections {
     letterSpacing: 0.4,
   );
 
-  static TextStyle headerChangeProfile = GoogleFonts.poppins(
-    fontSize: 20.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.textPrimaryColor,
-    letterSpacing: 0.4,
-  );
-
-  static TextStyle textButtonChangeProfile = GoogleFonts.montserrat(
-    fontSize: 14.0,
-    fontWeight: FontWeight.w700,
-    color: ColorCollections.disableButtonColor,
-    letterSpacing: 0.4,
-  );
-
   // change password profile page text collection session
   static TextStyle titleButtonChangePassword = GoogleFonts.montserrat(
     fontSize: 14.0,
@@ -276,7 +264,7 @@ class HomeTextCollections {
     letterSpacing: 0.4,
   );
 
-  static TextStyle disableSubmitButtonChangePassword = GoogleFonts.montserrat(
+    static TextStyle disableSubmitButtonChangePassword = GoogleFonts.montserrat(
     fontSize: 14.0,
     fontWeight: FontWeight.w700,
     color: ColorCollections.disableButtonColor,
@@ -289,6 +277,21 @@ class HomeTextCollections {
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
+
+  static TextStyle headerChangeProfile = GoogleFonts.poppins(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle textButtonChangeProfile = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+    color: ColorCollections.disableButtonColor,
+    letterSpacing: 0.4,
+  );
+
 
   // Verifikasi OTP Text Collections
   static TextStyle descOtp = GoogleFonts.poppins(
@@ -305,4 +308,24 @@ class HomeTextCollections {
     letterSpacing: 0.4,
   );
 }
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
 
