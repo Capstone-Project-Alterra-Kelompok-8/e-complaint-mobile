@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Complaint {
   final String id;
   final String name;
@@ -8,6 +10,8 @@ class Complaint {
   final String profilePhoto;
   final List<String> files;
   final int totalLikes;
+  final String date;
+  final DateTime updatedAt;
 
   Complaint({
     required this.id,
@@ -19,10 +23,14 @@ class Complaint {
     required this.profilePhoto,
     required this.files,
     required this.totalLikes,
+    required this.date,
+    required this.updatedAt,
   });
 
   factory Complaint.fromJson(Map<String, dynamic> json) {
     String baseUrl = 'https://storage.googleapis.com/e-complaint-assets/';
+    DateFormat dateFormat = DateFormat("d MMMM yyyy HH:mm:ss");
+
     return Complaint(
       id: json['id'],
       name: json['user']['name'],
@@ -35,7 +43,9 @@ class Complaint {
               ?.map((file) => baseUrl + file['path'].toString())
               .toList() ??
           [],
-      totalLikes: json['total_likes']
+      totalLikes: json['total_likes'],
+      date: json['date'],
+      updatedAt: dateFormat.parse(json['updated_at']),
     );
   }
 }

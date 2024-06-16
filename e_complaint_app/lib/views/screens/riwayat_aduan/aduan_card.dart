@@ -1,7 +1,8 @@
+// views/screens/riwayat_aduan/aduan_card.dart
 import 'package:flutter/material.dart';
 import 'package:page_view_indicators/page_view_indicators.dart';
-import 'package:e_complaint_app/views/screens/riwayat_aduan/comment.dart';
 import 'package:e_complaint_app/services/aduanku_service.dart';
+import 'package:e_complaint_app/views/screens/riwayat_aduan/comment.dart';
 
 class AduanCard extends StatefulWidget {
   final String id;
@@ -14,6 +15,7 @@ class AduanCard extends StatefulWidget {
   final String profilePhoto;
   final List<String> files;
   final int totalLikes;
+  final String date;
 
   const AduanCard({
     Key? key,
@@ -27,6 +29,7 @@ class AduanCard extends StatefulWidget {
     required this.profilePhoto,
     required this.files,
     required this.totalLikes,
+    required this.date,
   }) : super(key: key);
 
   @override
@@ -40,6 +43,7 @@ class _AduanCardState extends State<AduanCard> {
   PageController _pageController = PageController();
   final _currentPageNotifier = ValueNotifier<int>(0);
   late AduankuService _aduankuService;
+
   @override
   void initState() {
     super.initState();
@@ -49,7 +53,6 @@ class _AduanCardState extends State<AduanCard> {
   }
 
   void _toggleLike() async {
-    
     bool previousLikedStatus = _isLiked;
     setState(() {
       _isLiked = !_isLiked;
@@ -60,7 +63,6 @@ class _AduanCardState extends State<AduanCard> {
       }
     });
 
-    
     try {
       await _aduankuService.toggleComplaintLike(widget.id, _isLiked);
     } catch (e) {
@@ -128,9 +130,35 @@ class _AduanCardState extends State<AduanCard> {
                         : null,
                   ),
                   SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.name,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          widget.id,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 37, 100, 235),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Text(
-                    widget.name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    widget.status,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.green,
+                    ),
                   ),
                 ],
               ),
@@ -207,68 +235,42 @@ class _AduanCardState extends State<AduanCard> {
                   ),
                 ],
               ),
-              Text(
-                widget.regency,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-              ),
-              Text(
-                widget.id,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Color.fromARGB(255, 37, 100, 235),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isExpanded = !_isExpanded;
-                  });
-                },
-                child: Text(
-                  _isExpanded
-                      ? widget.description
-                      : widget.description.length > 100
-                          ? '${widget.description.substring(0, 100)}...'
-                          : widget.description,
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                  overflow: TextOverflow.fade,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${widget.regency}, ${widget.date}',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                ],
               ),
               SizedBox(height: 5),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isExpanded = !_isExpanded;
-                  });
-                },
-                child: Text(
-                  _isExpanded ? 'Sembunyikan' : 'Selengkapnya',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blue,
-                  ),
-                ),
+              Text(
+                _isExpanded
+                    ? widget.description
+                    : widget.description.length > 100
+                        ? '${widget.description.substring(0, 100)}...'
+                        : widget.description,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                overflow: TextOverflow.fade,
               ),
-              SizedBox(height: 10),
-              Center(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
+              SizedBox(height: 5),
+              if (widget.description.length > 100)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isExpanded = !_isExpanded;
+                    });
+                  },
                   child: Text(
-                    widget.status,
+                    _isExpanded ? 'Sembunyikan' : 'Selengkapnya',
                     style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.green,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.blue,
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

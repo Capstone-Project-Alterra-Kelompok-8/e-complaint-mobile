@@ -24,7 +24,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<UserController>(context, listen: false).loadUserData();
       Provider.of<NewsController>(context, listen: false).getNews();
-      Provider.of<MyComplaintController>(context, listen: false).getMyComplaint();
+      Provider.of<MyComplaintController>(context, listen: false)
+          .getMyComplaint();
     });
   }
 
@@ -44,10 +45,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image(image: AssetImage('assets/images/logo_appbar.png')),
-            IconButton(onPressed: (){
-              Navigator.pushNamed(context, '/notification');
-            },
-              icon: Icon(Icons.notifications_none_outlined, size: 35)),
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/notification');
+                },
+                icon: Icon(Icons.notifications_none_outlined, size: 35)),
           ],
         ),
       ),
@@ -124,8 +126,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/my_complaint');
-                 
-                  
                 },
                 child: const Column(
                   children: [
@@ -204,37 +204,38 @@ class _HomePageScreenState extends State<HomePageScreen> {
             ),
           ),
           Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: newsController.isLoaded
-                    ? (latestNews.isNotEmpty
-                        ? GridView.builder(
-                            controller: ScrollController(),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                              childAspectRatio: 12 / 19,
-                            ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: latestNews.length,
-                            itemBuilder: (context, index) {
-                              return NewsCard(news: latestNews[index]);
-                            },
-                          )
-                        : const Center(
-                            child: Text(
-                              'Tidak ada berita yang ditampilkan',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ))
-                    : const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                          backgroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: newsController.isLoaded
+                ? (latestNews.isNotEmpty
+                    ? GridView.builder(
+                        controller: ScrollController(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 12 / 19,
                         ),
-                      ),
-              ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: latestNews.length,
+                        itemBuilder: (context, index) {
+                          return NewsCard(news: latestNews[index]);
+                        },
+                      )
+                    : const Center(
+                        child: Text(
+                          'Tidak ada berita yang ditampilkan',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ))
+                : const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+          ),
         ],
       ),
       extendBody: true,
