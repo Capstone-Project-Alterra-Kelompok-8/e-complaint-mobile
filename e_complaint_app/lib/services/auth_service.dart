@@ -29,7 +29,7 @@ class RegisterUserService {
   }
 
   Future<void> sendOtp(String email) async {
-    final String url = '$_baseUrl/users/send-otp';
+    final String url = '$_baseUrl/users/register/send-otp';
     debugPrint('Sending OTP to: $email using URL: $url');
 
     try {
@@ -53,7 +53,7 @@ class RegisterUserService {
   }
 
   Future<void> verifyOtp(String email, String otp) async {
-    final String url = '$_baseUrl/users/verify-otp';
+    final String url = '$_baseUrl/users/register/verify-otp';
     debugPrint('Verifying OTP to: $email using URL: $url');
 
     try {

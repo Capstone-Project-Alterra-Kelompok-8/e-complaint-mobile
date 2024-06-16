@@ -37,6 +37,33 @@ class UserController with ChangeNotifier {
     }
   }
 
+  Future<void> changePassword(String newPassword, confirmNewPassword) async {
+    try {
+      if (newPassword.isEmpty) {
+        throw Exception('New password cannot be empty');
+      }
+      await _userService.changePassword(newPassword, confirmNewPassword);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('error $e');
+      throw e;
+    }
+  }
+
+  Future<void> changeProfile(String name, telephone_number, email) async {
+    try{
+      if (name.isEmpty && email.isEmpty && telephoneNumber.isEmpty){
+        throw Exception('Name, telephone number and email cannot be empty');
+      }
+      await _userService.changeProfile(name, telephone_number, email);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('error $e');
+      throw e;
+    }
+  }
+
+
 
   String get name => _user?.name ?? '';
   String get email => _user?.email ?? '';

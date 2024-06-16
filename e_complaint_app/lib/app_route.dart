@@ -1,7 +1,7 @@
 import 'package:e_complaint_app/views/screens/auth/splashscreen.dart';
 import 'package:e_complaint_app/views/screens/customer_services/chat_admin.dart';
-import 'package:e_complaint_app/views/screens/customer_services/chat_bot.dart';
 import 'package:e_complaint_app/views/screens/form_aduan/form_aduan.dart';
+import 'package:e_complaint_app/views/screens/home/chanepassword_screen.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/my_complaint_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/create_new_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/forget_password_screen.dart';
@@ -25,6 +25,7 @@ class AppRoute {
     '/verifikasi_link' : (context) => VerifikasiLink(),
     '/verifikasi_otp' : (context) => VerifikasiOtp(),
     '/new_password' : (context) => NewPasswordScreen(),
+    '/change_password_profile' : (context) => ChangePasswordProfileScreen(),
     '/news' :(context) => NewsScreen(),
     '/forgot_password' : (context) => ForgotPasswordScreen(),
     '/notification' : (context) => NotificationScreen(),
@@ -36,7 +37,6 @@ class AppRoute {
     '/form_aduan' : (context) => FormAduan(),
     '/riwayat_aduan' : (context) => RiwayatAduan(),
     '/chat_admin' :(context) => ChatAdmin(),
-    '/chat_bot' :(context) => ChatBot(),
   
   };
 }

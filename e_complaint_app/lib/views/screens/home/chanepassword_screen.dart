@@ -1,7 +1,9 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/home/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChangePasswordProfileScreen extends StatefulWidget {
   const ChangePasswordProfileScreen({super.key});
@@ -22,26 +24,26 @@ class _ChangePasswordProfileScreenState
   }
 
   TextEditingController newPasswordController = TextEditingController();
-  TextEditingController repaetNewPasswordController = TextEditingController();
+  TextEditingController repeatNewPasswordController = TextEditingController();
 
   bool get _isButtonEnabled {
     return newPasswordController.text.isNotEmpty &&
-        repaetNewPasswordController.text.isNotEmpty;
+        repeatNewPasswordController.text.isNotEmpty;
   }
 
   @override
   void initState() {
     super.initState();
     newPasswordController.addListener(_updateButtonState);
-    repaetNewPasswordController.addListener(_updateButtonState);
+    repeatNewPasswordController.addListener(_updateButtonState);
   }
 
   @override
   void dispose() {
     newPasswordController.removeListener(_updateButtonState);
     newPasswordController.dispose();
-    repaetNewPasswordController.removeListener(_updateButtonState);
-    repaetNewPasswordController.dispose();
+    repeatNewPasswordController.removeListener(_updateButtonState);
+    repeatNewPasswordController.dispose();
     super.dispose();
   }
 
@@ -51,6 +53,7 @@ class _ChangePasswordProfileScreenState
 
   @override
   Widget build(BuildContext context) {
+    final userController = Provider.of<UserController>(context);
     return Scaffold(
       appBar: const CurvedAppBar(),
       body: Padding(
@@ -135,7 +138,7 @@ class _ChangePasswordProfileScreenState
                   ],
                 ),
                 child: TextField(
-                  controller: repaetNewPasswordController,
+                  controller: repeatNewPasswordController,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(16),
                     hintText: 'Masukan Ulang Kata Sandi Baru',
@@ -168,7 +171,11 @@ class _ChangePasswordProfileScreenState
                 width: double.infinity,
                 child: ElevatedButton(
                     onPressed: _isButtonEnabled
-                        ? () {
+                        ? () async {
+                            await userController.changePassword(
+                                newPasswordController.text,
+                                repeatNewPasswordController.text);
+
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {

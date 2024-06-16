@@ -269,20 +269,21 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                   width: 140,
                   height: 52,
                   child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/change_profile_input');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorCollections.buttonColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+                    onPressed: () async {
+                      await userController.changeProfile(_namaController.text,
+                          _telephoneController.text, _emailController.text);
+
+                      Navigator.pushNamed(context, '/home');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorCollections.buttonColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                      child: TextButton(
-                        child: Text('Simpan',
-                            style: HomeTextCollections.textButtonChangeProfile),
-                        onPressed: () {},
-                      )),
+                    ),
+                    child: Text('Simpan',
+                        style: HomeTextCollections.textButtonChangeProfile),
+                  ),
                 ),
               ],
             ),

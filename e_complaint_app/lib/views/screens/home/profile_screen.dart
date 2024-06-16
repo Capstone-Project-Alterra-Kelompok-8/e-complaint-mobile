@@ -3,9 +3,6 @@ import 'package:e_complaint_app/controllers/auth_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
-import 'package:e_complaint_app/views/screens/home/aboutapp_screen.dart';
-import 'package:e_complaint_app/views/screens/home/chanepassword_screen.dart';
-import 'package:e_complaint_app/views/screens/home/changeprofile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
