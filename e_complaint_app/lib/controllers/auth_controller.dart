@@ -1,3 +1,4 @@
+import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/services/login_service.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +110,6 @@ class RegisterAuthController with ChangeNotifier {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('OTP verification failed'),
-            
           ),
         );
       } finally {
@@ -127,6 +127,170 @@ class RegisterAuthController with ChangeNotifier {
       );
     }
   }
+
+  Future<void> sendOtpForgotPassword(BuildContext context, String email) async {
+    _isLoading = true;
+    notifyListeners();
+    if (email.isNotEmpty) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await _registerUserService.sendOtpForgotPassword(email);
+        await prefs.setString('email', email);
+        Navigator.pushNamed(context, '/verifikasi_otp_forgot_password');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP sent successfully'),
+          ),
+        );
+        debugPrint('OTP sent successfully');
+      } catch (e) {
+        debugPrint('Failed to send OTP: $e');
+        _isLoading = false;
+        notifyListeners();
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<String?> _getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email');
+  }
+
+  Future<void> verifyOtpForgotPassword(BuildContext context, String otp) async {
+    _isLoading = true;
+    notifyListeners();
+    final email = await _getEmail();
+    if (email != null && otp.isNotEmpty) {
+      try {
+        await _registerUserService.verifyOtpForgotPassword(email, otp);
+        debugPrint('OTP verified successfully');
+        Navigator.pushReplacementNamed(context, '/new_password');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP verified successfully'),
+          ),
+        );
+      } catch (e) {
+        _isLoading = false;
+        notifyListeners();
+        debugPrint('OTP verification failed: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP verification failed'),
+          ),
+        );
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    } else {
+      debugPrint('Failed to verify');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to verify'),
+        ),
+      );
+    }
+  }
+
+  Future<void> changePasswordForgotPassword(
+      BuildContext context, String newPassword) async {
+    _isLoading = true;
+    notifyListeners();
+    final email = await _getEmail();
+    if (email != null) {
+      try {
+        if (newPassword.isEmpty) {
+          throw Exception('New password cannot be empty');
+        }
+        await _registerUserService.changePasswordForgotPassword(
+            email, newPassword);
+        notifyListeners();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password changed successfully'),
+          ),
+        );
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/successmark.png',
+                      width: 100,
+                      height: 100,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Kata Sandi diubah!',
+                      style:
+                          TextStyle(fontSize: 26, fontWeight: FontWeight.w700),
+                    ),
+                    const Text('Kata sandi anda telah'),
+                    const Text('berhasil diubah'),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorCollections.buttonColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: const Text(
+                        'Kembali ke masuk',
+                        style: TextStyle(
+                          color: ColorCollections.textSecondaryColor,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      } catch (e) {
+        _isLoading = false;
+        notifyListeners();
+        debugPrint('Error changing password: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error changing password: $e'),
+          ),
+        );
+        throw e;
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    } else {
+      _isLoading = false;
+      notifyListeners();
+      debugPrint('No email found in shared preferences');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No email found, please try again'),
+        ),
+      );
+    }
+  }
 }
 
 class LoginAuthController with ChangeNotifier {
@@ -135,32 +299,6 @@ class LoginAuthController with ChangeNotifier {
   final TextEditingController passwordController = TextEditingController();
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  // bool _isLoginButtonEnabled = false;
-
-  // LoginController() {
-  //   emailController.addListener(_updateButtonState);
-  //   passwordController.addListener(_updateButtonState);
-  // }
-
-  // bool get isLoginButtonEnabled => _isLoginButtonEnabled;
-
-  // void _updateButtonState() {
-  //   final isEnabled =
-  //       emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
-  //   if (_isLoginButtonEnabled != isEnabled) {
-  //     _isLoginButtonEnabled = isEnabled;
-  //     notifyListeners();
-  //   }
-  // }
-
-  // @override
-  // void dispose() {
-  //   emailController.removeListener(_updateButtonState);
-  //   passwordController.removeListener(_updateButtonState);
-  //   emailController.dispose();
-  //   passwordController.dispose();
-  //   super.dispose();
-  // }
 
   Future<void> login(
       BuildContext context, String email, String password) async {

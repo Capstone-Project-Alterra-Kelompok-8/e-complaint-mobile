@@ -40,257 +40,282 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
     _namaController.text = userController.name;
     _telephoneController.text = userController.telephoneNumber;
     _emailController.text = userController.email;
+    final isLoading = Provider.of<UserController>(context).isLoading;
 
     return Scaffold(
       appBar: const CurvedAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 23, right: 23),
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Center(
-              child: Text(
-                'Ubah Profile',
-                style: HomeTextCollections.headerChangeProfile,
-              ),
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            Center(
-              child: Stack(
-                children: [
-                  const CircleAvatar(
-                    radius: 75,
-                    backgroundColor: ColorCollections.primaryColor,
-                    foregroundColor: ColorCollections.backgroundColor,
-                    child: Icon(Icons.person, size: 75),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 23, right: 23),
+            child: ListView(
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                Center(
+                  child: Text(
+                    'Ubah Profile',
+                    style: HomeTextCollections.headerChangeProfile,
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        // Implementasikan logika untuk ganti foto profil
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.25),
-                              offset: const Offset(0, 2),
-                              blurRadius: 4,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Center(
+                  child: Stack(
+                    children: [
+                      const CircleAvatar(
+                        radius: 75,
+                        backgroundColor: ColorCollections.primaryColor,
+                        foregroundColor: ColorCollections.backgroundColor,
+                        child: Icon(Icons.person, size: 75),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            // Implementasikan logika untuk ganti foto profil
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  offset: const Offset(0, 2),
+                                  blurRadius: 4,
+                                ),
+                              ],
                             ),
-                          ],
+                            child: const Icon(
+                              Icons.camera_alt,
+                              color: ColorCollections.primaryColor,
+                              size: 30,
+                            ),
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: ColorCollections.primaryColor,
-                          size: 30,
-                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                const Gap(10),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Nama',
+                    style: LoginTextCollections.headingThree,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: TextFormField(
+                    controller: _namaController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(16),
+                      hintText: 'Nama',
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            const Gap(10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Nama',
-                style: LoginTextCollections.headingThree,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25),
-                    spreadRadius: 0,
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: _namaController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintText: 'Nama',
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nama field required';
+                      }
+                      return null;
+                    },
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Nama field required';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const Gap(10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Nomor Handphone',
-                style: LoginTextCollections.headingThree,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25),
-                    spreadRadius: 0,
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: _telephoneController,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintText: 'Nomor Handphone',
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
+                const Gap(10),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Nomor Handphone',
+                    style: LoginTextCollections.headingThree,
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'No Handphone field required';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const Gap(10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Email',
-                style: LoginTextCollections.headingThree,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25),
-                    spreadRadius: 0,
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintText: 'Email',
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
+                Container(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Email field required';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 100,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                  width: 140,
-                  height: 52,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/change_profile_input');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
                       ),
-                      child: TextButton(
-                        child: Text('Batal',
-                            style: HomeTextCollections.textButtonChangeProfile),
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, '/change_profile');
+                    ],
+                  ),
+                  child: TextFormField(
+                    controller: _telephoneController,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(16),
+                      hintText: 'Nomor Handphone',
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'No Handphone field required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const Gap(10),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Email',
+                    style: LoginTextCollections.headingThree,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(16),
+                      hintText: 'Email',
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email field required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      width: 140,
+                      height: 52,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, '/change_profile_input');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          child: TextButton(
+                            child: Text('Batal',
+                                style: HomeTextCollections
+                                    .textButtonChangeProfile),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/change_profile');
+                            },
+                          )),
+                    ),
+                    SizedBox(
+                      width: 140,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await userController.changeProfile(
+                              _namaController.text,
+                              _telephoneController.text,
+                              _emailController.text);
+
+                          Navigator.pushNamed(context, '/home');
                         },
-                      )),
-                ),
-                SizedBox(
-                  width: 140,
-                  height: 52,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/change_profile_input');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorCollections.buttonColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorCollections.buttonColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
-                      ),
-                      child: TextButton(
                         child: Text('Simpan',
                             style: HomeTextCollections.textButtonChangeProfile),
-                        onPressed: () {},
-                      )),
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(
+                  height: 50,
+                )
               ],
             ),
-            const SizedBox(
-              height: 50,
-            )
-          ],
-        ),
+          ),
+          if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: SizedBox(
+                  width: 70.0,
+                  height: 70.0,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
+                    backgroundColor: Colors.white,
+                    strokeWidth: 7.0,
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
