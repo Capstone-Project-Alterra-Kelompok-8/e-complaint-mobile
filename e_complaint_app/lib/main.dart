@@ -1,5 +1,4 @@
-import 'package:e_complaint_app/screens/chat_admin.dart';
-import 'package:e_complaint_app/screens/chat_bot.dart';
+import 'screens/chat_ai.dart';
 import 'package:flutter/material.dart';
 
 void main() {

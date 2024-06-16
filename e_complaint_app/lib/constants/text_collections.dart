@@ -44,6 +44,43 @@ class TextCollections {
     letterSpacing: 0.4,
   );
 
+  // chat_ai
+  static TextStyle messageBubble = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle messageToday = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle messageProfileBot = GoogleFonts.montserrat(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w500,
+    color: ColorCollections.textPrimaryColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle messageActiveNow = GoogleFonts.montserrat(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w500,
+    color: ColorCollections.timeStampColor,
+    letterSpacing: 0.4,
+  );
+
+  static TextStyle messageType = GoogleFonts.aBeeZee(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorCollections.timeStampColor,
+    letterSpacing: 0.4,
+  );
+
+
   static TextStyle primaryFont = GoogleFonts.montserrat();
   
 }
