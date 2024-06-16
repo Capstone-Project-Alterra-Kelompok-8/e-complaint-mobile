@@ -196,7 +196,7 @@ class RegisterAuthController with ChangeNotifier {
     }
   }
 
-Future<void> changePasswordForgotPassword(
+  Future<void> changePasswordForgotPassword(
       BuildContext context, String newPassword) async {
     _isLoading = true;
     notifyListeners();
@@ -276,6 +276,9 @@ Future<void> changePasswordForgotPassword(
           ),
         );
         throw e;
+      } finally {
+        _isLoading = false;
+        notifyListeners();
       }
     } else {
       _isLoading = false;
@@ -288,7 +291,6 @@ Future<void> changePasswordForgotPassword(
       );
     }
   }
-
 }
 
 class LoginAuthController with ChangeNotifier {
@@ -297,32 +299,6 @@ class LoginAuthController with ChangeNotifier {
   final TextEditingController passwordController = TextEditingController();
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  // bool _isLoginButtonEnabled = false;
-
-  // LoginController() {
-  //   emailController.addListener(_updateButtonState);
-  //   passwordController.addListener(_updateButtonState);
-  // }
-
-  // bool get isLoginButtonEnabled => _isLoginButtonEnabled;
-
-  // void _updateButtonState() {
-  //   final isEnabled =
-  //       emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
-  //   if (_isLoginButtonEnabled != isEnabled) {
-  //     _isLoginButtonEnabled = isEnabled;
-  //     notifyListeners();
-  //   }
-  // }
-
-  // @override
-  // void dispose() {
-  //   emailController.removeListener(_updateButtonState);
-  //   passwordController.removeListener(_updateButtonState);
-  //   emailController.dispose();
-  //   passwordController.dispose();
-  //   super.dispose();
-  // }
 
   Future<void> login(
       BuildContext context, String email, String password) async {
