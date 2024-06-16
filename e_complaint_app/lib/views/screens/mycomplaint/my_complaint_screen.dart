@@ -104,7 +104,7 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
     );
   }
 
- Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
+Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
   return ListTile(
     leading: Radio<String>(
       value: status,
@@ -115,11 +115,9 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
         });
       },
       activeColor: color,
-      autofocus: true,
-    
       fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
         if (states.contains(MaterialState.selected)) {
-          return color;
+          return color; // Color when selected
         }
         return Colors.orange; // Default color for unselected state
       }),
@@ -133,6 +131,7 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
     title: Text(status, style: textStyle),
   );
 }
+
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +154,10 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
                   style: TextCollections.titleFont,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.candlestick_chart_outlined),
+                  icon: ImageIcon(
+                    const AssetImage('assets/images/icon_filter.png'),
+                    size: 40,
+                  ),
                   onPressed: _showFilterBottomSheet,
                 ),
               ],

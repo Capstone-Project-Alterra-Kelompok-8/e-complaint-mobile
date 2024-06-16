@@ -88,10 +88,13 @@ class CurvedAppBarMyComplaint extends StatelessWidget implements PreferredSizeWi
           top: 20,
           right: 0,
           child: IconButton(
-            icon: const Icon(Icons.mark_unread_chat_alt_rounded),
-            onPressed: () {
-              Navigator.pushNamed(context, '/chat_admin');
-            },
+                  icon: ImageIcon(
+                    const AssetImage('assets/images/Chat_plus.png'),
+                    size: 40,
+                  ),
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/chat_admin');
+                  },
           ),
         ),
       ],
