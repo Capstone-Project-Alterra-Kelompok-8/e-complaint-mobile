@@ -13,4 +13,9 @@ class ColorCollections {
   static const Color bubleTextColor = Color(0xFFFEF08A);
   static const Color activeTextColor = Color(0xFFF797C7B);
   static const Color timeStampColor = Color(0xFFF6B7280);
+  static const Color textCreateNow = Color(0xFF404969);
+  static const Color profileButtonColor = Color(0xFFCFCFFC);
+  static const Color disableButtonColor = Color(0xFF79747E);
+  static const Color disableAuthButtonColor = Color(0xFFECEAF4);
+  static const Color disableButtonTextColor = Color(0xFF6750A4);
 }
