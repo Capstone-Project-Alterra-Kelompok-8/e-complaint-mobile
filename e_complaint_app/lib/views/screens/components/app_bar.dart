@@ -29,7 +29,7 @@ class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         Positioned(
-          top: 20,
+          top: 40,
           left: 0,
           child: IconButton(
             icon: const Icon(Icons.arrow_back_outlined),
@@ -75,7 +75,7 @@ class CurvedAppBarMyComplaint extends StatelessWidget implements PreferredSizeWi
           ),
         ),
         Positioned(
-          top: 20,
+          top: 40,
           left: 0,
           child: IconButton(
             icon: const Icon(Icons.arrow_back_outlined),
@@ -85,7 +85,7 @@ class CurvedAppBarMyComplaint extends StatelessWidget implements PreferredSizeWi
           ),
         ),
         Positioned(
-          top: 20,
+          top: 40,
           right: 0,
           child: IconButton(
                   icon: ImageIcon(
