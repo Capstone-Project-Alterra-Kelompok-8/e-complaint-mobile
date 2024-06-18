@@ -1,7 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
-import 'package:e_complaint_app/views/screens/home/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,8 +26,7 @@ class _ChangePasswordProfileScreenState
   TextEditingController repeatNewPasswordController = TextEditingController();
 
   bool get _isButtonEnabled {
-    return newPasswordController.text.isNotEmpty &&
-        repeatNewPasswordController.text.isNotEmpty;
+    return newPasswordController.text == repeatNewPasswordController.text && newPasswordController.text.isNotEmpty && repeatNewPasswordController.text.isNotEmpty;
   }
 
   @override

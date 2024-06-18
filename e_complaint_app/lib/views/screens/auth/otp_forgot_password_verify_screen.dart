@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VerifikasiOtpForgotPassword extends StatefulWidget {
   const VerifikasiOtpForgotPassword({super.key});
@@ -126,11 +127,18 @@ class _VerifikasiOtpForgotPasswordState
                                 Text('* Tidak menerima kode OTP?',
                                     style: HomeTextCollections.bottomDescOtp),
                                 TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     final sendOtpController =
                                         Provider.of<RegisterAuthController>(
                                             context,
                                             listen: false);
+                                    final prefs =
+                                        await SharedPreferences.getInstance();
+                                    final email =
+                                        prefs.getString('email') ?? '';
+
+                                    await sendOtpController
+                                        .sendOtpForgotPassword(context, email);
                                   },
                                   child: Text(
                                     'Kirim Ulang',

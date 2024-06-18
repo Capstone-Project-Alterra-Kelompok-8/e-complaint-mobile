@@ -44,7 +44,7 @@ class UserService {
     }
   }
 
-  Future<void> changePassword(String newPassword, confirmNewPassword) async {
+  Future<void> changePassword(String newPassword) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     const String _baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1';
@@ -53,7 +53,6 @@ class UserService {
         '$_baseUrl/users/change-password',
         data: jsonEncode({
           'new_password': newPassword,
-          'confirm_new_password': newPassword,
         }),
         options: Options(
           headers: {

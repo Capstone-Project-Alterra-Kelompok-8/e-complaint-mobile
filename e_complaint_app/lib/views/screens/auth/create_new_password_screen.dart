@@ -2,7 +2,6 @@ import 'package:e_complaint_app/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/controllers/user_controller.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({super.key});
@@ -17,13 +16,26 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       TextEditingController();
   bool _isButtonEnabled = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isObscured = true;
+  bool _isObscuredConfirm = true;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isObscured = !_isObscured;
+    });
+  }
+
+  void _togglePasswordVisibilityConfirm() {
+    setState(() {
+      _isObscuredConfirm = !_isObscuredConfirm;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     passwordController.addListener(_validateForm);
-    confirmPasswordController.addListener(
-        _validateForm); // Add listener to confirmPasswordController
+    confirmPasswordController.addListener(_validateForm);
   }
 
   void _validateForm() {
@@ -37,8 +49,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   @override
   void dispose() {
     passwordController.dispose();
-    confirmPasswordController
-        .dispose(); // Dispose the confirmPasswordController
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -111,7 +122,17 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
                         ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscured
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                          onPressed: _togglePasswordVisibility,
+                        ),
                       ),
+                      obscureText: _isObscured,
                     ),
                   ),
                   const SizedBox(
@@ -156,7 +177,17 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
                         ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscuredConfirm
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                          onPressed: _togglePasswordVisibilityConfirm,
+                        ),
                       ),
+                      obscureText: _isObscuredConfirm,
                     ),
                   ),
                   const SizedBox(

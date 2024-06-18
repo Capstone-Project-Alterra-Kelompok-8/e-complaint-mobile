@@ -47,7 +47,7 @@ class UserController with ChangeNotifier {
       if (newPassword.isEmpty) {
         throw Exception('New password cannot be empty');
       }
-      await _userService.changePassword(newPassword, confirmNewPassword);
+      await _userService.changePassword(newPassword);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -140,6 +140,6 @@ class UserController with ChangeNotifier {
   String get email => _user?.email ?? '';
   String get telephoneNumber => _user?.telephoneNumber ?? '';
   String get profilePhoto =>
-      _user?.profilePhoto ??
-      'https://storage.googleapis.com/e-complaint-assets/complaint_files/example1.jpg';
+      'https://storage.googleapis.com/e-complaint-assets/' +
+      (_user?.profilePhoto ?? 'complaint_files/example1.jpg');
 }

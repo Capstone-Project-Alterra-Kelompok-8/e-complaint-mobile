@@ -1,9 +1,11 @@
-import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:e_complaint_app/controllers/user_controller.dart';
+import 'package:e_complaint_app/constants/constants.dart';
 
 class ChangeProfileInputScreen extends StatefulWidget {
   const ChangeProfileInputScreen({super.key});
@@ -17,6 +19,7 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+File? _profilePhoto;
 
   @override
   void initState() {
@@ -34,13 +37,22 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _profilePhoto = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final userController = Provider.of<UserController>(context);
     _namaController.text = userController.name;
     _telephoneController.text = userController.telephoneNumber;
     _emailController.text = userController.email;
-    final isLoading = Provider.of<UserController>(context).isLoading;
+    final isLoading = userController.isLoading;
 
     return Scaffold(
       appBar: const CurvedAppBar(),
@@ -50,34 +62,41 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
             padding: const EdgeInsets.only(left: 23, right: 23),
             child: ListView(
               children: [
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 Center(
                   child: Text(
                     'Ubah Profile',
                     style: HomeTextCollections.headerChangeProfile,
                   ),
                 ),
-                const SizedBox(
-                  height: 24,
-                ),
+                const SizedBox(height: 24),
                 Center(
                   child: Stack(
                     children: [
-                      const CircleAvatar(
-                        radius: 75,
-                        backgroundColor: ColorCollections.primaryColor,
-                        foregroundColor: ColorCollections.backgroundColor,
-                        child: Icon(Icons.person, size: 75),
-                      ),
+                      _profilePhoto != null
+                          ? CircleAvatar(
+                              radius: 75,
+                              backgroundImage: FileImage(_profilePhoto!),
+                            )
+                          : userController.profilePhoto.isNotEmpty
+                              ? CircleAvatar(
+                                  radius: 75,
+                                  backgroundImage:
+                                      NetworkImage(userController.profilePhoto),
+                                )
+                              : const CircleAvatar(
+                                  radius: 75,
+                                  backgroundColor:
+                                      ColorCollections.primaryColor,
+                                  foregroundColor:
+                                      ColorCollections.backgroundColor,
+                                  child: Icon(Icons.person, size: 75),
+                                ),
                       Positioned(
                         bottom: 0,
                         right: 0,
                         child: GestureDetector(
-                          onTap: () {
-                            // Implementasikan logika untuk ganti foto profil
-                          },
+                          onTap: _pickImage,
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
@@ -102,148 +121,15 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 32,
-                ),
+                const SizedBox(height: 32),
                 const Gap(10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Nama',
-                    style: LoginTextCollections.headingThree,
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.25),
-                        spreadRadius: 0,
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    controller: _namaController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(16),
-                      hintText: 'Nama',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Nama field required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+                _buildTextField(_namaController, 'Nama'),
                 const Gap(10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Nomor Handphone',
-                    style: LoginTextCollections.headingThree,
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.25),
-                        spreadRadius: 0,
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    controller: _telephoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(16),
-                      hintText: 'Nomor Handphone',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'No Handphone field required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+                _buildTextField(_telephoneController, 'Nomor Handphone',
+                    TextInputType.phone),
                 const Gap(10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Email',
-                    style: LoginTextCollections.headingThree,
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.25),
-                        spreadRadius: 0,
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(16),
-                      hintText: 'Email',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email field required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 100,
-                ),
+                _buildTextField(_emailController, 'Email'),
+                const SizedBox(height: 100),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -251,24 +137,24 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                       width: 140,
                       height: 52,
                       child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, '/change_profile_input');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/change_profile_input');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                          child: TextButton(
-                            child: Text('Batal',
-                                style: HomeTextCollections
-                                    .textButtonChangeProfile),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, '/change_profile');
-                            },
-                          )),
+                        ),
+                        child: TextButton(
+                          child: Text('Batal',
+                              style:
+                                  HomeTextCollections.textButtonChangeProfile),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, '/change_profile');
+                          },
+                        ),
+                      ),
                     ),
                     SizedBox(
                       width: 140,
@@ -276,9 +162,10 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                       child: ElevatedButton(
                         onPressed: () async {
                           await userController.changeProfile(
-                              _namaController.text,
-                              _telephoneController.text,
-                              _emailController.text);
+                            _namaController.text,
+                            _telephoneController.text,
+                            _emailController.text,
+                          );
 
                           Navigator.pushNamed(context, '/home');
                         },
@@ -294,9 +181,7 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 50,
-                )
+                const SizedBox(height: 50),
               ],
             ),
           ),
@@ -317,6 +202,45 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label,
+      [TextInputType inputType = TextInputType.text]) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: LoginTextCollections.headingThree,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.25),
+                spreadRadius: 0,
+                blurRadius: 4,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: inputType,
+            decoration: InputDecoration(
+              hintText: label,
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
