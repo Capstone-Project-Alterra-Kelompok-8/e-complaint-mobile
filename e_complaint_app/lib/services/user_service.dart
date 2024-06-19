@@ -1,8 +1,9 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:e_complaint_app/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http_parser/http_parser.dart';
 
 class UserService {
   final Dio _dio = Dio(BaseOptions(
@@ -95,6 +96,45 @@ class UserService {
       }
     } catch (e) {
       print('Error changing profile: $e');
+    }
+  }
+
+  Future<void> changeProfilePhoto(File profilePhoto) async {
+    const String baseUrl = 'https://capstone-dev.mdrizki.my.id/api/v1';
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      String fileName = profilePhoto.path.split('/').last;
+
+      if (token == null) {
+        throw Exception("Token not found");
+      }
+
+      FormData formData = FormData.fromMap({
+        'profile_photo': await MultipartFile.fromFile(profilePhoto.path,
+            filename: fileName, contentType: new MediaType("image", "jpeg")),
+      });
+
+      Response response = await _dio.put(
+        '$baseUrl/users/update-profile-photo',
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print('Profile photo changed successfully');
+      } else {
+        throw Exception(
+            'Failed to change profile photo: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error changing profile photo: $e');
+      throw Exception('Failed to change profile photo: $e');
     }
   }
 }

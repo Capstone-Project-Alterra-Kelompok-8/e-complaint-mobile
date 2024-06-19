@@ -3,6 +3,7 @@ import 'package:e_complaint_app/models/user_model.dart';
 import 'package:e_complaint_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
 class UserController with ChangeNotifier {
   final UserService _userService = UserService();
@@ -115,7 +116,8 @@ class UserController with ChangeNotifier {
     }
   }
 
-  Future<void> changeProfile(String name, telephone_number, email) async {
+  Future<void> changeProfile(
+      BuildContext context, String name, telephone_number, email) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -123,6 +125,9 @@ class UserController with ChangeNotifier {
         throw Exception('Name, telephone number and email cannot be empty');
       }
       await _userService.changeProfile(name, telephone_number, email);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Profile berhasil diperbarui'),
+      ));
 
       notifyListeners();
     } catch (e) {
@@ -133,6 +138,20 @@ class UserController with ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> pickImageAndUpload(BuildContext context, File file) async {
+    try {
+      await _userService.changeProfilePhoto(file);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Profile berhasil diperbarui'),
+      ));
+    } catch (e) {
+      debugPrint('error $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Gagal mengunggah foto profil'),
+      ));
     }
   }
 

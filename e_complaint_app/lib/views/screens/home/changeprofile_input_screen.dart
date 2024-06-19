@@ -1,9 +1,9 @@
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:provider/provider.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/constants/constants.dart';
 
@@ -19,7 +19,7 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-File? _profilePhoto;
+  File? _profilePhoto;
 
   @override
   void initState() {
@@ -38,7 +38,8 @@ File? _profilePhoto;
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _profilePhoto = File(pickedFile.path);
@@ -100,19 +101,13 @@ File? _profilePhoto;
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  offset: const Offset(0, 2),
-                                  blurRadius: 4,
-                                ),
-                              ],
+                              borderRadius: BorderRadius.circular(12),
+                              color: Color.fromARGB(255, 233, 237, 247),
+                              
                             ),
                             child: const Icon(
-                              Icons.camera_alt,
-                              color: ColorCollections.primaryColor,
+                              Icons.camera_alt_outlined,
+                              color: ColorCollections.textPrimaryColor,
                               size: 30,
                             ),
                           ),
@@ -138,21 +133,17 @@ File? _profilePhoto;
                       height: 52,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/change_profile_input');
+                          Navigator.pushReplacementNamed(
+                              context, '/change_profile');
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: TextButton(
-                          child: Text('Batal',
-                              style:
-                                  HomeTextCollections.textButtonChangeProfile),
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/change_profile');
-                          },
+                        child: Text(
+                          'Batal',
+                          style: HomeTextCollections.textButtonChangeProfile,
                         ),
                       ),
                     ),
@@ -162,10 +153,16 @@ File? _profilePhoto;
                       child: ElevatedButton(
                         onPressed: () async {
                           await userController.changeProfile(
+                            context,
                             _namaController.text,
                             _telephoneController.text,
                             _emailController.text,
                           );
+
+                          if (_profilePhoto != null) {
+                            await userController.pickImageAndUpload(
+                                context, _profilePhoto!);
+                          }
 
                           Navigator.pushNamed(context, '/home');
                         },
@@ -175,8 +172,10 @@ File? _profilePhoto;
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: Text('Simpan',
-                            style: HomeTextCollections.textButtonChangeProfile),
+                        child: Text(
+                          'Simpan',
+                          style: HomeTextCollections.textButtonChangeProfile,
+                        ),
                       ),
                     ),
                   ],
