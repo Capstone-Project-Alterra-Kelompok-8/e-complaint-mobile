@@ -163,8 +163,6 @@ class _ChangeProfileInputScreenState extends State<ChangeProfileInputScreen> {
                             await userController.pickImageAndUpload(
                                 context, _profilePhoto!);
                           }
-
-                          Navigator.pushNamed(context, '/home');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorCollections.buttonColor,

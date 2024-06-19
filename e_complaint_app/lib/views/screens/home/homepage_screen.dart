@@ -6,7 +6,6 @@ import 'package:e_complaint_app/models/news_model.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
 import 'package:e_complaint_app/views/screens/news/components/news_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -32,7 +31,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Widget build(BuildContext context) {
     final newsController = Provider.of<NewsController>(context);
     final userController = Provider.of<UserController>(context);
- 
+
     List<NewsModel> latestNews = newsController.getLatestNews(6);
 
     return Scaffold(
@@ -98,24 +97,24 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
           // SEARCH WIDGET SECTION
           const SizedBox(
-            height: 10,
+            height: 50,
           ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 10, right: 23, left: 23, bottom: 36),
-            child: TextField(
-              decoration: InputDecoration(
-                  fillColor: ColorCollections.secondaryColor,
-                  filled: true,
-                  labelText: 'Cari...',
-                  prefixIcon: const Icon(Icons.search),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none)),
-            ),
-          ),
+          // Padding(
+          //   padding:
+          //       const EdgeInsets.only(top: 10, right: 23, left: 23, bottom: 36),
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //         fillColor: ColorCollections.secondaryColor,
+          //         filled: true,
+          //         labelText: 'Cari...',
+          //         prefixIcon: const Icon(Icons.search),
+          //         contentPadding:
+          //             const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          //         border: OutlineInputBorder(
+          //             borderRadius: BorderRadius.circular(8),
+          //             borderSide: BorderSide.none)),
+          //   ),
+          // ),
 
           // FITURE HOMEPAGE SECTION
           Row(

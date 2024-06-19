@@ -1,4 +1,3 @@
-import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/services/login_service.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +85,12 @@ class RegisterAuthController with ChangeNotifier {
         debugPrint('Failed to send OTP: $e');
       }
     } else {
-      debugPrint('Email field must be filled');
+      debugPrint('Failed to send OTP');
+            ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to Send OTP'),
+        ),
+      );
     }
   }
 
@@ -214,58 +218,7 @@ class RegisterAuthController with ChangeNotifier {
             content: Text('Password changed successfully'),
           ),
         );
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/successmark.png',
-                      width: 100,
-                      height: 100,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Kata Sandi diubah!',
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.w700),
-                    ),
-                    const Text('Kata sandi anda telah'),
-                    const Text('berhasil diubah'),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorCollections.buttonColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      child: const Text(
-                        'Kembali ke masuk',
-                        style: TextStyle(
-                          color: ColorCollections.textSecondaryColor,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
+        Navigator.pushNamed(context, '/success_forgot_password');
       } catch (e) {
         _isLoading = false;
         notifyListeners();

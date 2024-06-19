@@ -125,6 +125,8 @@ class UserController with ChangeNotifier {
         throw Exception('Name, telephone number and email cannot be empty');
       }
       await _userService.changeProfile(name, telephone_number, email);
+
+      Navigator.pushNamed(context, '/home');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Profile berhasil diperbarui'),
       ));
@@ -144,9 +146,6 @@ class UserController with ChangeNotifier {
   Future<void> pickImageAndUpload(BuildContext context, File file) async {
     try {
       await _userService.changeProfilePhoto(file);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Profile berhasil diperbarui'),
-      ));
     } catch (e) {
       debugPrint('error $e');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
