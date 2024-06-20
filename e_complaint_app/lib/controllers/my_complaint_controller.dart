@@ -126,5 +126,68 @@ class MyComplaintController extends ChangeNotifier {
 
 
 class MyComplaintCommentController extends ChangeNotifier {
+  final MyComplaintCommentService _myComplaintCommentService = MyComplaintCommentService();
+  List<CommentModel> _myComplaintsComment = [];
+  bool _isLoaded = false;
+  String _errorMessage = '';
+
+  List<CommentModel> get myComplaintsComment => _myComplaintsComment;
+  bool get isLoaded => _isLoaded;
+  String get errorMessage => _errorMessage;
   
+  Future<void> getMyComplaintComment(String complaintId) async {
+     try {
+
+      final response = await _myComplaintCommentService.getMyComplaintComment(complaintId);
+      print('Response: $response');
+
+      if (response != null && response.statusCode == 200) {
+        _myComplaintsComment.clear();
+        final Map<String, dynamic> responseData = response.data;
+        if (responseData.containsKey('data')) {
+          final List<dynamic> myComplaintCommentData = responseData['data'];
+
+          myComplaintCommentData.forEach((item) {
+            final myComplaintComment = CommentModel.fromJson(item);
+            _myComplaintsComment.add(myComplaintComment);
+            
+          });
+          _errorMessage = '';
+          print('My complaints comment loaded successfully');
+        } else {
+          _errorMessage = 'Data field is missing in the response';
+        }
+      } else {
+        _errorMessage = 'Failed to load My Complaints Comment: ${response?.statusCode}';
+        print('Response is empty or request failed: ${response?.statusCode}');
+      }
+    } catch (e) {
+      _errorMessage = 'Error: $e';
+      print('Error: $e');
+    } finally {
+      _isLoaded = true; // Only update status if request is completed
+      notifyListeners();
+    }
+
+  }
+
+  Future<void> postMyComplaintComment(String complaintId, String comment) async {
+    try {
+      final response = await _myComplaintCommentService.postMyComplaintComment(complaintId, comment);
+      if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+        await getMyComplaintComment(complaintId); // Refresh comments after posting a new one
+        _errorMessage = ''; // Clear error message if successful
+        print('Comment posted successfully');
+      } else {
+        _errorMessage = 'Failed to post comment: ${response?.statusCode}';
+        print('Failed to post comment: ${response?.statusCode}');
+      }
+    } catch (e) {
+      _errorMessage = 'Error: $e';
+      print('Error: $e');
+    } finally {
+      notifyListeners();
+    }
+  }
+    
 }

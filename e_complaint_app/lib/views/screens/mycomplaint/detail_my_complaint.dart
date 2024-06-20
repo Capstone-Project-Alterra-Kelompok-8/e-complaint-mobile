@@ -1,5 +1,6 @@
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/mycomplaint/components/comment.dart';
 import 'package:e_complaint_app/views/screens/mycomplaint/progress_my_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:e_complaint_app/constants/constants.dart';
@@ -151,20 +152,18 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                           ),
                           IconButton(
                             icon: Icon(Icons.comment_outlined),
-                            onPressed: () {},
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context, 
+                                builder: (context) => CommentMyComplaint(complaintId: widget.complaint.id));
+                            },
                           ),
                           IconButton(
                             onPressed: () {},
                             icon: Row(
                               children: [
                                 Icon(Icons.favorite_border),
-                                Text(
-                                  '10Rb',
-                                  style: TextCollections.headingThree.copyWith(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
+                                
                               ],
                             ),
                           ),

@@ -236,33 +236,54 @@ class MyComplaintProsesModel {
 }
 
 class Admin {
+  final int id;
   final String name;
+  final String profilePhoto;
 
-  Admin({required this.name});
+  Admin({
+    required this.id,
+    required this.name,
+    required this.profilePhoto,
+  });
 
   factory Admin.fromJson(Map<String, dynamic> json) {
-    return Admin(name: json['name'] ?? '');
+    return Admin(
+      id: json['id']??0,
+      name: json['name']??'',
+      profilePhoto: json['profile_photo']??'',
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
+      'profile_photo': profilePhoto,
     };
+  }
+
+  String get url {
+    if (profilePhoto.startsWith('http')) {
+      return profilePhoto;
+    }
+    return 'https://storage.googleapis.com/e-complaint-assets/$profilePhoto';
   }
 }
 
 class CommentModel {
   final int id;
   final String complaintId;
-  final User user;
-  final String message;
+  final User? user;
+  final Admin? admin;
+  final String comment;
   final String date;
 
   CommentModel({
     required this.id,
     required this.complaintId,
     required this.user,
-    required this.message,
+    required this.admin,
+    required this.comment,
     required this.date,
   });
 
@@ -270,9 +291,21 @@ class CommentModel {
     return CommentModel(
       id: json['id']??'',
       complaintId: json['complaint_id']??'',
-      user: User.fromJson(json['user']),
-      message: json['message'],
+      user: json.containsKey('user') ? User.fromJson(json['user']) : null,
+      admin: json.containsKey('admin') ? Admin.fromJson(json['admin']) : null,
+      comment: json['comment']??'',
       date: json['updated_at']??'',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'complaint_id': complaintId,
+      'user': user?.toJson(),
+      'admin': admin?.toJson(),
+      'comment': comment,
+      'updated_at': date,
+    };
   }
 }

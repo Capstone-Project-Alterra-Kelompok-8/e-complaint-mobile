@@ -38,14 +38,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => FormAduanController()),
         ChangeNotifierProvider(create: (context) => NewsCommentController()),
         ChangeNotifierProvider(create: (context) => RiwayatAduanController()),
+        ChangeNotifierProvider(create: (context) => MyComplaintCommentController()),
+
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           useMaterial3: true,
         ),
+        debugShowCheckedModeBanner: false,
         home: SplashScreen(
-            loggedIn: loggedIn), // Set SplashScreen as the initial screen
+        loggedIn: loggedIn), // Set SplashScreen as the initial screen
         routes: AppRoute.routes,
       ),
     );

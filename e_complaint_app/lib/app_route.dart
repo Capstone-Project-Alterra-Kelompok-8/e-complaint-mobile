@@ -42,7 +42,7 @@ class AppRoute {
     '/riwayat_aduan' : (context) => RiwayatAduan(),
     '/chat_admin' :(context) => ChatAdmin(),
     '/chat_bot' :(context) => ChatBot(),
-    '/AboutApp' : (context) => const AboutAppScreen(),
+    '/about_App' : (context) => AboutAppScreen(),
   
   };
 }
