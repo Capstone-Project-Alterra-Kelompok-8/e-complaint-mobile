@@ -17,7 +17,7 @@ class _MyComplaintScreenState extends State<MyComplaintScreen> {
     'Pending': Colors.grey,
     'Selesai': Colors.green,
     'Ditolak': Colors.red,
-    'On Progres': Colors.orange,
+    'On Progress': Colors.orange,
     'Verifikasi': Colors.blue,
   };
 

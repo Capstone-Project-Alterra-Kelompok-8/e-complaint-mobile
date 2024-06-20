@@ -180,6 +180,8 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
         return Colors.blueAccent[700]!;
       case 'On Progress':
         return Colors.yellow[700]!;
+      case 'Ditolak':
+        return Colors.red[700]!;
       case 'Selesai':
         return Colors.green;
       default:

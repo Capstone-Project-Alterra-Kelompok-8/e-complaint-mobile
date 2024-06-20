@@ -24,7 +24,7 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
     'Pending': Colors.grey,
     'Selesai': Colors.green,
     'Ditolak': Colors.red,
-    'On Progres': Colors.orange,
+    'On Progress': Colors.orange,
     'Verifikasi': Colors.blue,
   };
 
@@ -151,7 +151,9 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                           ),
                           IconButton(
                             icon: Icon(Icons.comment_outlined),
-                            onPressed: () {},
+                            onPressed: () {
+                              
+                            },
                           ),
                           IconButton(
                             onPressed: () {},
