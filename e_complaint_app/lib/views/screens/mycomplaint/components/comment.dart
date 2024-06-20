@@ -128,7 +128,7 @@ class _CommentMyComplaintState extends State<CommentMyComplaint> {
           return ListTile(
             leading: CircleAvatar(
               backgroundImage: NetworkImage(
-                comment.user?.profilePhoto ?? comment.admin?.url ?? 'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
+                comment.user?.url ?? comment.admin?.url ?? 'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
               ),
             ),
             title: Text(comment.user?.name ?? comment.admin?.name ?? 'Anonymous'),
