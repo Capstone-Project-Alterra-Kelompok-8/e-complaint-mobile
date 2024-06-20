@@ -1,18 +1,19 @@
 import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/controllers/news_controller.dart';
+import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CommentsBottomSheet extends StatefulWidget {
-  final int newsId;
 
-  const CommentsBottomSheet({Key? key, required this.newsId}) : super(key: key);
+class CommentMyComplaint extends StatefulWidget {
+  final String complaintId;
+
+  const CommentMyComplaint({Key? key, required this.complaintId}) : super(key: key);
 
   @override
-  _CommentsBottomSheetState createState() => _CommentsBottomSheetState();
+  _CommentMyComplaintState createState() => _CommentMyComplaintState();
 }
 
-class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
+class _CommentMyComplaintState extends State<CommentMyComplaint> {
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -20,16 +21,15 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
     super.initState();
     // Fetch comments when the bottom sheet is opened
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<NewsCommentController>(context, listen: false).getNewsComment(widget.newsId.toString());
+      Provider.of<MyComplaintCommentController>(context, listen: false).getMyComplaintComment(widget.complaintId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final newsCommentController = Provider.of<NewsCommentController>(context);
-    return Consumer<NewsCommentController>(
-      builder: (context, newsCommentController, child) {
-        return Container(
+    final myComplaintCommentController = Provider.of<MyComplaintCommentController>(context);
+
+     return Container(
       padding: EdgeInsets.all(16.0),
       height: MediaQuery.of(context).size.height * 0.75,
       child: Column(
@@ -68,7 +68,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
           ),
           SizedBox(height: 10),
           Expanded(
-            child: _buildCommentsList(newsCommentController),
+            child: _buildCommentsList(myComplaintCommentController),
           ),
           SizedBox(height: 10),
           Padding(
@@ -101,7 +101,7 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
                   onPressed: () async {
                     final comment = _controller.text;
                     if (comment.isNotEmpty) {
-                      await newsCommentController.postNewsComment(widget.newsId.toString(), comment);
+                      await myComplaintCommentController.postMyComplaintComment(widget.complaintId.toString(), comment);
                       _controller.clear();
                     }
                   },
@@ -112,22 +112,19 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
         ],
       ),
     );
-      },
-    );
   }
-
-  Widget _buildCommentsList(NewsCommentController newsCommentController) {
-    if (!newsCommentController.isLoaded) {
+   Widget _buildCommentsList(MyComplaintCommentController myComplaintCommentController) {
+    if (!myComplaintCommentController.isLoaded) {
       return Center(child: CircularProgressIndicator());
-    } else if (newsCommentController.errorMessage.isNotEmpty) {
+    } else if (myComplaintCommentController.errorMessage.isNotEmpty) {
       return Center(child: Text('No comments available'));
-    } else if (newsCommentController.newsComments.isEmpty) {
+    } else if (myComplaintCommentController.myComplaintsComment.isEmpty) {
       return Center(child: Text('No comments available'));
     } else {
       return ListView.builder(
-        itemCount: newsCommentController.newsComments.length,
+        itemCount: myComplaintCommentController.myComplaintsComment.length,
         itemBuilder: (BuildContext context, int index) {
-          final comment = newsCommentController.newsComments[index];
+          final comment = myComplaintCommentController.myComplaintsComment[index];
           return ListTile(
             leading: CircleAvatar(
               backgroundImage: NetworkImage(

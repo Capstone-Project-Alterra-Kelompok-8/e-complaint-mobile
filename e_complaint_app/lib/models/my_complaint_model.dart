@@ -276,7 +276,7 @@ class CommentModel {
   final String complaintId;
   final User? user;
   final Admin? admin;
-  final String message;
+  final String comment;
   final String date;
 
   CommentModel({
@@ -284,7 +284,7 @@ class CommentModel {
     required this.complaintId,
     required this.user,
     required this.admin,
-    required this.message,
+    required this.comment,
     required this.date,
   });
 
@@ -292,9 +292,9 @@ class CommentModel {
     return CommentModel(
       id: json['id']??'',
       complaintId: json['complaint_id']??'',
-      user: json.containsKey('user') && json['user'] != null ? User.fromJson(json['user']) : null,
-      admin: json.containsKey('admin') && json['admin'] != null ? Admin.fromJson(json['admin']) : null,
-      message: json['message'],
+      user: json.containsKey('user') ? User.fromJson(json['user']) : null,
+      admin: json.containsKey('admin') ? Admin.fromJson(json['admin']) : null,
+      comment: json['comment']??'',
       date: json['updated_at']??'',
     );
   }
@@ -305,7 +305,7 @@ class CommentModel {
       'complaint_id': complaintId,
       'user': user?.toJson(),
       'admin': admin?.toJson(),
-      'message': message,
+      'comment': comment,
       'updated_at': date,
     };
   }

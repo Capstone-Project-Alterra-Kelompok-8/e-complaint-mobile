@@ -112,15 +112,16 @@ Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
       onChanged: (String? value) {
         setState(() {
           _selectedStatus = value;
+          
         });
       },
-      activeColor: color,
-      fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return color; // Color when selected
-        }
-        return Colors.orange; // Default color for unselected state
-      }),
+     activeColor: color,
+     fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected)) {
+            return color; // Color when selected
+          }
+          return Colors.orange; // Default color for unselected state
+        }),
       overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
         if (states.contains(MaterialState.pressed)) {
           return color.withOpacity(0.3); // Slightly transparent color when pressed

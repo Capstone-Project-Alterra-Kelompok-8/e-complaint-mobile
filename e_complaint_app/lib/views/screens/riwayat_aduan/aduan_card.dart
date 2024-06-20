@@ -173,11 +173,18 @@ class _AduanCardState extends State<AduanCard> {
                         controller: _pageController,
                         itemCount: widget.files.length,
                         itemBuilder: (context, index) {
-                          return Image.network(
-                            widget.files[index],
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          );
+                          return  widget.files[index].isNotEmpty
+                              ? Image.network(
+                                  widget.files[index],
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                )
+                              : Image.network(
+                                  'https://via.placeholder.com/150x150.png?text=No+Image',
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                );
+                          
                         },
                         onPageChanged: (index) {
                           _currentPageNotifier.value = index;

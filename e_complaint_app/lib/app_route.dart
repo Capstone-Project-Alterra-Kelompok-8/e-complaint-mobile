@@ -44,7 +44,7 @@ class AppRoute {
     '/chat_admin' :(context) => ChatAdmin(),
     '/success_forgot_password' : (context) => SuccessForgotPasswordScreen(),
     '/chat_bot' :(context) => ChatBot(),
-    '/about_App' : (context) => const AboutAppScreen(),
+    '/about_App' : (context) => AboutAppScreen(),
   
   };
 }

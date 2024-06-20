@@ -136,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/my_complaint');
+               Navigator.pushNamed(context, '/my_complaint');
             },
             child: SizedBox(
               width: double.infinity,
@@ -145,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                       Navigator.pushNamed(context, '/my_complaint');
+                      Navigator.pushNamed(context, '/my_complaint');
                     },
                     icon: const Icon(Icons.mode_comment_outlined),
                     color: ColorCollections.textPrimaryColor,
@@ -201,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                        Navigator.pushNamed(context, '/about_App');
+                       Navigator.pushNamed(context, '/about_App');
                     },
                     icon: const Icon(Icons.info),
                     color: ColorCollections.textPrimaryColor,
