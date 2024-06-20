@@ -1,4 +1,3 @@
-
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/services/chat_ai_service.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
@@ -184,6 +183,9 @@ void _sendMessage() async {
       padding: const EdgeInsets.all(10.0),
       child: Row(
         children: [
+            IconButton(onPressed: (){
+                      Navigator.pop(context);
+                    }, icon: Icon(Icons.arrow_back)),
           Stack(
             children: [
               CircleAvatar(
@@ -230,77 +232,79 @@ void _sendMessage() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CurvedAppBar(),
-      body: Column(
-        children: [
-          _buildBotProfile(),
-          Divider(color: Colors.black, thickness: 0.2,),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      _buildDateLabel("Hari ini"),
-                      const SizedBox(height: 10),
-                    ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 30.0),
+        child: Column(
+          children: [
+            _buildBotProfile(),
+            Divider(color: Colors.black, thickness: 0.2,),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _messages.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        _buildDateLabel("Hari ini"),
+                        const SizedBox(height: 10),
+                      ],
+                    );
+                  }
+                  final message = _messages[index - 1];
+                  return _buildMessageBubble(
+                    message['content']!,
+                    message['timestamp']!,
+                    message['role'] == 'user',
                   );
-                }
-                final message = _messages[index - 1];
-                return _buildMessageBubble(
-                  message['content']!,
-                  message['timestamp']!,
-                  message['role'] == 'user',
-                );
-              },
+                },
+              ),
             ),
-          ),
-          if (isLoading) const CircularProgressIndicator(),
-          Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextField(
-                            controller: _complaintController,
-                            decoration: InputDecoration(
-                              hintText: 'Type a message...',
-                              hintStyle: TextCollections.messageType,
-                              border: InputBorder.none,
+            if (isLoading) const CircularProgressIndicator(),
+            Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: TextField(
+                              controller: _complaintController,
+                              decoration: InputDecoration(
+                                hintText: 'Type a message...',
+                                hintStyle: TextCollections.messageType,
+                                border: InputBorder.none,
+                              ),
+                              style: TextStyle(fontSize: 16),
+                              maxLines: null, // Mengizinkan multiple lines
                             ),
-                            style: TextStyle(fontSize: 16),
-                            maxLines: null, // Mengizinkan multiple lines
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 1,
-                    height: 35.94,
-                    color: Colors.grey,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.send_outlined),
-                    onPressed: _sendMessage,
-                  ),
-                ],
+                    Container(
+                      width: 1,
+                      height: 35.94,
+                      color: Colors.grey,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send_outlined),
+                      onPressed: _sendMessage,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

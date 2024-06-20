@@ -3,6 +3,7 @@ import 'package:e_complaint_app/models/user_model.dart';
 import 'package:e_complaint_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
 class UserController with ChangeNotifier {
   final UserService _userService = UserService();
@@ -47,7 +48,7 @@ class UserController with ChangeNotifier {
       if (newPassword.isEmpty) {
         throw Exception('New password cannot be empty');
       }
-      await _userService.changePassword(newPassword, confirmNewPassword);
+      await _userService.changePassword(newPassword);
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -115,7 +116,8 @@ class UserController with ChangeNotifier {
     }
   }
 
-  Future<void> changeProfile(String name, telephone_number, email) async {
+  Future<void> changeProfile(
+      BuildContext context, String name, telephone_number, email) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -123,6 +125,11 @@ class UserController with ChangeNotifier {
         throw Exception('Name, telephone number and email cannot be empty');
       }
       await _userService.changeProfile(name, telephone_number, email);
+
+      Navigator.pushNamed(context, '/home');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Profile berhasil diperbarui'),
+      ));
 
       notifyListeners();
     } catch (e) {
@@ -136,10 +143,21 @@ class UserController with ChangeNotifier {
     }
   }
 
+  Future<void> pickImageAndUpload(BuildContext context, File file) async {
+    try {
+      await _userService.changeProfilePhoto(file);
+    } catch (e) {
+      debugPrint('error $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Gagal mengunggah foto profil'),
+      ));
+    }
+  }
+
   String get name => _user?.name ?? '';
   String get email => _user?.email ?? '';
   String get telephoneNumber => _user?.telephoneNumber ?? '';
   String get profilePhoto =>
-      _user?.profilePhoto ??
-      'https://storage.googleapis.com/e-complaint-assets/complaint_files/example1.jpg';
+      'https://storage.googleapis.com/e-complaint-assets/' +
+      (_user?.profilePhoto ?? 'complaint_files/example1.jpg');
 }

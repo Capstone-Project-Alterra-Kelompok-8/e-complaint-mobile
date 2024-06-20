@@ -84,7 +84,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                       Navigator.pushNamed(context, '/change_profile');
+                    },
                     icon: const Icon(Icons.person_2_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
@@ -112,7 +114,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                       Navigator.pushNamed(context, '/change_password_profile');
+                    },
                     icon: const Icon(Icons.key_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
@@ -131,14 +135,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Divider(),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/my_complaint');
+            },
             child: SizedBox(
               width: double.infinity,
               height: 70,
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                       Navigator.pushNamed(context, '/my_complaint');
+                    },
                     icon: const Icon(Icons.mode_comment_outlined),
                     color: ColorCollections.textPrimaryColor,
                   ),
@@ -184,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/aboutApp');
+              Navigator.pushNamed(context, '/about_App');
             },
             child: SizedBox(
               width: double.infinity,
@@ -192,7 +200,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                        Navigator.pushNamed(context, '/about_App');
+                    },
                     icon: const Icon(Icons.info),
                     color: ColorCollections.textPrimaryColor,
                   ),

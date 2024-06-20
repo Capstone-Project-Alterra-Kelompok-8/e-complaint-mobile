@@ -12,7 +12,8 @@ class ProgressMyComplaintScreen extends StatefulWidget {
   const ProgressMyComplaintScreen({super.key, required this.complaintId});
 
   @override
-  State<ProgressMyComplaintScreen> createState() => _ProgressMyComplaintScreenState();
+  State<ProgressMyComplaintScreen> createState() =>
+      _ProgressMyComplaintScreenState();
 }
 
 class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
@@ -45,51 +46,53 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
             return Center(child: Text('No progress found for this complaint.'));
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: ColorCollections.secondaryColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x14000000),
-                    blurRadius: 16,
-                    offset: Offset(0, 8),
-                    spreadRadius: 0,
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8),
+          return SingleChildScrollView(
+            controller: ScrollController(),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: ColorCollections.secondaryColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x14000000),
+                      blurRadius: 16,
+                      offset: Offset(0, 8),
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8),
+                        ),
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black,
+                            width: 1,
+                          ),
+                        ),
                       ),
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.black,
-                          width: 1,
+                      child: Center(
+                        child: Text(
+                          'Proses Aduan'.toUpperCase(),
+                          style: TextCollections.headingThree.copyWith(
+                            color: ColorCollections.textPrimaryColor,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        'Proses Aduan'.toUpperCase(),
-                        style: TextCollections.headingThree.copyWith(
-                          color: ColorCollections.textPrimaryColor,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Gap(10),
-                  ListView.builder(
+                    Gap(10),
+                    ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: controller.myComplaintProses.length,
@@ -106,9 +109,11 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
                                   color: iconColor,
                                   size: 30,
                                 ),
-                                if (index != controller.myComplaintProses.length - 1)
+                                if (index !=
+                                    controller.myComplaintProses.length - 1)
                                   CustomPaint(
-                                    size: Size(1, 100), // Adjust the height as needed
+                                    size: Size(
+                                        1, 100), // Adjust the height as needed
                                     painter: DashedLinePainter(),
                                   ),
                               ],
@@ -135,14 +140,16 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
                                   ),
                                   Text(
                                     proses.date,
-                                    style: TextCollections.headingThree.copyWith(
+                                    style:
+                                        TextCollections.headingThree.copyWith(
                                       fontSize: 14,
                                       color: Color(0xEC5A5A5A),
                                     ),
                                   ),
                                   Text(
                                     proses.message,
-                                    style: TextCollections.headingThree.copyWith(
+                                    style:
+                                        TextCollections.headingThree.copyWith(
                                       fontSize: 14,
                                       color: Color(0xEC5A5A5A),
                                     ),
@@ -155,7 +162,8 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
                         );
                       },
                     ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

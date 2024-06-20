@@ -1,4 +1,5 @@
 import 'package:e_complaint_app/views/screens/auth/otp_forgot_password_verify_screen.dart';
+import 'package:e_complaint_app/views/screens/auth/success_fotgot_password_screen.dart';
 import 'package:e_complaint_app/views/screens/auth/splashscreen.dart';
 import 'package:e_complaint_app/views/screens/chat_admin/chat_admin_screen.dart';
 import 'package:e_complaint_app/views/screens/chat_ai/chat_ai_screen.dart';
@@ -41,8 +42,9 @@ class AppRoute {
     '/form_aduan' : (context) => FormAduan(),
     '/riwayat_aduan' : (context) => RiwayatAduan(),
     '/chat_admin' :(context) => ChatAdmin(),
+    '/success_forgot_password' : (context) => SuccessForgotPasswordScreen(),
     '/chat_bot' :(context) => ChatBot(),
-    '/AboutApp' : (context) => const AboutAppScreen(),
+    '/about_App' : (context) => const AboutAppScreen(),
   
   };
 }

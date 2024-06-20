@@ -125,6 +125,3 @@ class MyComplaintController extends ChangeNotifier {
 }
 
 
-class MyComplaintCommentController extends ChangeNotifier {
-  
-}
