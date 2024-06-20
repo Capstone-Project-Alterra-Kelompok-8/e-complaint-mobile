@@ -1,12 +1,19 @@
-// views/screens/riwayat_aduan/riwayat_aduan.dart
 import 'package:e_complaint_app/controllers/riwayat_aduan_controller.dart';
 import 'package:e_complaint_app/views/screens/components/app_bar.dart';
-import 'package:e_complaint_app/views/screens/riwayat_aduan/aduan_card.dart';
+import 'package:e_complaint_app/views/screens/riwayat_aduan/components/aduan_card.dart';
+import 'package:e_complaint_app/views/screens/riwayat_aduan/components/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RiwayatAduan extends StatelessWidget {
+class RiwayatAduan extends StatefulWidget {
   const RiwayatAduan({Key? key}) : super(key: key);
+
+  @override
+  _RiwayatAduanState createState() => _RiwayatAduanState();
+}
+
+class _RiwayatAduanState extends State<RiwayatAduan> {
+  String? _selectedCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,7 @@ class RiwayatAduan extends StatelessWidget {
                           AssetImage('assets/images/icon_filter.png'),
                         ),
                         onPressed: () {
-                          // Handle filter action
+                          _showFilterSheet(context);
                         },
                       ),
                       border: OutlineInputBorder(
@@ -65,6 +72,22 @@ class RiwayatAduan extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  void _showFilterSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Filter(
+          onCategorySelected: (category) {
+            setState(() {
+              _selectedCategory = category;
+            });
+          },
+          initialCategory: _selectedCategory,
+        );
+      },
     );
   }
 
@@ -103,21 +126,26 @@ class RiwayatAduan extends StatelessWidget {
   }
 
   Widget _getSegmentContent(RiwayatAduanController controller) {
+    final complaints = _selectedCategory == null
+        ? controller.complaints
+        : controller.complaints
+            .where((complaint) => complaint.categoryName == _selectedCategory)
+            .toList();
     return ListView.builder(
-      itemCount: controller.complaints.length,
+      itemCount: complaints.length,
       itemBuilder: (context, index) {
         return AduanCard(
-          id: controller.complaints[index].id,
-          name: controller.complaints[index].name,
-          initials: controller.getInitials(controller.complaints[index].name),
-          description: controller.complaints[index].description,
-          category: controller.complaints[index].categoryName,
-          regency: controller.complaints[index].regencyName,
-          status: controller.complaints[index].status,
-          profilePhoto: controller.complaints[index].profilePhoto,
-          files: controller.complaints[index].files,
-          totalLikes: controller.complaints[index].totalLikes,
-          date: controller.complaints[index].date,
+          id: complaints[index].id,
+          name: complaints[index].name,
+          initials: controller.getInitials(complaints[index].name),
+          description: complaints[index].description,
+          category: complaints[index].categoryName,
+          regency: complaints[index].regencyName,
+          status: complaints[index].status,
+          profilePhoto: complaints[index].profilePhoto,
+          files: complaints[index].files,
+          totalLikes: complaints[index].totalLikes,
+          date: complaints[index].date,
         );
       },
     );

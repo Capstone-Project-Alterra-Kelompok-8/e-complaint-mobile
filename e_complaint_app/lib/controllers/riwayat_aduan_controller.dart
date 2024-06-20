@@ -6,6 +6,7 @@ class RiwayatAduanController with ChangeNotifier {
   List<bool> _selectedSegments = [true, false, false, false];
   TextEditingController _searchController = TextEditingController();
   List<Complaint> complaints = [];
+  List<Complaint> allComplaints = [];
   bool isLoading = true;
   String _errorMessage = '';
 
@@ -16,12 +17,17 @@ class RiwayatAduanController with ChangeNotifier {
   List<bool> get selectedSegments => _selectedSegments;
   TextEditingController get searchController => _searchController;
 
+  RiwayatAduanController() {
+    _searchController.addListener(_onSearchChanged);
+  }
+
   void fetchComplaints() async {
     isLoading = true;
     notifyListeners();
 
     try {
-      complaints = await _aduankuService.fetchComplaints();
+      allComplaints = await _aduankuService.fetchComplaints();
+      complaints = allComplaints;
     } catch (e) {
       print('Failed to load complaints: $e');
       _errorMessage = 'Failed to load complaints: $e';
@@ -30,6 +36,21 @@ class RiwayatAduanController with ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  void _onSearchChanged() {
+    final keyword = _searchController.text.toLowerCase();
+    if (keyword.isEmpty) {
+      complaints = allComplaints;
+    } else {
+      complaints = allComplaints.where((complaint) {
+        return complaint.name.toLowerCase().contains(keyword) ||
+            complaint.description.toLowerCase().contains(keyword) ||
+            complaint.categoryName.toLowerCase().contains(keyword) ||
+            complaint.regencyName.toLowerCase().contains(keyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 
   void onSegmentSelected(int index) {
@@ -66,5 +87,12 @@ class RiwayatAduanController with ChangeNotifier {
       initials = nameSplit[0][0];
     }
     return initials.toUpperCase();
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
   }
 }
