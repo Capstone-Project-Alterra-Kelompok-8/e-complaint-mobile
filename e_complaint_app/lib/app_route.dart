@@ -38,7 +38,7 @@ class AppRoute {
     '/forgot_password' : (context) => ForgotPasswordScreen(),
     '/notification' : (context) => NotificationScreen(),
     '/my_complaint' : (context) => MyComplaintScreen(),
-   
+  
     '/home' : (context) => const HomePageScreen(),
     '/change_profile_input' : (context) => const ChangeProfileInputScreen(),
     '/change_profile' : (context) => const ChangeProfileScreen(),

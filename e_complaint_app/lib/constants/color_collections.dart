@@ -11,6 +11,7 @@ class ColorCollections {
   static const Color alertErrorColor = Color(0xFFDC2626);
   static const Color profileColor = Color(0xFFECE6F0);
   static const Color bubleTextColor = Color(0xFFFEF08A);
+  static const Color chatColor = Color(0xFFF2F2F5);
   static const Color activeTextColor = Color(0xFFF797C7B);
   static const Color timeStampColor = Color(0xFFF6B7280);
   static const Color textCreateNow = Color(0xFF404969);

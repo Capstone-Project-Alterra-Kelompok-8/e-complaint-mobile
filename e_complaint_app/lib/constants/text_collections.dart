@@ -137,7 +137,7 @@ class TextCollections {
   );
 
   // chat_ai
-  static TextStyle messageBubble = GoogleFonts.montserrat(
+  static TextStyle messageBubble = GoogleFonts.roboto(
     fontSize: 14.0,
     fontWeight: FontWeight.w400,
     color: ColorCollections.textPrimaryColor,
@@ -146,7 +146,7 @@ class TextCollections {
 
   static TextStyle messageToday = GoogleFonts.montserrat(
     fontSize: 14.0,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
     color: ColorCollections.textPrimaryColor,
     letterSpacing: 0.4,
   );
