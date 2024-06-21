@@ -2,6 +2,7 @@ import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
+import 'package:e_complaint_app/views/screens/chat_admin/chat_admin_screen.dart';
 import 'package:e_complaint_app/views/screens/chat_ai/chat_ai_screen.dart';
 import 'package:e_complaint_app/models/news_model.dart';
 import 'package:e_complaint_app/views/screens/components/bottom_navbar.dart';
@@ -152,8 +153,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/chat_admin');
-                },
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatAdmin()),
+            );
+          },
                 child: const Column(
                   children: [
                     Image(

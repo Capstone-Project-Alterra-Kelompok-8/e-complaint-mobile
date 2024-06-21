@@ -33,7 +33,8 @@ class ChatbotService {
       return ChatbotMessage.fromJson(jsonResponse);
     } else {
       debugPrint('Failed to send request: ${response.statusCode}');
-      throw Exception('Failed to send request');
+      debugPrint('Response body: ${response.body}');
+      throw Exception('Failed to send request with status code ${response.statusCode}');
     }
   }
 }

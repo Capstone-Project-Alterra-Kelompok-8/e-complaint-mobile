@@ -1,6 +1,6 @@
 import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/services/chat_ai_service.dart';
-import 'package:e_complaint_app/views/screens/components/app_bar.dart';
+import 'package:e_complaint_app/views/screens/components/triangle.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -105,22 +105,18 @@ void _sendMessage() async {
               children: [
                 CircleAvatar(
                   backgroundImage: AssetImage('assets/images/bot.jpg'),
-                  radius: 31,
-                  
+                  radius: 21,
                 ),
                 Positioned(
-                  bottom: 2,
-                  right: 10,
+                  bottom: 0,
+                  right: 3,
                   child: Container(
                     width: 10,
                     height: 10,
                     decoration: BoxDecoration(
                       color: Colors.green,
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
+                      
                     ),
                   ),
                 ),
@@ -128,37 +124,48 @@ void _sendMessage() async {
             ),
           if (!isUser) SizedBox(width: 10),
           Flexible(
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
+            child: Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  decoration: BoxDecoration(
+                    color: isUser ? ColorCollections.primaryColor : Colors.white70,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment:
-                    isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message,
-                    style: TextCollections.messageBubble,
-                    textAlign: isUser ? TextAlign.right : TextAlign.left,
+                  child: Column(
+                    crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        message,
+                        style: TextCollections.messageBubble,
+                        textAlign: isUser ? TextAlign.right : TextAlign.left,
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        timestamp,
+                        style: TextCollections.timeStamp,
+                        textAlign: isUser ? TextAlign.right : TextAlign.left,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    timestamp,
-                    style: TextCollections.timeStamp,
-                    textAlign: isUser ? TextAlign.right : TextAlign.left,
+                ),
+                Positioned(
+                  left: isUser ? null : 0,
+                  right: isUser ? 0 : null,
+                  top: 10,
+                  child: CustomPaint(
+                    painter: TrianglePainter(
+                      isUser: isUser,
+                      color: isUser ? ColorCollections.primaryColor : Colors.white70,
+                    ),
+                    child: Container(
+                      height: 10,
+                      width: 10,
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -190,24 +197,21 @@ void _sendMessage() async {
             children: [
               CircleAvatar(
                 backgroundImage: AssetImage('assets/images/bot.jpg'),
-                radius: 31,
+                radius: 21,
               ),
               Positioned(
-                bottom: 2,
-                right: 10,
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 1,
+                  bottom: 0,
+                  right: 3,
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                      
                     ),
                   ),
                 ),
-              ),
             ],
           ),
           SizedBox(width: 10),
@@ -232,79 +236,86 @@ void _sendMessage() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30.0),
-        child: Column(
-          children: [
-            _buildBotProfile(),
-            Divider(color: Colors.black, thickness: 0.2,),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _messages.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        _buildDateLabel("Hari ini"),
-                        const SizedBox(height: 10),
-                      ],
-                    );
-                  }
-                  final message = _messages[index - 1];
-                  return _buildMessageBubble(
-                    message['content']!,
-                    message['timestamp']!,
-                    message['role'] == 'user',
-                  );
-                },
-              ),
+      backgroundColor: ColorCollections.chatColor,
+      body: Column(
+        children: [
+          Container(
+            color: Colors.white,
+            padding: EdgeInsets.only(top: 30, left: 4, right: 16, bottom: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildBotProfile(),
+                ),
+              ],
             ),
-            if (isLoading) const CircularProgressIndicator(),
-            Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: TextField(
-                              controller: _complaintController,
-                              decoration: InputDecoration(
-                                hintText: 'Type a message...',
-                                hintStyle: TextCollections.messageType,
-                                border: InputBorder.none,
-                              ),
-                              style: TextStyle(fontSize: 16),
-                              maxLines: null, // Mengizinkan multiple lines
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _messages.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      _buildDateLabel("Hari ini"),
+                      const SizedBox(height: 10),
+                    ],
+                  );
+                }
+                final message = _messages[index - 1];
+                return _buildMessageBubble(
+                  message['content']!,
+                  message['timestamp']!,
+                  message['role'] == 'user',
+                );
+              },
+            ),
+          ),
+          if (isLoading) const CircularProgressIndicator(),
+          Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: TextField(
+                            controller: _complaintController,
+                            decoration: InputDecoration(
+                              hintText: 'Type a message...',
+                              hintStyle: TextCollections.messageType,
+                              border: InputBorder.none,
                             ),
+                            style: TextStyle(fontSize: 16),
+                            maxLines: null, 
                           ),
                         ),
                       ),
                     ),
-                    Container(
-                      width: 1,
-                      height: 35.94,
-                      color: Colors.grey,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.send_outlined),
-                      onPressed: _sendMessage,
-                    ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 35.94,
+                    color: Colors.grey,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.send_outlined, color: ColorCollections.primaryColor,),
+                    onPressed: _sendMessage,
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
