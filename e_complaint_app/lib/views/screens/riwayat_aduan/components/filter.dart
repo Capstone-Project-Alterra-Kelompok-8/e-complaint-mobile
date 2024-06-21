@@ -130,6 +130,19 @@ class _FilterState extends State<Filter> {
                   Navigator.of(context).pop();
                 },
               ),
+              RadioListTile<String>(
+                title: Text('Sosial'),
+                value: 'Sosial',
+                groupValue: _selectedCategory,
+                activeColor: Color.fromARGB(255, 255, 183, 0),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+                  widget.onCategorySelected(value!);
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           ),
         ),

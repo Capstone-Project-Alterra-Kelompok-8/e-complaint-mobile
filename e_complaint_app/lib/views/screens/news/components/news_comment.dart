@@ -118,7 +118,8 @@ class _CommentsBottomSheetState extends State<CommentsBottomSheet> {
 
   Widget _buildCommentsList(NewsCommentController newsCommentController) {
     if (!newsCommentController.isLoaded) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: CircularProgressIndicator(
+      ));
     } else if (newsCommentController.errorMessage.isNotEmpty) {
       return Center(child: Text('No comments available'));
     } else if (newsCommentController.newsComments.isEmpty) {
