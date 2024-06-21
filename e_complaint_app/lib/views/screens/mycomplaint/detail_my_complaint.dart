@@ -21,6 +21,7 @@ class DetailMyComplaintScreen extends StatefulWidget {
 class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
   final PageController _pageController = PageController(); // PageController for controlling the PageView
   final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0); // ValueNotifier for page index
+  bool isFavorite = false; // Track favorite state
   final Map<String, Color> _statusColorMap = {
     'Pending': Colors.grey,
     'Selesai': Colors.green,
@@ -159,12 +160,15 @@ class _DetailMyComplaintScreenState extends State<DetailMyComplaintScreen> {
                             },
                           ),
                           IconButton(
-                            onPressed: () {},
-                            icon: Row(
-                              children: [
-                                Icon(Icons.favorite_border),
-                                
-                              ],
+                            onPressed: () {
+                              setState(() {
+                                isFavorite = !isFavorite; // Toggle favorite state
+                              });
+                            },
+                             icon: Icon(
+                              isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+                              color: isFavorite ? Colors.red : Colors.black,
+                              size: 24,
                             ),
                           ),
                         ],

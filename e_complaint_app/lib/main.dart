@@ -1,6 +1,7 @@
 import 'package:e_complaint_app/app_route.dart';
 import 'package:e_complaint_app/controllers/auth_controller.dart';
 import 'package:e_complaint_app/controllers/form_controller.dart';
+import 'package:e_complaint_app/controllers/notification_controller.dart';
 import 'package:e_complaint_app/controllers/riwayat_aduan_controller.dart';
 import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => NewsCommentController()),
         ChangeNotifierProvider(create: (context) => RiwayatAduanController()),
         ChangeNotifierProvider(create: (context) => MyComplaintCommentController()),
+        ChangeNotifierProvider(create: (context) => NotificationController()),
 
       ],
       child: MaterialApp(

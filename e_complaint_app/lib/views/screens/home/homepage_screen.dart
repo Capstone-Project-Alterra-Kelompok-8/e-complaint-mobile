@@ -50,7 +50,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/notification');
                 },
-                icon: Icon(Icons.notifications_none_outlined, size: 35)),
+                icon: Icon(Icons.notifications_none_outlined, size: 30)),
           ],
         ),
       ),
