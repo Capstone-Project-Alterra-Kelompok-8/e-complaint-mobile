@@ -1,11 +1,27 @@
 import 'package:e_complaint_app/constants/constants.dart';
+import 'package:e_complaint_app/models/notification_model.dart';
 import 'package:flutter/material.dart';
 
 class CardNotification extends StatelessWidget {
-  const CardNotification({super.key});
+  final NotificationModel notification;
+
+  const CardNotification({super.key, required this.notification});
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
+    String title = 'Pemberitahuan';
+    String subtitle = '';
+
+    if (notification.discussion != null) {
+      title = 'Komentar';
+      subtitle = '${notification.discussion!.user?.name ?? notification.discussion!.admin?.name} berkomentar: ${notification.discussion!.comment}';
+    } else if (notification.like != null) {
+      title = 'Suka';
+      subtitle = '${notification.like!.user?.name ?? notification.like!.admin?.name} menyukai kiriman Anda';
+    }
+
+    final imageUrl = notification.discussion?.user?.url ?? notification.like?.user?.url ?? notification.discussion?.admin?.url ?? notification.like?.admin?.url ??'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png';
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -21,7 +37,6 @@ class CardNotification extends StatelessWidget {
               spreadRadius: 0,
             ),
           ],
-          
         ),
         child: ListTile(
           leading: Container(
@@ -30,40 +45,28 @@ class CardNotification extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: AssetImage('assets/images/cek.jpg'),
+                image: imageUrl.startsWith('http')
+                    ? NetworkImage(imageUrl)
+                    : AssetImage(imageUrl) as ImageProvider,
                 fit: BoxFit.cover,
               ),
             ),
-            
           ),
           title: Text(
-            'Pemberitahuan',
+            title,
             style: TextCollections.headingOne.copyWith(
               fontSize: 16,
             ),
           ),
           subtitle: Text(
-            'Pengajuanmu telah diterima, silahkan tunggu konfirmasi selanjutnya Pengajuanmu telah diterima, silahkan tunggu konfirmasi selanjutnya Pengajuanmu telah diterima, silahkan tunggu konfirmasi selanjutnya',
+            subtitle,
             overflow: TextOverflow.ellipsis,
             maxLines: 3,
             style: TextCollections.headingThree.copyWith(
               fontSize: 12,
-              
-             ),
-          ),
-          trailing: Container(
-            width: 55,
-            height: 55,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              image: DecorationImage(
-                image: AssetImage('assets/images/cek.jpg'),
-                fit: BoxFit.cover,
-              ),
             ),
           ),
-        )
+        ),
       ),
     );
   }
