@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/services/chat_ai_service.dart';
 import 'package:e_complaint_app/views/components/triangle.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:e_complaint_app/controllers/chatAdmin_controller.dart';
 
 class ChatAdmin extends StatefulWidget {
   const ChatAdmin({Key? key}) : super(key: key);
@@ -14,85 +11,27 @@ class ChatAdmin extends StatefulWidget {
 }
 
 class _ChatAdminState extends State<ChatAdmin> {
-  final TextEditingController _complaintController = TextEditingController();
-  final List<Map<String, String>> _messages = [];
-  bool isLoading = false;
+  final ChatAdminController _chatAdminController = ChatAdminController();
 
   @override
   void initState() {
     super.initState();
-    _loadMessages();
-  }
-
-  void _loadMessages() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? messagesString = prefs.getString('chatMessages');
-    if (messagesString != null) {
-      List<dynamic> messagesJson = jsonDecode(messagesString);
+    _chatAdminController.loadMessages((messages) {
       setState(() {
-        _messages.addAll(messagesJson.map((message) => Map<String, String>.from(message)).toList());
+        _chatAdminController.messages.addAll(messages);
       });
-    }
-  }
-
-  void _saveMessages() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String messagesString = jsonEncode(_messages);
-    await prefs.setString('chatMessages', messagesString);
-  }
-
-  void _sendMessage() async {
-    if (_complaintController.text.trim().isEmpty) {
-      return;
-    }
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-
-    if (token == null) {
-      return;
-    }
-
-    setState(() {
-      _messages.add({
-        'role': 'user',
-        'content': _complaintController.text,
-        'timestamp': DateFormat('HH:mm').format(DateTime.now())
-      });
-      isLoading = true;
     });
-    _saveMessages(); // Save messages after adding a new one
-
-    try {
-      final result = await ChatbotService.sendMessage(
-        message: _complaintController.text,
-      );
-
-      setState(() {
-        _messages.add({
-          'role': 'bot',
-          'content': result.botResponse,
-          'timestamp': DateFormat('HH:mm').format(DateTime.now())
-        });
-        isLoading = false;
-      });
-      _saveMessages(); // Save messages after receiving a response
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to send a request. Please try again.'),
-        ),
-      );
-    } finally {
-      _complaintController.clear();
-    }
   }
 
-    Widget _buildMessageBubble(String message, String timestamp, bool isUser) {
+  void _showMessageBubble() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to send a request. Please try again.'),
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(String message, String timestamp, bool isUser) {
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
@@ -254,7 +193,7 @@ class _ChatAdminState extends State<ChatAdmin> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _messages.length + 1,
+              itemCount: _chatAdminController.messages.length + 1,
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return Column(
@@ -265,7 +204,7 @@ class _ChatAdminState extends State<ChatAdmin> {
                     ],
                   );
                 }
-                final message = _messages[index - 1];
+                final message = _chatAdminController.messages[index - 1];
                 return _buildMessageBubble(
                   message['content']!,
                   message['timestamp']!,
@@ -274,7 +213,7 @@ class _ChatAdminState extends State<ChatAdmin> {
               },
             ),
           ),
-          if (isLoading) const CircularProgressIndicator(),
+          if (_chatAdminController.isLoading) const CircularProgressIndicator(),
           Container(
             color: Colors.white,
             child: Padding(
@@ -291,7 +230,7 @@ class _ChatAdminState extends State<ChatAdmin> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextField(
-                            controller: _complaintController,
+                            controller: _chatAdminController.complaintController,
                             decoration: InputDecoration(
                               hintText: 'Type a message...',
                               hintStyle: TextCollections.messageType,
@@ -311,7 +250,11 @@ class _ChatAdminState extends State<ChatAdmin> {
                   ),
                   IconButton(
                     icon: Icon(Icons.send_outlined),
-                    onPressed: _sendMessage,
+                    onPressed: () {
+                      setState(() {
+                        _chatAdminController.sendMessage(setState, _showMessageBubble);
+                      });
+                    },
                   ),
                 ],
               ),

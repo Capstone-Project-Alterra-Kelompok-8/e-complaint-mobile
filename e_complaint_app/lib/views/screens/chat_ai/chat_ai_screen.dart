@@ -1,98 +1,112 @@
-import 'package:e_complaint_app/components/app_bar.dart';
 import 'package:e_complaint_app/constants/constants.dart';
-import 'package:e_complaint_app/services/chat_ai_service.dart';
 import 'package:e_complaint_app/views/components/triangle.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:e_complaint_app/controllers/chatBot_controller.dart';
 
-class ChatBot extends StatefulWidget {
+class ChatBot extends StatelessWidget {
   const ChatBot({Key? key}) : super(key: key);
 
   @override
-  State<ChatBot> createState() => _ChatBotState();
-}
-
-class _ChatBotState extends State<ChatBot> {
-  final TextEditingController _complaintController = TextEditingController();
-  final List<Map<String, String>> _messages = [];
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _addDefaultMessages();
-  }
-
-  void _addDefaultMessages() {
-    final firstDefaultMessage = {
-      'role': 'bot',
-      'content': 'Hai, Aku Kava (KeluhProv AI Virtual Assistant)',
-      'timestamp': DateFormat('HH:mm').format(DateTime.now()),
-    };
-
-    final secondDefaultMessage = {
-      'role': 'bot',
-      'content': 'Bantu KAVA agar bisa memberikan solusi yang tepat & cepat supaya bisa kami bantu secepatnya',
-      'timestamp': DateFormat('HH:mm').format(DateTime.now()),
-    };
-
-    setState(() {
-      _messages.add(firstDefaultMessage);
-      _messages.add(secondDefaultMessage);
-    });
-  }
-
-void _sendMessage() async {
-  if (_complaintController.text.trim().isEmpty) {
-    return;
-  }
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('token');
-
-  if (token == null) {
-    // Handle case when token is not available
-    // Redirect to login screen or show error message
-    return;
-  }
-
-  setState(() {
-    _messages.add({
-      'role': 'user',
-      'content': _complaintController.text,
-      'timestamp': DateFormat('HH:mm').format(DateTime.now())
-    });
-    isLoading = true;
-  });
-
-  try {
-    final result = await ChatbotService.sendMessage(
-      message: _complaintController.text,
-    );
-
-    setState(() {
-      _messages.add({
-        'role': 'bot',
-        'content': result.botResponse,
-        'timestamp': DateFormat('HH:mm').format(DateTime.now())
-      });
-      isLoading = false;
-    });
-  } catch (e) {
-    setState(() {
-      isLoading = false;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Failed to send a request. Please try again.'),
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ChatBotController(),
+      child: Scaffold(
+        backgroundColor: ColorCollections.chatColor,
+        body: Column(
+          children: [
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.only(top: 30, left: 4, right: 16, bottom: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildBotProfile(context),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Consumer<ChatBotController>(
+                builder: (context, controller, child) {
+                  return ListView.builder(
+                    itemCount: controller.messages.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            _buildDateLabel("Hari ini"),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      }
+                      final message = controller.messages[index - 1];
+                      return _buildMessageBubble(
+                        message['content']!,
+                        message['timestamp']!,
+                        message['role'] == 'user',
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            Consumer<ChatBotController>(
+              builder: (context, controller, child) {
+                return controller.isLoading
+                    ? const CircularProgressIndicator()
+                    : Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: TextField(
+                                        controller: controller.complaintController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Type a message...',
+                                          hintStyle: TextCollections.messageType,
+                                          border: InputBorder.none,
+                                        ),
+                                        style: TextStyle(fontSize: 16),
+                                        maxLines: null,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 1,
+                                height: 35.94,
+                                color: Colors.grey,
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.send_outlined, color: ColorCollections.primaryColor,),
+                                onPressed: () {
+                                  controller.sendMessage(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+              },
+            ),
+          ],
+        ),
       ),
     );
-  } finally {
-    _complaintController.clear();
   }
-}
 
   Widget _buildMessageBubble(String message, String timestamp, bool isUser) {
     return Align(
@@ -117,7 +131,6 @@ void _sendMessage() async {
                     decoration: BoxDecoration(
                       color: Colors.green,
                       shape: BoxShape.circle,
-                      
                     ),
                   ),
                 ),
@@ -180,17 +193,23 @@ void _sendMessage() async {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         child: Text(
           text,
-          style:TextCollections.messageToday,
+          style: TextCollections.messageToday,
         ),
       ),
     );
   }
 
-  Widget _buildBotProfile() {
+  Widget _buildBotProfile(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
         children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
           Stack(
             children: [
               CircleAvatar(
@@ -198,18 +217,17 @@ void _sendMessage() async {
                 radius: 21,
               ),
               Positioned(
-                  bottom: 0,
-                  right: 3,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                      
-                    ),
+                bottom: 0,
+                right: 3,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
                   ),
                 ),
+              ),
             ],
           ),
           SizedBox(width: 10),
@@ -218,106 +236,13 @@ void _sendMessage() async {
             children: [
               Text(
                 'Bot',
-                style: TextCollections.messageProfileBot
+                style: TextCollections.messageProfileBot,
               ),
               Text(
                 'Aktif sekarang',
-                style: TextCollections.messageActiveNow
+                style: TextCollections.messageActiveNow,
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorCollections.chatColor,
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(top: 20, left: 4, right: 16, bottom: 8),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Expanded(
-                  child: _buildBotProfile(),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      _buildDateLabel("Hari ini"),
-                      const SizedBox(height: 10),
-                    ],
-                  );
-                }
-                final message = _messages[index - 1];
-                return _buildMessageBubble(
-                  message['content']!,
-                  message['timestamp']!,
-                  message['role'] == 'user',
-                );
-              },
-            ),
-          ),
-          if (isLoading) const CircularProgressIndicator(),
-          Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextField(
-                            controller: _complaintController,
-                            decoration: InputDecoration(
-                              hintText: 'Type a message...',
-                              hintStyle: TextCollections.messageType,
-                              border: InputBorder.none,
-                            ),
-                            style: TextStyle(fontSize: 16),
-                            maxLines: null, 
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 1,
-                    height: 35.94,
-                    color: Colors.grey,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.send_outlined, color: ColorCollections.primaryColor,),
-                    onPressed: _sendMessage,
-                  ),
-                ],
-              ),
-            ),
           ),
         ],
       ),
