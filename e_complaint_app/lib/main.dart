@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => MyComplaintController()),
         ChangeNotifierProvider(create: (context) => FormAduanController()),
         ChangeNotifierProvider(create: (context) => NewsCommentController()),
-        ChangeNotifierProvider(create: (context) => RiwayatAduanController()),
+        ChangeNotifierProvider(create: (context) => RiwayatAduanController(0)),
         ChangeNotifierProvider(create: (context) => MyComplaintCommentController()),
         ChangeNotifierProvider(create: (context) => NotificationController()),
 

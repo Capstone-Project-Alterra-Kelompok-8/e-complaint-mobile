@@ -3,7 +3,7 @@ import 'package:e_complaint_app/services/riwayat_aduan_service.dart';
 import 'package:flutter/material.dart';
 
 class RiwayatAduanController with ChangeNotifier {
-  List<bool> _selectedSegments = [true, false, false, false];
+  List<bool> _selectedSegments;
   TextEditingController _searchController = TextEditingController();
   List<Complaint> complaints = [];
   List<Complaint> allComplaints = [];
@@ -17,8 +17,11 @@ class RiwayatAduanController with ChangeNotifier {
   List<bool> get selectedSegments => _selectedSegments;
   TextEditingController get searchController => _searchController;
 
-  RiwayatAduanController() {
+  RiwayatAduanController(int initialSegment)
+      : _selectedSegments = List.generate(4, (index) => index == initialSegment) {
     _searchController.addListener(_onSearchChanged);
+    fetchComplaints();
+    onSegmentSelected(initialSegment);
   }
 
   void fetchComplaints() async {

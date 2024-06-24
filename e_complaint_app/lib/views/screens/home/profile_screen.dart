@@ -34,16 +34,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             height: 35,
           ),
           Center(
-            child: userController.profilePhoto.isNotEmpty ? CircleAvatar(
-              radius: 45,
-              backgroundImage: NetworkImage(userController.profilePhoto),
-            ) :
-            const CircleAvatar(
-              radius: 45,
-              backgroundColor: ColorCollections.primaryColor,
-              foregroundColor: ColorCollections.backgroundColor,
-              child: Icon(Icons.person),
-            ),
+            child: userController.profilePhoto.isNotEmpty
+                ? CircleAvatar(
+                    radius: 45,
+                    backgroundImage: NetworkImage(userController.profilePhoto),
+                  )
+                : const CircleAvatar(
+                    radius: 45,
+                    backgroundColor: ColorCollections.primaryColor,
+                    foregroundColor: ColorCollections.backgroundColor,
+                    child: Icon(Icons.person),
+                  ),
           ),
           Center(
             child: Column(
@@ -85,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                       Navigator.pushNamed(context, '/change_profile');
+                      Navigator.pushNamed(context, '/change_profile');
                     },
                     icon: const Icon(Icons.person_2_outlined),
                     color: ColorCollections.textPrimaryColor,
@@ -115,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                       Navigator.pushNamed(context, '/change_password_profile');
+                      Navigator.pushNamed(context, '/change_password_profile');
                     },
                     icon: const Icon(Icons.key_outlined),
                     color: ColorCollections.textPrimaryColor,
@@ -136,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           GestureDetector(
             onTap: () {
-               Navigator.pushNamed(context, '/my_complaint');
+              Navigator.pushNamed(context, '/my_complaint');
             },
             child: SizedBox(
               width: double.infinity,
@@ -165,7 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Divider(),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/riwayat_favorit', arguments: 3);
+            },
             child: SizedBox(
               width: double.infinity,
               height: 70,
@@ -201,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                       Navigator.pushNamed(context, '/about_App');
+                      Navigator.pushNamed(context, '/about_App');
                     },
                     icon: const Icon(Icons.info),
                     color: ColorCollections.textPrimaryColor,

@@ -40,11 +40,12 @@ class AppRoute {
     '/change_profile' : (context) => const ChangeProfileScreen(),
     '/profile' : (context) => const ProfileScreen(),
     '/form_aduan' : (context) => FormAduan(),
-    '/riwayat_aduan' : (context) => RiwayatAduan(),
+    '/riwayat_aduan' : (context) => RiwayatAduan(initialSegment: 0,),
     '/chat_admin' :(context) => ChatAdmin(),
     '/success_forgot_password' : (context) => SuccessForgotPasswordScreen(),
     '/chat_bot' :(context) => ChatBot(),
     '/about_App' : (context) => AboutAppScreen(),
+    '/riwayat_favorit' : (context) => RiwayatAduan(initialSegment: 3)
   
   };
 }

@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RiwayatAduan extends StatefulWidget {
-  const RiwayatAduan({Key? key}) : super(key: key);
+  final int initialSegment;
+  const RiwayatAduan({Key? key, required this.initialSegment})
+      : super(key: key);
 
   @override
   _RiwayatAduanState createState() => _RiwayatAduanState();
@@ -16,9 +18,20 @@ class _RiwayatAduanState extends State<RiwayatAduan> {
   String? _selectedCategory;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final controller =
+          Provider.of<RiwayatAduanController>(context, listen: false);
+      controller.onSegmentSelected(widget.initialSegment);
+      controller.fetchComplaints();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => RiwayatAduanController()..fetchComplaints(),
+      create: (context) => RiwayatAduanController(widget.initialSegment)..fetchComplaints(),
       child: Scaffold(
         appBar: CurvedAppBar(),
         body: Consumer<RiwayatAduanController>(
