@@ -4,17 +4,22 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
-class ChatAdminController {
+class ChatAdminController extends ChangeNotifier {
   final TextEditingController complaintController = TextEditingController();
   final List<Map<String, String>> messages = [];
   bool isLoading = false;
 
-  void loadMessages(Function(List<Map<String, String>>) updateMessages) async {
+  ChatAdminController() {
+    loadMessages();
+  }
+
+  void loadMessages() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? messagesString = prefs.getString('chatMessages');
     if (messagesString != null) {
       List<dynamic> messagesJson = jsonDecode(messagesString);
-      updateMessages(messagesJson.map((message) => Map<String, String>.from(message)).toList());
+      messages.addAll(messagesJson.map((message) => Map<String, String>.from(message)).toList());
+      notifyListeners();
     }
   }
 
@@ -24,7 +29,7 @@ class ChatAdminController {
     await prefs.setString('chatMessages', messagesString);
   }
 
-  void sendMessage(Function setState, Function showMessageBubble) async {
+  void sendMessage(Function showMessageBubble) async {
     if (complaintController.text.trim().isEmpty) {
       return;
     }
@@ -36,35 +41,31 @@ class ChatAdminController {
       return;
     }
 
-    setState(() {
-      messages.add({
-        'role': 'user',
-        'content': complaintController.text,
-        'timestamp': DateFormat('HH:mm').format(DateTime.now())
-      });
-      isLoading = true;
+    messages.add({
+      'role': 'user',
+      'content': complaintController.text,
+      'timestamp': DateFormat('HH:mm').format(DateTime.now())
     });
-    saveMessages(); 
+    isLoading = true;
+    notifyListeners();
+    saveMessages();
 
     try {
       final result = await ChatbotService.sendMessage(
         message: complaintController.text,
       );
 
-      setState(() {
-        messages.add({
-          'role': 'bot',
-          'content': result.botResponse,
-          'timestamp': DateFormat('HH:mm').format(DateTime.now())
-        });
-        isLoading = false;
+      messages.add({
+        'role': 'bot',
+        'content': result.botResponse,
+        'timestamp': DateFormat('HH:mm').format(DateTime.now())
       });
-      saveMessages(); 
+      isLoading = false;
+      notifyListeners();
+      saveMessages();
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-
+      isLoading = false;
+      notifyListeners();
       showMessageBubble();
     } finally {
       complaintController.clear();

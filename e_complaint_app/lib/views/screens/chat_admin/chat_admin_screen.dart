@@ -2,6 +2,7 @@ import 'package:e_complaint_app/constants/constants.dart';
 import 'package:e_complaint_app/views/screens/components/triangle.dart';
 import 'package:flutter/material.dart';
 import 'package:e_complaint_app/controllers/chatAdmin_controller.dart';
+import 'package:provider/provider.dart';
 
 class ChatAdmin extends StatefulWidget {
   const ChatAdmin({Key? key}) : super(key: key);
@@ -11,17 +12,6 @@ class ChatAdmin extends StatefulWidget {
 }
 
 class _ChatAdminState extends State<ChatAdmin> {
-  final ChatAdminController _chatAdminController = ChatAdminController();
-
-  @override
-  void initState() {
-    super.initState();
-    _chatAdminController.loadMessages((messages) {
-      setState(() {
-        _chatAdminController.messages.addAll(messages);
-      });
-    });
-  }
 
   void _showMessageBubble() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -54,7 +44,6 @@ class _ChatAdminState extends State<ChatAdmin> {
                     decoration: BoxDecoration(
                       color: Colors.green,
                       shape: BoxShape.circle,
-                      
                     ),
                   ),
                 ),
@@ -135,18 +124,17 @@ class _ChatAdminState extends State<ChatAdmin> {
                 radius: 21,
               ),
               Positioned(
-                  bottom: 0,
-                  right: 3,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                      
-                    ),
+                bottom: 0,
+                right: 3,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
                   ),
                 ),
+              ),
             ],
           ),
           SizedBox(width: 10),
@@ -155,11 +143,11 @@ class _ChatAdminState extends State<ChatAdmin> {
             children: [
               Text(
                 'Admin',
-                style: TextCollections.messageProfileBot
+                style: TextCollections.messageProfileBot,
               ),
               Text(
                 'Aktif sekarang',
-                style: TextCollections.messageActiveNow
+                style: TextCollections.messageActiveNow,
               ),
             ],
           ),
@@ -170,6 +158,7 @@ class _ChatAdminState extends State<ChatAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    final _chatAdminController = Provider.of<ChatAdminController>(context);
     return Scaffold(
       backgroundColor: ColorCollections.chatColor,
       body: Column(
@@ -237,7 +226,7 @@ class _ChatAdminState extends State<ChatAdmin> {
                               border: InputBorder.none,
                             ),
                             style: TextStyle(fontSize: 16),
-                            maxLines: null, 
+                            maxLines: null,
                           ),
                         ),
                       ),
@@ -251,9 +240,7 @@ class _ChatAdminState extends State<ChatAdmin> {
                   IconButton(
                     icon: Icon(Icons.send_outlined),
                     onPressed: () {
-                      setState(() {
-                        _chatAdminController.sendMessage(setState, _showMessageBubble);
-                      });
+                      _chatAdminController.sendMessage(_showMessageBubble);
                     },
                   ),
                 ],

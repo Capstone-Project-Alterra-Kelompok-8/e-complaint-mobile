@@ -7,6 +7,7 @@ import 'package:e_complaint_app/controllers/user_controller.dart';
 import 'package:e_complaint_app/controllers/profile_controller.dart';
 import 'package:e_complaint_app/controllers/my_complaint_controller.dart';
 import 'package:e_complaint_app/controllers/news_controller.dart';
+import 'package:e_complaint_app/controllers/chatAdmin_controller.dart';
 import 'package:e_complaint_app/views/screens/auth/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => RiwayatAduanController(0)),
         ChangeNotifierProvider(create: (context) => MyComplaintCommentController()),
         ChangeNotifierProvider(create: (context) => NotificationController()),
-
+        ChangeNotifierProvider(create: (context) => ChatAdminController()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -49,8 +50,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(
-        loggedIn: loggedIn), // Set SplashScreen as the initial screen
+        home: SplashScreen(loggedIn: loggedIn), // Set SplashScreen as the initial screen
         routes: AppRoute.routes,
       ),
     );
