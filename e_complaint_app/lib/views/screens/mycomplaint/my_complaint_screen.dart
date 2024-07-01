@@ -165,6 +165,7 @@ Widget _buildStatusOption(String status, Color color, TextStyle textStyle) {
             ),
           ),
           Expanded(
+            key: Key('list_complaint'),
             child: myComplaintController.isLoaded
                 ? myComplaintController.filteredComplaints.isNotEmpty
                     ? ListView.builder(

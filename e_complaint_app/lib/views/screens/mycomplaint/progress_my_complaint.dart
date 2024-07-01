@@ -93,6 +93,7 @@ class _ProgressMyComplaintScreenState extends State<ProgressMyComplaintScreen> {
                     ),
                     Gap(10),
                     ListView.builder(
+                      key: Key('proses_aduan'),
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: controller.myComplaintProses.length,
