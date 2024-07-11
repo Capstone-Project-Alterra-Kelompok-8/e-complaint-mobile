@@ -2,7 +2,7 @@
 
 ![Portfolio Capstone Divisi](https://github.com/Capstone-Project-Alterra-Kelompok-8/e-complaint-mobile/assets/145460055/4dc89da0-4886-4d80-8a6e-47127a55d63a)
 
- #  Welcome to Our E-Complaint API Project
+ #  Welcome to Our E-Complaint Mobile Project
 
 At KeluhProv, we are dedicated to revolutionizing the way people handle and manage complaints. Our mission is to create a seamless, efficient, and user-friendly platform that empowers individuals and organizations to voice their concerns and seek resolutions effortlessly.
 
